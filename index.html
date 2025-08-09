@@ -6,7 +6,6 @@
     <title>TechStep - Interactive Cybersecurity Training Platform</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         .logo-container {
             display: flex;
@@ -15,15 +14,15 @@
         }
         
         .logo-icon {
-            width: 45px;
-            height: 45px;
-            background: linear-gradient(135deg, #3B82F6 0%, #1E40AF 100%);
-            border-radius: 8px;
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
         }
         
         .logo-icon::before {
@@ -31,1375 +30,954 @@
             position: absolute;
             width: 20px;
             height: 20px;
-            background: linear-gradient(45deg, #60A5FA, #3B82F6);
-            border-radius: 3px;
-            box-shadow: inset 0 1px 3px rgba(255,255,255,0.3);
+            background: linear-gradient(45deg, #60a5fa 0%, #3b82f6 100%);
+            border-radius: 4px;
+            transform: rotate(45deg);
+        }
+        
+        .logo-icon::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 2px;
+            z-index: 2;
         }
         
         .logo-text {
             font-size: 28px;
-            font-weight: 800;
-            background: linear-gradient(135deg, #3B82F6, #1E40AF);
+            font-weight: 700;
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             letter-spacing: -0.5px;
         }
+
+        .hero-bg {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+        }
+        
+        .stats-card {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            backdrop-filter: blur(10px);
+        }
         
         .course-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
             transition: all 0.3s ease;
-            border: 2px solid transparent;
         }
         
-        .course-card.selected {
-            border-color: #3B82F6;
-            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(30, 64, 175, 0.05));
+        .course-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(59, 130, 246, 0.3);
         }
         
-        .pricing-toggle {
-            background: #E5E7EB;
-            border-radius: 25px;
-            padding: 4px;
-            display: flex;
+        .mentor-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        
+        .mentor-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        .testimonial-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        
+        .testimonial-card:hover {
+            transform: translateY(-3px);
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        .career-pro-card {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(29, 78, 216, 0.1) 100%);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        
+        .toggle-switch {
             position: relative;
-            transition: all 0.3s ease;
-        }
-        
-        .toggle-option {
-            padding: 8px 16px;
-            border-radius: 20px;
+            width: 60px;
+            height: 30px;
+            background: #374151;
+            border-radius: 15px;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-weight: 500;
-            position: relative;
-            z-index: 2;
         }
         
-        .toggle-option.active {
-            background: linear-gradient(135deg, #3B82F6, #1E40AF);
-            color: white;
-            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+        .toggle-switch.active {
+            background: #3b82f6;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 24px;
+            height: 24px;
+            background: white;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+        
+        .toggle-switch.active .toggle-slider {
+            transform: translateX(30px);
+        }
+        
+        .price-display {
+            transition: all 0.3s ease;
         }
         
         .mentor-booking {
             display: none;
-            animation: slideDown 0.5s ease;
+            animation: fadeIn 0.5s ease;
         }
         
         .mentor-booking.show {
             display: block;
         }
         
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         .progress-bar {
-            background: #E5E7EB;
+            background: rgba(59, 130, 246, 0.2);
             border-radius: 10px;
             overflow: hidden;
-            height: 8px;
         }
         
         .progress-fill {
-            background: linear-gradient(90deg, #3B82F6, #1E40AF);
-            height: 100%;
+            height: 8px;
+            background: linear-gradient(90deg, #3b82f6, #1d4ed8);
+            border-radius: 10px;
             transition: width 1s ease;
         }
         
-        .interactive-btn {
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .interactive-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
-        }
-        
-        .dashboard-card {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        .course-selection {
+            opacity: 0.7;
             transition: all 0.3s ease;
         }
         
-        .dashboard-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+        .course-selection.selected {
+            opacity: 1;
+            transform: scale(1.02);
         }
         
-        .notification-badge {
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            background: #EF4444;
-            color: white;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            font-weight: bold;
-        }
-        
-        .step-indicator {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            margin: 20px 0;
-        }
-        
-        .step {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: #E5E7EB;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            transition: all 0.3s ease;
-        }
-        
-        .step.active {
-            background: linear-gradient(135deg, #3B82F6, #1E40AF);
-            color: white;
-        }
-        
-        .step.completed {
-            background: #10B981;
-            color: white;
-        }
-        
-        .course-preview {
-            display: none;
-            background: rgba(59, 130, 246, 0.05);
-            border-left: 4px solid #3B82F6;
-            padding: 16px;
-            margin-top: 12px;
-            border-radius: 0 8px 8px 0;
-        }
-        
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .modal.show {
-            display: flex;
-        }
-        
-        .modal-content {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            max-width: 500px;
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
-            position: relative;
-            animation: modalSlideIn 0.3s ease;
-        }
-        
-        @keyframes modalSlideIn {
-            from {
-                opacity: 0;
-                transform: scale(0.8);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
+        .payment-calculator {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
         }
     </style>
 </head>
-<body class="bg-gray-50">
+<body class="bg-gray-900 text-white">
     <!-- Navigation -->
-    <nav class="bg-white shadow-lg sticky top-0 z-50">
+    <nav class="bg-gray-800 shadow-lg sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <div class="logo-container">
                     <div class="logo-icon"></div>
-                    <div class="logo-text">TechStep</div>
+                    <span class="logo-text">TechStep</span>
                 </div>
-                <div class="hidden md:flex space-x-8">
-                    <a href="#home" class="text-gray-700 hover:text-blue-600 transition-colors">Home</a>
-                    <a href="#courses" class="text-gray-700 hover:text-blue-600 transition-colors">Courses</a>
-                    <a href="#mentors" class="text-gray-700 hover:text-blue-600 transition-colors">Mentors</a>
-                    <a href="#podcast" class="text-gray-700 hover:text-blue-600 transition-colors">Podcast</a>
-                </div>
-                <div class="flex items-center space-x-4">
-                    <button onclick="showDashboard()" class="interactive-btn bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 relative">
-                        <i class="fas fa-tachometer-alt mr-2"></i>
-                        Dashboard
-                        <span class="notification-badge">3</span>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#courses" class="text-gray-300 hover:text-blue-400 transition duration-300">Courses</a>
+                    <a href="#mentors" class="text-gray-300 hover:text-blue-400 transition duration-300">Mentors</a>
+                    <a href="#podcast" class="text-gray-300 hover:text-blue-400 transition duration-300">Podcast</a>
+                    <a href="#testimonials" class="text-gray-300 hover:text-blue-400 transition duration-300">Reviews</a>
+                    <button class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition duration-300">
+                        Get Started
                     </button>
-                    <button onclick="showLoginModal()" class="interactive-btn border border-blue-600 text-blue-600 px-4 py-2 rounded-lg hover:bg-blue-50">Login</button>
+                </div>
+                <div class="md:hidden">
+                    <button class="text-gray-300 hover:text-white">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
                 </div>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section id="home" class="bg-gradient-to-br from-blue-900 via-blue-800 to-blue-600 text-white py-20">
+    <section class="hero-bg py-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h1 class="text-5xl md:text-6xl font-bold mb-6">
-                Accelerate Your <span class="text-blue-300">Cybersecurity</span> Career
+                Accelerate Your <span class="text-blue-400">Cybersecurity Career</span>
             </h1>
-            <p class="text-xl md:text-2xl mb-8 text-blue-100">Interactive training platform with live mentorship</p>
-            
-            <!-- Interactive Stats -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
-                <div class="dashboard-card p-6 text-center">
-                    <div id="studentCount" class="text-3xl font-bold text-blue-600 mb-2">100+</div>
-                    <div class="text-gray-600">Students Trained</div>
-                </div>
-                <div class="dashboard-card p-6 text-center">
-                    <div class="text-3xl font-bold text-green-600 mb-2">92%</div>
-                    <div class="text-gray-600">Certification Pass Rate</div>
-                </div>
-                <div class="dashboard-card p-6 text-center">
-                    <div class="text-3xl font-bold text-purple-600 mb-2">15+</div>
-                    <div class="text-gray-600">Industry Courses</div>
-                </div>
-                <div class="dashboard-card p-6 text-center">
-                    <div class="text-3xl font-bold text-red-600 mb-2">24/7</div>
-                    <div class="text-gray-600">Support Available</div>
-                </div>
+            <p class="text-xl text-gray-300 mb-8 max-w-3xl mx-auto">
+                Master cybersecurity with expert-led training, hands-on labs, and personalized mentoring. 
+                From SOC Analyst to GRC Expert - we'll guide you every step of the way.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+                <button class="bg-blue-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-700 transition duration-300 transform hover:scale-105">
+                    <i class="fas fa-rocket mr-2"></i>Start Learning Today
+                </button>
+                <button class="border border-gray-400 text-gray-300 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-800 transition duration-300">
+                    <i class="fas fa-play mr-2"></i>Watch Demo
+                </button>
             </div>
             
-            <button onclick="scrollToCourses()" class="interactive-btn bg-white text-blue-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-blue-50">
-                <i class="fas fa-rocket mr-2"></i>
-                Start Your Journey
-            </button>
+            <!-- Stats -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+                <div class="stats-card p-6 rounded-lg text-center">
+                    <div class="text-3xl font-bold mb-2">100+</div>
+                    <div class="text-gray-200">Students Trained</div>
+                </div>
+                <div class="stats-card p-6 rounded-lg text-center">
+                    <div class="text-3xl font-bold mb-2">92%</div>
+                    <div class="text-gray-200">Certification Pass Rate</div>
+                </div>
+                <div class="stats-card p-6 rounded-lg text-center">
+                    <div class="text-3xl font-bold mb-2">15+</div>
+                    <div class="text-gray-200">Industry Courses</div>
+                </div>
+                <div class="stats-card p-6 rounded-lg text-center">
+                    <div class="text-3xl font-bold mb-2">24/7</div>
+                    <div class="text-gray-200">Support Available</div>
+                </div>
+            </div>
         </div>
     </section>
 
     <!-- Interactive Course Selection -->
-    <section id="courses" class="py-20 bg-white">
+    <section id="courses" class="py-20 bg-gray-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">Choose Your Cybersecurity Path</h2>
-                <p class="text-xl text-gray-600 mb-8">Interactive course selection with live mentor options</p>
-                
-                <!-- Pricing Toggle -->
-                <div class="flex justify-center mb-8">
-                    <div class="pricing-toggle">
-                        <div class="toggle-option active" onclick="togglePricing('self')">
-                            <i class="fas fa-user mr-2"></i>Self-Paced
-                        </div>
-                        <div class="toggle-option" onclick="togglePricing('mentor')">
-                            <i class="fas fa-users mr-2"></i>With Mentor
-                        </div>
+                <h2 class="text-4xl font-bold mb-4">Choose Your Learning Path</h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    Select from our comprehensive cybersecurity courses. Choose self-paced learning or add live mentor support.
+                </p>
+            </div>
+
+            <!-- Learning Type Selector -->
+            <div class="bg-gray-700 p-6 rounded-lg mb-8 max-w-2xl mx-auto">
+                <h3 class="text-xl font-semibold mb-4 text-center">Select Learning Type</h3>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                    <div class="flex items-center gap-3">
+                        <input type="radio" id="self-paced" name="learning-type" value="self-paced" checked 
+                               class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500">
+                        <label for="self-paced" class="text-lg">Self-Paced Learning</label>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <input type="radio" id="with-mentor" name="learning-type" value="with-mentor"
+                               class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500">
+                        <label for="with-mentor" class="text-lg">With Live Mentor</label>
                     </div>
                 </div>
             </div>
-            
-            <!-- Course Selection Grid -->
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+
+            <!-- Courses Grid -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
                 <!-- SOC Analyst Course -->
-                <div class="course-card bg-white p-6 rounded-xl shadow-lg cursor-pointer" onclick="selectCourse('soc', 1800, 1200)">
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                            <i class="fas fa-shield-alt text-blue-600 text-xl"></i>
-                        </div>
-                        <div class="text-right">
-                            <div class="text-2xl font-bold text-gray-900" id="soc-price">$1,200</div>
-                            <div class="text-sm text-gray-500">Self-Paced</div>
-                        </div>
+                <div class="course-card p-6 rounded-lg course-selection" data-course="soc-analyst">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-xl font-semibold">SOC Analyst Foundations</h3>
+                        <input type="checkbox" class="course-checkbox w-5 h-5 text-blue-600" data-self-price="1200" data-mentor-price="1800">
                     </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-2">SOC Analyst Foundations</h3>
-                    <p class="text-gray-600 mb-4">Master security operations center fundamentals, threat detection, and incident response protocols.</p>
-                    <div class="course-preview">
-                        <h4 class="font-semibold mb-2">Course Includes:</h4>
-                        <ul class="text-sm text-gray-600 space-y-1">
-                            <li><i class="fas fa-check text-green-500 mr-2"></i>SIEM Tool Mastery</li>
-                            <li><i class="fas fa-check text-green-500 mr-2"></i>Threat Hunting Techniques</li>
-                            <li><i class="fas fa-check text-green-500 mr-2"></i>Incident Response Playbooks</li>
-                            <li><i class="fas fa-check text-green-500 mr-2"></i>Real-world Lab Scenarios</li>
-                        </ul>
+                    <p class="text-gray-300 mb-4">Master security operations center fundamentals, threat detection, and incident response procedures.</p>
+                    <div class="price-display">
+                        <div class="self-paced-price text-2xl font-bold text-blue-400">$1,200</div>
+                        <div class="mentor-price text-2xl font-bold text-blue-400 hidden">$1,800</div>
+                    </div>
+                    <div class="text-sm text-gray-400 mt-2">
+                        <div class="self-paced-desc">Self-paced video lessons & labs</div>
+                        <div class="mentor-desc hidden">Includes live mentor sessions</div>
                     </div>
                 </div>
 
                 <!-- Threat Detection Course -->
-                <div class="course-card bg-white p-6 rounded-xl shadow-lg cursor-pointer" onclick="selectCourse('threat', 2000, 1400)">
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
-                            <i class="fas fa-search text-red-600 text-xl"></i>
-                        </div>
-                        <div class="text-right">
-                            <div class="text-2xl font-bold text-gray-900" id="threat-price">$1,400</div>
-                            <div class="text-sm text-gray-500">Self-Paced</div>
-                        </div>
+                <div class="course-card p-6 rounded-lg course-selection" data-course="threat-detection">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-xl font-semibold">Threat Detection & Incident Response</h3>
+                        <input type="checkbox" class="course-checkbox w-5 h-5 text-blue-600" data-self-price="1400" data-mentor-price="2000">
                     </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-2">Threat Detection & Incident Response</h3>
-                    <p class="text-gray-600 mb-4">Advanced threat hunting, malware analysis, and comprehensive incident response strategies.</p>
-                    <div class="course-preview">
-                        <h4 class="font-semibold mb-2">Course Includes:</h4>
-                        <ul class="text-sm text-gray-600 space-y-1">
-                            <li><i class="fas fa-check text-green-500 mr-2"></i>Advanced Threat Hunting</li>
-                            <li><i class="fas fa-check text-green-500 mr-2"></i>Malware Analysis Lab</li>
-                            <li><i class="fas fa-check text-green-500 mr-2"></i>Digital Forensics</li>
-                            <li><i class="fas fa-check text-green-500 mr-2"></i>Crisis Management</li>
-                        </ul>
+                    <p class="text-gray-300 mb-4">Advanced threat hunting, malware analysis, and comprehensive incident response strategies.</p>
+                    <div class="price-display">
+                        <div class="self-paced-price text-2xl font-bold text-blue-400">$1,400</div>
+                        <div class="mentor-price text-2xl font-bold text-blue-400 hidden">$2,000</div>
+                    </div>
+                    <div class="text-sm text-gray-400 mt-2">
+                        <div class="self-paced-desc">Self-paced video lessons & labs</div>
+                        <div class="mentor-desc hidden">Includes live mentor sessions</div>
                     </div>
                 </div>
 
-                <!-- Splunk & SIEM Course -->
-                <div class="course-card bg-white p-6 rounded-xl shadow-lg cursor-pointer" onclick="selectCourse('splunk', 1600, 1100)">
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                            <i class="fas fa-chart-line text-green-600 text-xl"></i>
-                        </div>
-                        <div class="text-right">
-                            <div class="text-2xl font-bold text-gray-900" id="splunk-price">$1,100</div>
-                            <div class="text-sm text-gray-500">Self-Paced</div>
-                        </div>
+                <!-- Splunk Course -->
+                <div class="course-card p-6 rounded-lg course-selection" data-course="splunk-siem">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-xl font-semibold">Splunk & SIEM Engineering</h3>
+                        <input type="checkbox" class="course-checkbox w-5 h-5 text-blue-600" data-self-price="1100" data-mentor-price="1600">
                     </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-2">Splunk & SIEM Engineering</h3>
-                    <p class="text-gray-600 mb-4">Master SIEM platforms, log analysis, and security monitoring technologies.</p>
-                    <div class="course-preview">
-                        <h4 class="font-semibold mb-2">Course Includes:</h4>
-                        <ul class="text-sm text-gray-600 space-y-1">
-                            <li><i class="fas fa-check text-green-500 mr-2"></i>Splunk Administration</li>
-                            <li><i class="fas fa-check text-green-500 mr-2"></i>Custom Dashboard Creation</li>
-                            <li><i class="fas fa-check text-green-500 mr-2"></i>Log Correlation Techniques</li>
-                            <li><i class="fas fa-check text-green-500 mr-2"></i>Alerting & Reporting</li>
-                        </ul>
+                    <p class="text-gray-300 mb-4">Master Splunk administration, SIEM deployment, and security monitoring infrastructure.</p>
+                    <div class="price-display">
+                        <div class="self-paced-price text-2xl font-bold text-blue-400">$1,100</div>
+                        <div class="mentor-price text-2xl font-bold text-blue-400 hidden">$1,600</div>
+                    </div>
+                    <div class="text-sm text-gray-400 mt-2">
+                        <div class="self-paced-desc">Self-paced video lessons & labs</div>
+                        <div class="mentor-desc hidden">Includes live mentor sessions</div>
                     </div>
                 </div>
 
                 <!-- Cloud Security Course -->
-                <div class="course-card bg-white p-6 rounded-xl shadow-lg cursor-pointer" onclick="selectCourse('cloud', 1900, 1300)">
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                            <i class="fas fa-cloud text-purple-600 text-xl"></i>
-                        </div>
-                        <div class="text-right">
-                            <div class="text-2xl font-bold text-gray-900" id="cloud-price">$1,300</div>
-                            <div class="text-sm text-gray-500">Self-Paced</div>
-                        </div>
+                <div class="course-card p-6 rounded-lg course-selection" data-course="cloud-security">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-xl font-semibold">Cloud Security Fundamentals</h3>
+                        <input type="checkbox" class="course-checkbox w-5 h-5 text-blue-600" data-self-price="1300" data-mentor-price="1900">
                     </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-2">Cloud Security Fundamentals</h3>
-                    <p class="text-gray-600 mb-4">AWS, Azure, and GCP security architecture, compliance, and best practices.</p>
-                    <div class="course-preview">
-                        <h4 class="font-semibold mb-2">Course Includes:</h4>
-                        <ul class="text-sm text-gray-600 space-y-1">
-                            <li><i class="fas fa-check text-green-500 mr-2"></i>Multi-Cloud Security</li>
-                            <li><i class="fas fa-check text-green-500 mr-2"></i>IAM & Access Control</li>
-                            <li><i class="fas fa-check text-green-500 mr-2"></i>Container Security</li>
-                            <li><i class="fas fa-check text-green-500 mr-2"></i>Compliance Frameworks</li>
-                        </ul>
+                    <p class="text-gray-300 mb-4">AWS, Azure, and GCP security architecture, compliance, and best practices.</p>
+                    <div class="price-display">
+                        <div class="self-paced-price text-2xl font-bold text-blue-400">$1,300</div>
+                        <div class="mentor-price text-2xl font-bold text-blue-400 hidden">$1,900</div>
+                    </div>
+                    <div class="text-sm text-gray-400 mt-2">
+                        <div class="self-paced-desc">Self-paced video lessons & labs</div>
+                        <div class="mentor-desc hidden">Includes live mentor sessions</div>
+                    </div>
+                </div>
+
+                <!-- Malware Analysis Course -->
+                <div class="course-card p-6 rounded-lg course-selection" data-course="malware-analysis">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-xl font-semibold">Malware Analysis & Network Defense</h3>
+                        <input type="checkbox" class="course-checkbox w-5 h-5 text-blue-600" data-self-price="1500" data-mentor-price="2200">
+                    </div>
+                    <p class="text-gray-300 mb-4">Reverse engineering, dynamic analysis, and advanced network security techniques.</p>
+                    <div class="price-display">
+                        <div class="self-paced-price text-2xl font-bold text-blue-400">$1,500</div>
+                        <div class="mentor-price text-2xl font-bold text-blue-400 hidden">$2,200</div>
+                    </div>
+                    <div class="text-sm text-gray-400 mt-2">
+                        <div class="self-paced-desc">Self-paced video lessons & labs</div>
+                        <div class="mentor-desc hidden">Includes live mentor sessions</div>
                     </div>
                 </div>
 
                 <!-- GRC Course -->
-                <div class="course-card bg-white p-6 rounded-xl shadow-lg cursor-pointer" onclick="selectCourse('grc', 2000, 1400)">
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
-                            <i class="fas fa-clipboard-check text-yellow-600 text-xl"></i>
-                        </div>
-                        <div class="text-right">
-                            <div class="text-2xl font-bold text-gray-900" id="grc-price">$1,400</div>
-                            <div class="text-sm text-gray-500">Self-Paced</div>
-                        </div>
+                <div class="course-card p-6 rounded-lg course-selection" data-course="grc-essentials">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-xl font-semibold">Risk, Compliance & GRC Essentials</h3>
+                        <input type="checkbox" class="course-checkbox w-5 h-5 text-blue-600" data-self-price="1400" data-mentor-price="2000">
                     </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-2">Risk, Compliance & GRC Essentials</h3>
-                    <p class="text-gray-600 mb-4">Governance, risk management, compliance frameworks, and audit procedures.</p>
-                    <div class="course-preview">
-                        <h4 class="font-semibold mb-2">Course Includes:</h4>
-                        <ul class="text-sm text-gray-600 space-y-1">
-                            <li><i class="fas fa-check text-green-500 mr-2"></i>Risk Assessment Methodologies</li>
-                            <li><i class="fas fa-check text-green-500 mr-2"></i>Compliance Framework Mapping</li>
-                            <li><i class="fas fa-check text-green-500 mr-2"></i>Audit Preparation & Execution</li>
-                            <li><i class="fas fa-check text-green-500 mr-2"></i>Policy Development</li>
-                        </ul>
+                    <p class="text-gray-300 mb-4">Governance frameworks, risk management, and regulatory compliance strategies.</p>
+                    <div class="price-display">
+                        <div class="self-paced-price text-2xl font-bold text-blue-400">$1,400</div>
+                        <div class="mentor-price text-2xl font-bold text-blue-400 hidden">$2,000</div>
                     </div>
-                </div>
-
-                <!-- AI Governance Course -->
-                <div class="course-card bg-white p-6 rounded-xl shadow-lg cursor-pointer" onclick="selectCourse('ai', 2100, 1450)">
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
-                            <i class="fas fa-robot text-indigo-600 text-xl"></i>
-                        </div>
-                        <div class="text-right">
-                            <div class="text-2xl font-bold text-gray-900" id="ai-price">$1,450</div>
-                            <div class="text-sm text-gray-500">Self-Paced</div>
-                        </div>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-2">AI Governance & Ethical Security</h3>
-                    <p class="text-gray-600 mb-4">Artificial intelligence security, governance frameworks, and ethical considerations.</p>
-                    <div class="course-preview">
-                        <h4 class="font-semibold mb-2">Course Includes:</h4>
-                        <ul class="text-sm text-gray-600 space-y-1">
-                            <li><i class="fas fa-check text-green-500 mr-2"></i>AI Risk Assessment</li>
-                            <li><i class="fas fa-check text-green-500 mr-2"></i>Algorithmic Bias Detection</li>
-                            <li><i class="fas fa-check text-green-500 mr-2"></i>ML Security Testing</li>
-                            <li><i class="fas fa-check text-green-500 mr-2"></i>Ethical AI Frameworks</li>
-                        </ul>
+                    <div class="text-sm text-gray-400 mt-2">
+                        <div class="self-paced-desc">Self-paced video lessons & labs</div>
+                        <div class="mentor-desc hidden">Includes live mentor sessions</div>
                     </div>
                 </div>
             </div>
 
-            <!-- Selected Course Summary -->
-            <div id="course-summary" class="bg-blue-50 p-6 rounded-xl mb-8" style="display: none;">
-                <h3 class="text-xl font-bold text-gray-900 mb-4">
-                    <i class="fas fa-shopping-cart text-blue-600 mr-2"></i>
-                    Your Selection
+            <!-- Mentor Booking Section (Conditional) -->
+            <div id="mentor-booking-section" class="mentor-booking bg-gray-700 p-6 rounded-lg mb-8">
+                <h3 class="text-2xl font-semibold mb-4 text-center">
+                    <i class="fas fa-user-tie mr-2 text-blue-400"></i>Book Your Mentor Sessions
                 </h3>
-                <div class="flex justify-between items-center mb-4">
+                <div class="grid md:grid-cols-2 gap-6">
                     <div>
-                        <div id="selected-course-name" class="font-semibold text-lg"></div>
-                        <div id="selected-course-type" class="text-gray-600"></div>
+                        <label class="block text-sm font-medium mb-2">Select Preferred Mentor</label>
+                        <select class="w-full p-3 bg-gray-600 rounded-lg text-white">
+                            <option>Dr. Rebecca Chen - Chief Security Officer</option>
+                            <option>Marcus Johnson - Senior GRC Manager</option>
+                            <option>David Thompson - Cloud Security Architect</option>
+                            <option>Sarah Martinez - SOC Operations Director</option>
+                        </select>
                     </div>
-                    <div class="text-right">
-                        <div id="selected-course-price" class="text-2xl font-bold text-blue-600"></div>
-                        <div class="text-sm text-gray-500">Total Price</div>
-                    </div>
-                </div>
-                
-                <!-- Payment Plans -->
-                <div class="grid md:grid-cols-3 gap-4 mb-6">
-                    <div class="bg-white p-4 rounded-lg border-2 border-blue-200 cursor-pointer" onclick="selectPaymentPlan('full')">
-                        <div class="font-semibold text-blue-600"><i class="fas fa-credit-card mr-2"></i>Full Payment</div>
-                        <div class="text-sm text-gray-600">5% discount applied</div>
-                        <div id="full-payment-price" class="font-bold text-lg text-green-600"></div>
-                    </div>
-                    <div class="bg-white p-4 rounded-lg border cursor-pointer" onclick="selectPaymentPlan('monthly')">
-                        <div class="font-semibold text-gray-700"><i class="fas fa-calendar-alt mr-2"></i>Monthly Plan</div>
-                        <div class="text-sm text-gray-600">3 equal payments</div>
-                        <div id="monthly-payment-price" class="font-bold text-lg"></div>
-                    </div>
-                    <div class="bg-white p-4 rounded-lg border cursor-pointer" onclick="selectPaymentPlan('weekly')">
-                        <div class="font-semibold text-gray-700"><i class="fas fa-calendar-week mr-2"></i>Weekly Plan</div>
-                        <div class="text-sm text-gray-600">12 equal payments</div>
-                        <div id="weekly-payment-price" class="font-bold text-lg"></div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Session Duration</label>
+                        <select class="w-full p-3 bg-gray-600 rounded-lg text-white">
+                            <option>30 minutes - Quick consultation</option>
+                            <option>60 minutes - In-depth session</option>
+                            <option>90 minutes - Comprehensive review</option>
+                        </select>
                     </div>
                 </div>
-
-                <!-- Mentor Booking Section (Hidden by default) -->
-                <div id="mentor-booking" class="mentor-booking bg-white p-6 rounded-lg border-2 border-green-200 mb-6">
-                    <h4 class="font-bold text-lg text-green-600 mb-4">
-                        <i class="fas fa-user-tie mr-2"></i>
-                        Book Your Mentor Session
-                    </h4>
-                    <p class="text-gray-600 mb-4">Select your preferred mentor and schedule your first session</p>
-                    
-                    <!-- Available Mentors -->
-                    <div class="grid md:grid-cols-2 gap-4 mb-4">
-                        <div class="bg-gray-50 p-4 rounded-lg cursor-pointer hover:bg-green-50 transition-colors" onclick="selectMentor('rebecca')">
-                            <div class="flex items-center mb-2">
-                                <div class="w-12 h-12 bg-gray-300 rounded-full mr-3"></div>
-                                <div>
-                                    <div class="font-semibold">Dr. Rebecca Chen</div>
-                                    <div class="text-sm text-gray-600">Chief Security Officer</div>
-                                </div>
-                            </div>
-                            <div class="text-sm text-gray-600">Available: Mon, Wed, Fri</div>
-                        </div>
-                        <div class="bg-gray-50 p-4 rounded-lg cursor-pointer hover:bg-green-50 transition-colors" onclick="selectMentor('marcus')">
-                            <div class="flex items-center mb-2">
-                                <div class="w-12 h-12 bg-gray-300 rounded-full mr-3"></div>
-                                <div>
-                                    <div class="font-semibold">Marcus Johnson</div>
-                                    <div class="text-sm text-gray-600">Senior GRC Manager</div>
-                                </div>
-                            </div>
-                            <div class="text-sm text-gray-600">Available: Tue, Thu, Sat</div>
-                        </div>
-                    </div>
-                    
-                    <!-- Session Scheduling -->
-                    <div class="bg-blue-50 p-4 rounded-lg">
-                        <h5 class="font-semibold mb-2">Schedule Your First Session</h5>
-                        <div class="grid md:grid-cols-2 gap-4">
-                            <input type="date" class="w-full p-2 border rounded-lg" min="" id="session-date">
-                            <select class="w-full p-2 border rounded-lg" id="session-time">
-                                <option>Select Time</option>
-                                <option>9:00 AM - 10:00 AM</option>
-                                <option>10:00 AM - 11:00 AM</option>
-                                <option>2:00 PM - 3:00 PM</option>
-                                <option>3:00 PM - 4:00 PM</option>
-                                <option>4:00 PM - 5:00 PM</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Enrollment Button -->
-                <div class="text-center">
-                    <button onclick="proceedToCheckout()" class="interactive-btn bg-gradient-to-r from-blue-600 to-blue-800 text-white px-8 py-4 rounded-lg text-lg font-semibold">
-                        <i class="fas fa-arrow-right mr-2"></i>
-                        Proceed to Enrollment
+                <div class="mt-4">
+                    <button class="w-full bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition duration-300">
+                        <i class="fas fa-calendar-plus mr-2"></i>Schedule Mentor Session
                     </button>
                 </div>
             </div>
 
-            <!-- Career Pro Package -->
-            <div class="bg-gradient-to-br from-blue-600 to-blue-800 p-8 rounded-xl text-white">
-                <div class="text-center mb-8">
-                    <h3 class="text-2xl font-bold mb-4">
-                        <i class="fas fa-star mr-2 text-yellow-400"></i>
-                        Career Pro Package - $499
-                    </h3>
-                    <p class="text-blue-100">Accelerate your career with comprehensive support</p>
+            <!-- Cart Summary -->
+            <div class="bg-gray-700 p-6 rounded-lg max-w-md mx-auto">
+                <h3 class="text-xl font-semibold mb-4">Order Summary</h3>
+                <div id="cart-items" class="space-y-2 mb-4">
+                    <p class="text-gray-400">Select courses to see pricing</p>
                 </div>
-                
-                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <div class="text-center">
-                        <div class="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-3">
-                            <i class="fas fa-file-alt text-2xl"></i>
-                        </div>
-                        <h4 class="font-semibold mb-2">Resume Review</h4>
-                        <p class="text-sm text-blue-100">Professional optimization</p>
+                <div class="border-t border-gray-600 pt-4">
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="text-lg font-semibold">Total:</span>
+                        <span id="total-price" class="text-2xl font-bold text-blue-400">$0</span>
                     </div>
-                    <div class="text-center">
-                        <div class="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-3">
-                            <i class="fab fa-linkedin text-2xl"></i>
+                    <div class="payment-calculator hidden" id="payment-breakdown">
+                        <h4 class="font-semibold mb-2">Payment Plans:</h4>
+                        <div class="text-sm space-y-1">
+                            <div class="flex justify-between">
+                                <span>Full Payment (5% discount):</span>
+                                <span id="full-payment">$0</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>3 Monthly Payments:</span>
+                                <span id="monthly-payment">$0/month</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>12 Weekly Payments:</span>
+                                <span id="weekly-payment">$0/week</span>
+                            </div>
                         </div>
-                        <h4 class="font-semibold mb-2">LinkedIn Profile</h4>
-                        <p class="text-sm text-blue-100">Professional enhancement</p>
                     </div>
-                    <div class="text-center">
-                        <div class="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-3">
-                            <i class="fas fa-comments text-2xl"></i>
-                        </div>
-                        <h4 class="font-semibold mb-2">Mock Interviews</h4>
-                        <p class="text-sm text-blue-100">Technical & behavioral</p>
-                    </div>
-                    <div class="text-center">
-                        <div class="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-3">
-                            <i class="fas fa-users text-2xl"></i>
-                        </div>
-                        <h4 class="font-semibold mb-2">Peer Pod Access</h4>
-                        <p class="text-sm text-blue-100">3-person accountability group</p>
-                    </div>
-                </div>
-                
-                <div class="text-center mt-8">
-                    <button onclick="addCareerPackage()" class="interactive-btn bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50">
-                        <i class="fas fa-plus mr-2"></i>
-                        Add Career Pro Package
-                    </button>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Interactive Mentors Section -->
-    <section id="mentors" class="py-20 bg-gray-50">
+    <!-- Meet Your Expert Mentors -->
+    <section id="mentors" class="py-20 bg-gray-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">Meet Your Expert Mentors</h2>
-                <p class="text-xl text-gray-600">Learn from industry leaders with real-world experience</p>
-            </div>
-            
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Mentor Cards -->
-                <div class="dashboard-card p-6 text-center cursor-pointer" onclick="showMentorDetails('rebecca')">
-                    <div class="w-24 h-24 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full mx-auto mb-4 flex items-center justify-center">
-                        <i class="fas fa-user-shield text-white text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-2">Dr. Rebecca Chen</h3>
-                    <p class="text-blue-600 font-semibold mb-2">Chief Security Officer</p>
-                    <p class="text-gray-600 mb-4">Former Government Security Specialist with 15+ years experience</p>
-                    <div class="flex justify-center space-x-2 mb-4">
-                        <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm">CISSP</span>
-                        <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-sm">CISM</span>
-                    </div>
-                    <button class="interactive-btn bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 w-full">
-                        <i class="fas fa-calendar mr-2"></i>Book Session
-                    </button>
-                </div>
-
-                <div class="dashboard-card p-6 text-center cursor-pointer" onclick="showMentorDetails('marcus')">
-                    <div class="w-24 h-24 bg-gradient-to-br from-green-400 to-green-600 rounded-full mx-auto mb-4 flex items-center justify-center">
-                        <i class="fas fa-clipboard-check text-white text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-2">Marcus Johnson</h3>
-                    <p class="text-green-600 font-semibold mb-2">Senior GRC Manager</p>
-                    <p class="text-gray-600 mb-4">Risk & Compliance Leadership Expert with Big Four experience</p>
-                    <div class="flex justify-center space-x-2 mb-4">
-                        <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-sm">CISA</span>
-                        <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm">CRISC</span>
-                    </div>
-                    <button class="interactive-btn bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 w-full">
-                        <i class="fas fa-calendar mr-2"></i>Book Session
-                    </button>
-                </div>
-
-                <div class="dashboard-card p-6 text-center cursor-pointer" onclick="showMentorDetails('david')">
-                    <div class="w-24 h-24 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full mx-auto mb-4 flex items-center justify-center">
-                        <i class="fas fa-cloud text-white text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-2">David Thompson</h3>
-                    <p class="text-purple-600 font-semibold mb-2">Cloud Security Architect</p>
-                    <p class="text-gray-600 mb-4">AWS Community Hero with 10+ years cloud security experience</p>
-                    <div class="flex justify-center space-x-2 mb-4">
-                        <span class="bg-purple-100 text-purple-800 px-2 py-1 rounded text-sm">AWS Security</span>
-                        <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm">CCSP</span>
-                    </div>
-                    <button class="interactive-btn bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 w-full">
-                        <i class="fas fa-calendar mr-2"></i>Book Session
-                    </button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Interactive Podcast Section -->
-    <section id="podcast" class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">TechStep Podcast</h2>
-                <p class="text-xl text-gray-600">"CyberSecure Weekly" - Your Gateway to Cybersecurity Excellence</p>
-            </div>
-            
-            <!-- Podcast Player Interface -->
-            <div class="max-w-4xl mx-auto">
-                <div class="dashboard-card p-8">
-                    <div class="flex items-center justify-between mb-8">
-                        <div class="flex items-center space-x-4">
-                            <div class="w-16 h-16 bg-gradient-to-br from-red-500 to-red-700 rounded-lg flex items-center justify-center">
-                                <i class="fas fa-podcast text-white text-2xl"></i>
-                            </div>
-                            <div>
-                                <h3 class="text-xl font-bold text-gray-900">Episode 45: Zero Trust Architecture in 2024</h3>
-                                <p class="text-gray-600">with Dr. Rebecca Chen • 28 minutes</p>
-                            </div>
-                        </div>
-                        <button class="interactive-btn bg-red-600 text-white px-6 py-3 rounded-full hover:bg-red-700">
-                            <i class="fas fa-play mr-2"></i>Play
-                        </button>
-                    </div>
-                    
-                    <!-- Progress Bar -->
-                    <div class="progress-bar mb-6">
-                        <div class="progress-fill" style="width: 35%"></div>
-                    </div>
-                    
-                    <!-- Episode List -->
-                    <div class="grid gap-4">
-                        <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer">
-                            <div class="flex items-center space-x-3">
-                                <button class="w-10 h-10 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center hover:bg-blue-200">
-                                    <i class="fas fa-play text-sm"></i>
-                                </button>
-                                <div>
-                                    <div class="font-semibold text-gray-900">Episode 44: AI-Powered Threat Detection</div>
-                                    <div class="text-sm text-gray-600">Dr. Sarah Martinez • 32 minutes</div>
-                                </div>
-                            </div>
-                            <div class="text-sm text-gray-500">2 days ago</div>
-                        </div>
-                        
-                        <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer">
-                            <div class="flex items-center space-x-3">
-                                <button class="w-10 h-10 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center hover:bg-blue-200">
-                                    <i class="fas fa-play text-sm"></i>
-                                </button>
-                                <div>
-                                    <div class="font-semibold text-gray-900">Episode 43: GRC Best Practices for SMBs</div>
-                                    <div class="text-sm text-gray-600">Marcus Johnson • 25 minutes</div>
-                                </div>
-                            </div>
-                            <div class="text-sm text-gray-500">1 week ago</div>
-                        </div>
-                        
-                        <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer">
-                            <div class="flex items-center space-x-3">
-                                <button class="w-10 h-10 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center hover:bg-blue-200">
-                                    <i class="fas fa-play text-sm"></i>
-                                </button>
-                                <div>
-                                    <div class="font-semibold text-gray-900">Episode 42: Cloud Security Fundamentals</div>
-                                    <div class="text-sm text-gray-600">David Thompson • 30 minutes</div>
-                                </div>
-                            </div>
-                            <div class="text-sm text-gray-500">2 weeks ago</div>
-                        </div>
-                    </div>
-                    
-                    <div class="text-center mt-8">
-                        <button class="interactive-btn bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-lg">
-                            <i class="fas fa-external-link-alt mr-2"></i>
-                            Subscribe on Spotify
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Student Testimonials -->
-    <section class="py-20 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">What Our Students Say</h2>
-                <p class="text-xl text-gray-600">Real success stories from our cybersecurity professionals</p>
-            </div>
-            
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="dashboard-card p-6">
-                    <div class="flex items-center mb-4">
-                        <div class="w-12 h-12 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full mr-4 flex items-center justify-center">
-                            <i class="fas fa-user text-white"></i>
-                        </div>
-                        <div>
-                            <div class="font-semibold text-gray-900">Michael Torres</div>
-                            <div class="text-sm text-gray-600">SOC Analyst at Fortune 500</div>
-                        </div>
-                    </div>
-                    <div class="flex mb-4">
-                        <i class="fas fa-star text-yellow-400"></i>
-                        <i class="fas fa-star text-yellow-400"></i>
-                        <i class="fas fa-star text-yellow-400"></i>
-                        <i class="fas fa-star text-yellow-400"></i>
-                        <i class="fas fa-star text-yellow-400"></i>
-                    </div>
-                    <p class="text-gray-600">"TechStep's SOC Analyst program transformed my career. The hands-on labs and mentor guidance helped me land my dream job in just 4 months!"</p>
-                </div>
-
-                <div class="dashboard-card p-6">
-                    <div class="flex items-center mb-4">
-                        <div class="w-12 h-12 bg-gradient-to-br from-green-400 to-green-600 rounded-full mr-4 flex items-center justify-center">
-                            <i class="fas fa-user text-white"></i>
-                        </div>
-                        <div>
-                            <div class="font-semibold text-gray-900">Priya Patel</div>
-                            <div class="text-sm text-gray-600">GRC Specialist</div>
-                        </div>
-                    </div>
-                    <div class="flex mb-4">
-                        <i class="fas fa-star text-yellow-400"></i>
-                        <i class="fas fa-star text-yellow-400"></i>
-                        <i class="fas fa-star text-yellow-400"></i>
-                        <i class="fas fa-star text-yellow-400"></i>
-                        <i class="fas fa-star text-yellow-400"></i>
-                    </div>
-                    <p class="text-gray-600">"The GRC course content is incredibly comprehensive. Marcus Johnson's mentorship was invaluable - I passed my CISA certification on the first try!"</p>
-                </div>
-
-                <div class="dashboard-card p-6">
-                    <div class="flex items-center mb-4">
-                        <div class="w-12 h-12 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full mr-4 flex items-center justify-center">
-                            <i class="fas fa-user text-white"></i>
-                        </div>
-                        <div>
-                            <div class="font-semibold text-gray-900">James Chen</div>
-                            <div class="text-sm text-gray-600">Cloud Security Engineer</div>
-                        </div>
-                    </div>
-                    <div class="flex mb-4">
-                        <i class="fas fa-star text-yellow-400"></i>
-                        <i class="fas fa-star text-yellow-400"></i>
-                        <i class="fas fa-star text-yellow-400"></i>
-                        <i class="fas fa-star text-yellow-400"></i>
-                        <i class="fas fa-star text-yellow-400"></i>
-                    </div>
-                    <p class="text-gray-600">"Outstanding cloud security training! The real-world scenarios and AWS hands-on labs prepared me perfectly for my current role. Highly recommended!"</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Dashboard Modal -->
-    <div id="dashboard-modal" class="modal">
-        <div class="modal-content">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold text-gray-900">
-                    <i class="fas fa-tachometer-alt text-blue-600 mr-2"></i>
-                    Your Dashboard
-                </h2>
-                <button onclick="closeDashboard()" class="text-gray-400 hover:text-gray-600">
-                    <i class="fas fa-times text-xl"></i>
-                </button>
-            </div>
-            
-            <!-- Progress Overview -->
-            <div class="grid md:grid-cols-2 gap-6 mb-8">
-                <div class="dashboard-card p-4">
-                    <h3 class="font-semibold text-gray-900 mb-3">
-                        <i class="fas fa-chart-line text-green-600 mr-2"></i>
-                        Learning Progress
-                    </h3>
-                    <div class="space-y-3">
-                        <div>
-                            <div class="flex justify-between mb-1">
-                                <span class="text-sm text-gray-600">SOC Analyst Foundations</span>
-                                <span class="text-sm text-blue-600">75%</span>
-                            </div>
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: 75%"></div>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="flex justify-between mb-1">
-                                <span class="text-sm text-gray-600">GRC Essentials</span>
-                                <span class="text-sm text-blue-600">45%</span>
-                            </div>
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: 45%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="dashboard-card p-4">
-                    <h3 class="font-semibold text-gray-900 mb-3">
-                        <i class="fas fa-calendar-check text-purple-600 mr-2"></i>
-                        Upcoming Sessions
-                    </h3>
-                    <div class="space-y-2">
-                        <div class="flex items-center justify-between p-2 bg-blue-50 rounded">
-                            <div>
-                                <div class="font-semibold text-sm">Dr. Rebecca Chen</div>
-                                <div class="text-xs text-gray-600">SOC Best Practices</div>
-                            </div>
-                            <div class="text-xs text-blue-600">Tomorrow 2PM</div>
-                        </div>
-                        <div class="flex items-center justify-between p-2 bg-green-50 rounded">
-                            <div>
-                                <div class="font-semibold text-sm">Marcus Johnson</div>
-                                <div class="text-xs text-gray-600">Risk Assessment</div>
-                            </div>
-                            <div class="text-xs text-green-600">Friday 10AM</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Quick Actions -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <button class="interactive-btn bg-blue-100 text-blue-600 p-4 rounded-lg hover:bg-blue-200 text-center">
-                    <i class="fas fa-play-circle text-2xl mb-2"></i>
-                    <div class="font-semibold text-sm">Continue Learning</div>
-                </button>
-                <button class="interactive-btn bg-green-100 text-green-600 p-4 rounded-lg hover:bg-green-200 text-center">
-                    <i class="fas fa-calendar-plus text-2xl mb-2"></i>
-                    <div class="font-semibold text-sm">Schedule Session</div>
-                </button>
-                <button class="interactive-btn bg-purple-100 text-purple-600 p-4 rounded-lg hover:bg-purple-200 text-center">
-                    <i class="fas fa-certificate text-2xl mb-2"></i>
-                    <div class="font-semibold text-sm">View Certificates</div>
-                </button>
-                <button class="interactive-btn bg-yellow-100 text-yellow-600 p-4 rounded-lg hover:bg-yellow-200 text-center">
-                    <i class="fas fa-headphones text-2xl mb-2"></i>
-                    <div class="font-semibold text-sm">Latest Podcast</div>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Login Modal -->
-    <div id="login-modal" class="modal">
-        <div class="modal-content">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold text-gray-900">Login to TechStep</h2>
-                <button onclick="closeLogin()" class="text-gray-400 hover:text-gray-600">
-                    <i class="fas fa-times text-xl"></i>
-                </button>
-            </div>
-            
-            <form class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
-                    <input type="email" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
-                    <input type="password" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                </div>
-                <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors">
-                    <i class="fas fa-sign-in-alt mr-2"></i>Sign In
-                </button>
-            </form>
-            
-            <div class="text-center mt-6">
-                <p class="text-gray-600">Don't have an account? 
-                    <a href="#" class="text-blue-600 hover:text-blue-800 font-semibold">Sign up free</a>
+                <h2 class="text-4xl font-bold mb-4">Meet Your Expert Mentors</h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    Learn from industry veterans with real-world experience in cybersecurity leadership and operations.
                 </p>
             </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Dr. Rebecca Chen -->
+                <div class="mentor-card p-6 rounded-lg text-center">
+                    <img src="https://www.shutterstock.com/image-photo/closeup-headshot-face-portrait-beautiful-260nw-2491646077.jpg" 
+                         alt="Dr. Rebecca Chen" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover">
+                    <h3 class="text-xl font-semibold mb-2">Dr. Rebecca Chen</h3>
+                    <p class="text-blue-400 mb-2">Chief Security Officer</p>
+                    <p class="text-gray-300 text-sm mb-4">15+ years in enterprise security leadership. PhD in Cybersecurity & Information Assurance. Former Government Security Specialist.</p>
+                    <div class="flex flex-wrap gap-1 mb-4">
+                        <span class="bg-blue-600 text-xs px-2 py-1 rounded">CISSP</span>
+                        <span class="bg-blue-600 text-xs px-2 py-1 rounded">CISM</span>
+                        <span class="bg-blue-600 text-xs px-2 py-1 rounded">Strategic Planning</span>
+                    </div>
+                    <p class="text-xs text-gray-400">Specializes in: Threat Intelligence, Incident Response, Security Strategy</p>
+                </div>
+
+                <!-- Marcus Johnson -->
+                <div class="mentor-card p-6 rounded-lg text-center">
+                    <img src="https://www.shutterstock.com/image-photo/cheerful-handsome-young-african-man-260nw-2432719403.jpg" 
+                         alt="Marcus Johnson" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover">
+                    <h3 class="text-xl font-semibold mb-2">Marcus Johnson</h3>
+                    <p class="text-blue-400 mb-2">Senior GRC Manager</p>
+                    <p class="text-gray-300 text-sm mb-4">12+ years in governance, risk, and compliance. Former Big Four Consulting Manager with expertise in regulatory frameworks.</p>
+                    <div class="flex flex-wrap gap-1 mb-4">
+                        <span class="bg-blue-600 text-xs px-2 py-1 rounded">CISA</span>
+                        <span class="bg-blue-600 text-xs px-2 py-1 rounded">CRISC</span>
+                        <span class="bg-blue-600 text-xs px-2 py-1 rounded">ISO 27001</span>
+                    </div>
+                    <p class="text-xs text-gray-400">Specializes in: Risk Assessment, Compliance Frameworks, Audit Management</p>
+                </div>
+
+                <!-- David Thompson -->
+                <div class="mentor-card p-6 rounded-lg text-center">
+                    <img src="https://www.shutterstock.com/image-photo/successful-indian-authoritative-confident-young-260nw-2274331045.jpg" 
+                         alt="David Thompson" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover">
+                    <h3 class="text-xl font-semibold mb-2">David Thompson</h3>
+                    <p class="text-blue-400 mb-2">Cloud Security Architect</p>
+                    <p class="text-gray-300 text-sm mb-4">10+ years in cloud security architecture. Former Cloud Platform Security Lead and AWS Community Hero.</p>
+                    <div class="flex flex-wrap gap-1 mb-4">
+                        <span class="bg-blue-600 text-xs px-2 py-1 rounded">AWS Security</span>
+                        <span class="bg-blue-600 text-xs px-2 py-1 rounded">CCSP</span>
+                        <span class="bg-blue-600 text-xs px-2 py-1 rounded">CISSP</span>
+                    </div>
+                    <p class="text-xs text-gray-400">Specializes in: Multi-cloud Security, DevSecOps, Container Security</p>
+                </div>
+
+                <!-- Sarah Martinez -->
+                <div class="mentor-card p-6 rounded-lg text-center">
+                    <img src="https://www.shutterstock.com/image-photo/happy-attractive-indian-woman-looking-260nw-2449701411.jpg" 
+                         alt="Sarah Martinez" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover">
+                    <h3 class="text-xl font-semibold mb-2">Sarah Martinez</h3>
+                    <p class="text-blue-400 mb-2">SOC Operations Director</p>
+                    <p class="text-gray-300 text-sm mb-4">13+ years in security operations and threat hunting. Former Threat Intelligence Analyst with SOC leadership experience.</p>
+                    <div class="flex flex-wrap gap-1 mb-4">
+                        <span class="bg-blue-600 text-xs px-2 py-1 rounded">GCIH</span>
+                        <span class="bg-blue-600 text-xs px-2 py-1 rounded">GCFA</span>
+                        <span class="bg-blue-600 text-xs px-2 py-1 rounded">CISSP</span>
+                    </div>
+                    <p class="text-xs text-gray-400">Specializes in: SIEM Management, Incident Response, Threat Detection</p>
+                </div>
+
+                <!-- Alex Rivera -->
+                <div class="mentor-card p-6 rounded-lg text-center">
+                    <img src="https://www.shutterstock.com/image-photo/happy-smiling-bearded-indian-business-260nw-2066562635.jpg" 
+                         alt="Alex Rivera" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover">
+                    <h3 class="text-xl font-semibold mb-2">Alex Rivera</h3>
+                    <p class="text-blue-400 mb-2">Penetration Testing Lead</p>
+                    <p class="text-gray-300 text-sm mb-4">8+ years in ethical hacking and vulnerability assessment. Former Offensive Security Consultant with Red Team operations experience.</p>
+                    <div class="flex flex-wrap gap-1 mb-4">
+                        <span class="bg-blue-600 text-xs px-2 py-1 rounded">OSCP</span>
+                        <span class="bg-blue-600 text-xs px-2 py-1 rounded">OSCE</span>
+                        <span class="bg-blue-600 text-xs px-2 py-1 rounded">CEH</span>
+                    </div>
+                    <p class="text-xs text-gray-400">Specializes in: Network Penetration, Web App Security, Social Engineering</p>
+                </div>
+
+                <!-- Dr. Michelle Zhang -->
+                <div class="mentor-card p-6 rounded-lg text-center">
+                    <img src="https://www.shutterstock.com/image-photo/business-man-face-smile-portrait-600nw-2262612091.jpg" 
+                         alt="Dr. Michelle Zhang" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover">
+                    <h3 class="text-xl font-semibold mb-2">Dr. Michelle Zhang</h3>
+                    <p class="text-blue-400 mb-2">AI Security Researcher</p>
+                    <p class="text-gray-300 text-sm mb-4">PhD in Computer Science with AI Security focus. Former AI Research Scientist specializing in machine learning security.</p>
+                    <div class="flex flex-wrap gap-1 mb-4">
+                        <span class="bg-blue-600 text-xs px-2 py-1 rounded">AI Ethics</span>
+                        <span class="bg-blue-600 text-xs px-2 py-1 rounded">CISSP</span>
+                        <span class="bg-blue-600 text-xs px-2 py-1 rounded">ML Security</span>
+                    </div>
+                    <p class="text-xs text-gray-400">Specializes in: AI Governance, Algorithmic Security, ML Threat Modeling</p>
+                </div>
+            </div>
         </div>
-    </div>
+    </section>
+
+    <!-- TechStep Podcast -->
+    <section id="podcast" class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4">🎧 TechStep Podcast</h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    "CyberSecure Weekly" - Your gateway to cybersecurity excellence with industry insights, expert interviews, and career advice.
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Episode 1 -->
+                <div class="bg-gray-700 p-6 rounded-lg">
+                    <div class="flex items-center mb-4">
+                        <div class="w-16 h-16 bg-blue-600 rounded-lg flex items-center justify-center mr-4">
+                            <i class="fas fa-microphone text-2xl text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold">Episode 45</h3>
+                            <p class="text-blue-400 text-sm">Latest</p>
+                        </div>
+                    </div>
+                    <h4 class="text-lg font-semibold mb-2">Zero Trust Architecture in 2024</h4>
+                    <p class="text-gray-300 text-sm mb-4">Dr. Rebecca Chen discusses the evolution of zero trust models and implementation strategies for modern enterprises.</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-400">32 mins</span>
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+                            <i class="fas fa-play mr-1"></i>Play
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Episode 2 -->
+                <div class="bg-gray-700 p-6 rounded-lg">
+                    <div class="flex items-center mb-4">
+                        <div class="w-16 h-16 bg-green-600 rounded-lg flex items-center justify-center mr-4">
+                            <i class="fas fa-brain text-2xl text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold">Episode 44</h3>
+                            <p class="text-blue-400 text-sm">Popular</p>
+                        </div>
+                    </div>
+                    <h4 class="text-lg font-semibold mb-2">AI-Powered Threat Detection</h4>
+                    <p class="text-gray-300 text-sm mb-4">Dr. Michelle Zhang explores how artificial intelligence is revolutionizing cybersecurity threat detection and response.</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-400">28 mins</span>
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+                            <i class="fas fa-play mr-1"></i>Play
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Episode 3 -->
+                <div class="bg-gray-700 p-6 rounded-lg">
+                    <div class="flex items-center mb-4">
+                        <div class="w-16 h-16 bg-purple-600 rounded-lg flex items-center justify-center mr-4">
+                            <i class="fas fa-shield-alt text-2xl text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold">Episode 43</h3>
+                            <p class="text-blue-400 text-sm">Trending</p>
+                        </div>
+                    </div>
+                    <h4 class="text-lg font-semibold mb-2">GRC Best Practices for SMBs</h4>
+                    <p class="text-gray-300 text-sm mb-4">Marcus Johnson shares practical governance, risk, and compliance strategies tailored for small and medium businesses.</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-400">35 mins</span>
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+                            <i class="fas fa-play mr-1"></i>Play
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <button class="bg-gray-700 text-white px-8 py-3 rounded-lg font-semibold hover:bg-gray-600 transition duration-300">
+                    <i class="fas fa-podcast mr-2"></i>View All Episodes
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- What Our Students Say -->
+    <section id="testimonials" class="py-20 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4">What Our Students Say</h2>
+                <p class="text-xl text-gray-300">Real success stories from our cybersecurity professionals</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="testimonial-card p-6 rounded-lg">
+                    <div class="flex items-center mb-4">
+                        <img src="https://www.shutterstock.com/image-photo/smiling-cheerful-young-adult-african-600nw-1850821510.jpg" 
+                             alt="Michael Torres" class="w-12 h-12 rounded-full mr-4 object-cover">
+                        <div>
+                            <h4 class="font-semibold">Michael Torres</h4>
+                            <p class="text-blue-400 text-sm">SOC Analyst at Fortune 500</p>
+                        </div>
+                    </div>
+                    <div class="flex text-yellow-400 mb-3">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="text-gray-300">"The SOC Analyst course completely transformed my career. The hands-on labs and mentor guidance helped me land my dream job. The practical approach made all the difference!"</p>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div class="testimonial-card p-6 rounded-lg">
+                    <div class="flex items-center mb-4">
+                        <img src="https://www.shutterstock.com/image-photo/modern-youth-representative-headshot-portrait-600nw-2412728603.jpg" 
+                             alt="Priya Patel" class="w-12 h-12 rounded-full mr-4 object-cover">
+                        <div>
+                            <h4 class="font-semibold">Priya Patel</h4>
+                            <p class="text-blue-400 text-sm">GRC Specialist</p>
+                        </div>
+                    </div>
+                    <div class="flex text-yellow-400 mb-3">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="text-gray-300">"Marcus Johnson's mentoring was invaluable. The GRC course content is comprehensive and the Career Pro Package helped me negotiate a 40% salary increase!"</p>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div class="testimonial-card p-6 rounded-lg">
+                    <div class="flex items-center mb-4">
+                        <img src="https://www.shutterstock.com/image-photo/happy-handsome-young-hispanic-business-260nw-2605417069.jpg" 
+                             alt="James Chen" class="w-12 h-12 rounded-full mr-4 object-cover">
+                        <div>
+                            <h4 class="font-semibold">James Chen</h4>
+                            <p class="text-blue-400 text-sm">Cloud Security Engineer</p>
+                        </div>
+                    </div>
+                    <div class="flex text-yellow-400 mb-3">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="text-gray-300">"The Cloud Security course was exactly what I needed to transition from traditional IT to cybersecurity. David Thompson's real-world experience shines through."</p>
+                </div>
+
+                <!-- Testimonial 4 -->
+                <div class="testimonial-card p-6 rounded-lg">
+                    <div class="flex items-center mb-4">
+                        <img src="https://www.shutterstock.com/image-photo/smiling-portrait-young-asian-man-600nw-2492067901.jpg" 
+                             alt="Sarah Rodriguez" class="w-12 h-12 rounded-full mr-4 object-cover">
+                        <div>
+                            <h4 class="font-semibold">Sarah Rodriguez</h4>
+                            <p class="text-blue-400 text-sm">Information Security Manager</p>
+                        </div>
+                    </div>
+                    <div class="flex text-yellow-400 mb-3">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="text-gray-300">"From SOC analyst to security manager in 18 months! TechStep's comprehensive training and mentorship program accelerated my career beyond my expectations."</p>
+                </div>
+
+                <!-- Testimonial 5 -->
+                <div class="testimonial-card p-6 rounded-lg">
+                    <div class="flex items-center mb-4">
+                        <img src="https://www.shutterstock.com/image-photo/portrait-headshot-young-adult-asian-600nw-1815432683.jpg" 
+                             alt="David Park" class="w-12 h-12 rounded-full mr-4 object-cover">
+                        <div>
+                            <h4 class="font-semibold">David Park</h4>
+                            <p class="text-blue-400 text-sm">Penetration Tester</p>
+                        </div>
+                    </div>
+                    <div class="flex text-yellow-400 mb-3">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="text-gray-300">"Alex Rivera's penetration testing course is incredibly thorough. The hands-on approach and real-world scenarios prepared me perfectly for the OSCP exam."</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Career Pro Package -->
+    <section class="py-20 bg-gray-800">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="career-pro-card p-8 rounded-lg text-center">
+                <h2 class="text-3xl font-bold mb-4">🚀 Career Pro Package</h2>
+                <p class="text-xl text-gray-300 mb-6">Accelerate your cybersecurity career with our comprehensive career support package</p>
+                <div class="text-4xl font-bold text-blue-400 mb-6">$499</div>
+                
+                <div class="grid md:grid-cols-2 gap-6 text-left mb-8">
+                    <div class="space-y-3">
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle text-green-400 mr-3"></i>
+                            <span>Resume Review & Optimization</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle text-green-400 mr-3"></i>
+                            <span>LinkedIn Profile Enhancement</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle text-green-400 mr-3"></i>
+                            <span>Cover Letter Template + Personalization</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle text-green-400 mr-3"></i>
+                            <span>Mock Interview (Technical + Behavioral)</span>
+                        </div>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle text-green-400 mr-3"></i>
+                            <span>1:1 Career Strategy Session</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle text-green-400 mr-3"></i>
+                            <span>Internship Placement Support</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle text-green-400 mr-3"></i>
+                            <span>Peer Pod Access (3-person accountability group)</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle text-green-400 mr-3"></i>
+                            <span>Salary Negotiation Guidance</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="bg-green-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-green-700 transition duration-300">
+                    <i class="fas fa-rocket mr-2"></i>Add Career Pro Package
+                </button>
+            </div>
+        </div>
+    </section>
 
     <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-12">
+    <footer class="bg-gray-900 py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid md:grid-cols-4 gap-8">
                 <div>
                     <div class="logo-container mb-4">
                         <div class="logo-icon"></div>
-                        <div class="logo-text text-white">TechStep</div>
+                        <span class="logo-text">TechStep</span>
                     </div>
-                    <p class="text-gray-400">Accelerating cybersecurity careers through expert training and mentorship.</p>
+                    <p class="text-gray-300">Accelerating cybersecurity careers through expert training and mentorship.</p>
                 </div>
                 <div>
-                    <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
-                    <ul class="space-y-2 text-gray-400">
-                        <li><a href="#courses" class="hover:text-white transition-colors">Courses</a></li>
-                        <li><a href="#mentors" class="hover:text-white transition-colors">Mentors</a></li>
-                        <li><a href="#podcast" class="hover:text-white transition-colors">Podcast</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">About</a></li>
+                    <h3 class="text-lg font-semibold mb-4">Courses</h3>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><a href="#" class="hover:text-blue-400">SOC Analyst</a></li>
+                        <li><a href="#" class="hover:text-blue-400">Threat Detection</a></li>
+                        <li><a href="#" class="hover:text-blue-400">Cloud Security</a></li>
+                        <li><a href="#" class="hover:text-blue-400">GRC Essentials</a></li>
                     </ul>
                 </div>
                 <div>
                     <h3 class="text-lg font-semibold mb-4">Support</h3>
-                    <ul class="space-y-2 text-gray-400">
-                        <li><a href="#" class="hover:text-white transition-colors">Help Center</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">Contact Us</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">Privacy Policy</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">Terms of Service</a></li>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><a href="#" class="hover:text-blue-400">Help Center</a></li>
+                        <li><a href="#" class="hover:text-blue-400">Contact Us</a></li>
+                        <li><a href="#" class="hover:text-blue-400">Community</a></li>
+                        <li><a href="#" class="hover:text-blue-400">Resources</a></li>
                     </ul>
                 </div>
                 <div>
                     <h3 class="text-lg font-semibold mb-4">Connect</h3>
                     <div class="flex space-x-4">
-                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
-                            <i class="fab fa-linkedin text-xl"></i>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
-                            <i class="fab fa-twitter text-xl"></i>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
-                            <i class="fab fa-youtube text-xl"></i>
-                        </a>
+                        <a href="#" class="text-gray-300 hover:text-blue-400"><i class="fab fa-linkedin text-xl"></i></a>
+                        <a href="#" class="text-gray-300 hover:text-blue-400"><i class="fab fa-twitter text-xl"></i></a>
+                        <a href="#" class="text-gray-300 hover:text-blue-400"><i class="fab fa-youtube text-xl"></i></a>
                     </div>
                 </div>
             </div>
-            <div class="border-t border-gray-800 mt-8 pt-8 text-center">
-                <p class="text-gray-400">© 2024 TechStep. All rights reserved. • Powered by iPS Global Consulting</p>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2024 TechStep. All rights reserved.</p>
+                <p class="mt-2 text-sm">Powered by iPS Global Consulting</p>
             </div>
         </div>
     </footer>
 
     <script>
-        let currentPricingMode = 'self';
-        let selectedCourses = {};
-        let selectedPaymentPlan = null;
-        let selectedMentor = null;
+        // Learning type toggle functionality
+        const learningTypeInputs = document.querySelectorAll('input[name="learning-type"]');
+        const mentorBookingSection = document.getElementById('mentor-booking-section');
+        const courseCards = document.querySelectorAll('.course-card');
+        const courseCheckboxes = document.querySelectorAll('.course-checkbox');
+        const cartItems = document.getElementById('cart-items');
+        const totalPriceElement = document.getElementById('total-price');
+        const paymentBreakdown = document.getElementById('payment-breakdown');
+        const fullPaymentElement = document.getElementById('full-payment');
+        const monthlyPaymentElement = document.getElementById('monthly-payment');
+        const weeklyPaymentElement = document.getElementById('weekly-payment');
 
-        // Initialize date picker
-        document.getElementById('session-date').min = new Date().toISOString().split('T')[0];
+        let selectedCourses = [];
+        let currentLearningType = 'self-paced';
 
-        // Pricing Toggle
-        function togglePricing(mode) {
-            currentPricingMode = mode;
-            
-            // Update toggle buttons
-            document.querySelectorAll('.toggle-option').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.target.classList.add('active');
-            
-            // Update all course prices
-            updateAllCoursePrices();
-            
-            // Show/hide mentor booking section
-            const mentorBooking = document.getElementById('mentor-booking');
-            if (mode === 'mentor') {
-                mentorBooking.classList.add('show');
-            } else {
-                mentorBooking.classList.remove('show');
-            }
-        }
-
-        function updateAllCoursePrices() {
-            const courses = ['soc', 'threat', 'splunk', 'cloud', 'grc', 'ai'];
-            const prices = {
-                'soc': { mentor: 1800, self: 1200 },
-                'threat': { mentor: 2000, self: 1400 },
-                'splunk': { mentor: 1600, self: 1100 },
-                'cloud': { mentor: 1900, self: 1300 },
-                'grc': { mentor: 2000, self: 1400 },
-                'ai': { mentor: 2100, self: 1450 }
-            };
-            
-            courses.forEach(course => {
-                const priceElement = document.getElementById(`${course}-price`);
-                const price = prices[course][currentPricingMode];
-                priceElement.textContent = `$${price.toLocaleString()}`;
+        // Toggle learning type
+        learningTypeInputs.forEach(input => {
+            input.addEventListener('change', function() {
+                currentLearningType = this.value;
                 
-                const typeElement = priceElement.nextElementSibling;
-                typeElement.textContent = currentPricingMode === 'self' ? 'Self-Paced' : 'With Mentor';
-            });
-        }
-
-        // Course Selection
-        function selectCourse(courseId, mentorPrice, selfPrice) {
-            // Remove previous selections
-            document.querySelectorAll('.course-card').forEach(card => {
-                card.classList.remove('selected');
-            });
-            
-            // Add selection to current card
-            event.currentTarget.classList.add('selected');
-            
-            // Show course preview
-            const preview = event.currentTarget.querySelector('.course-preview');
-            document.querySelectorAll('.course-preview').forEach(p => {
-                p.style.display = 'none';
-            });
-            preview.style.display = 'block';
-            
-            // Store selection
-            const currentPrice = currentPricingMode === 'mentor' ? mentorPrice : selfPrice;
-            selectedCourses = {
-                id: courseId,
-                name: event.currentTarget.querySelector('h3').textContent,
-                price: currentPrice,
-                mentorPrice: mentorPrice,
-                selfPrice: selfPrice,
-                type: currentPricingMode === 'mentor' ? 'With Mentor' : 'Self-Paced'
-            };
-            
-            updateCourseSummary();
-        }
-
-        function updateCourseSummary() {
-            const summary = document.getElementById('course-summary');
-            const courseName = document.getElementById('selected-course-name');
-            const courseType = document.getElementById('selected-course-type');
-            const coursePrice = document.getElementById('selected-course-price');
-            
-            courseName.textContent = selectedCourses.name;
-            courseType.textContent = selectedCourses.type;
-            coursePrice.textContent = `$${selectedCourses.price.toLocaleString()}`;
-            
-            // Update payment options
-            updatePaymentOptions();
-            
-            summary.style.display = 'block';
-            summary.scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function updatePaymentOptions() {
-            const basePrice = selectedCourses.price;
-            const fullPaymentPrice = Math.round(basePrice * 0.95); // 5% discount
-            const monthlyPrice = Math.round(basePrice / 3);
-            const weeklyPrice = Math.round(basePrice / 12);
-            
-            document.getElementById('full-payment-price').textContent = `$${fullPaymentPrice.toLocaleString()}`;
-            document.getElementById('monthly-payment-price').textContent = `$${monthlyPrice.toLocaleString()}/month`;
-            document.getElementById('weekly-payment-price').textContent = `$${weeklyPrice.toLocaleString()}/week`;
-        }
-
-        function selectPaymentPlan(plan) {
-            selectedPaymentPlan = plan;
-            
-            // Update visual selection
-            document.querySelectorAll('[onclick*="selectPaymentPlan"]').forEach(card => {
-                card.classList.remove('border-blue-500', 'bg-blue-50');
-                card.classList.add('border-gray-200');
-            });
-            
-            event.currentTarget.classList.remove('border-gray-200');
-            event.currentTarget.classList.add('border-blue-500', 'bg-blue-50');
-        }
-
-        function selectMentor(mentorId) {
-            selectedMentor = mentorId;
-            
-            // Update visual selection
-            document.querySelectorAll('[onclick*="selectMentor"]').forEach(card => {
-                card.classList.remove('bg-green-100');
-                card.classList.add('bg-gray-50');
-            });
-            
-            event.currentTarget.classList.remove('bg-gray-50');
-            event.currentTarget.classList.add('bg-green-100');
-        }
-
-        function addCareerPackage() {
-            // Add visual feedback
-            event.currentTarget.innerHTML = '<i class="fas fa-check mr-2"></i>Added to Cart';
-            event.currentTarget.classList.add('bg-green-100', 'text-green-700');
-            setTimeout(() => {
-                event.currentTarget.innerHTML = '<i class="fas fa-plus mr-2"></i>Add Career Pro Package';
-                event.currentTarget.classList.remove('bg-green-100', 'text-green-700');
-            }, 2000);
-        }
-
-        function proceedToCheckout() {
-            if (!selectedCourses.id) {
-                alert('Please select a course first!');
-                return;
-            }
-            
-            if (!selectedPaymentPlan) {
-                alert('Please select a payment plan!');
-                return;
-            }
-            
-            if (currentPricingMode === 'mentor' && !selectedMentor) {
-                alert('Please select a mentor for your course!');
-                return;
-            }
-            
-            // Simulate checkout process
-            showCheckoutSteps();
-        }
-
-        function showCheckoutSteps() {
-            const steps = ['Payment Details', 'Account Setup', 'Confirmation'];
-            let currentStep = 0;
-            
-            const modal = document.createElement('div');
-            modal.className = 'modal show';
-            modal.innerHTML = `
-                <div class="modal-content">
-                    <h2 class="text-2xl font-bold text-gray-900 mb-6">
-                        <i class="fas fa-shopping-cart text-blue-600 mr-2"></i>
-                        Complete Your Enrollment
-                    </h2>
-                    
-                    <div class="step-indicator">
-                        ${steps.map((step, index) => `
-                            <div class="step ${index === 0 ? 'active' : ''}">${index + 1}</div>
-                            ${index < steps.length - 1 ? '<div class="flex-1 h-px bg-gray-300"></div>' : ''}
-                        `).join('')}
-                    </div>
-                    
-                    <div class="mb-6">
-                        <h3 class="text-lg font-semibold mb-4">${steps[0]}</h3>
-                        <div class="space-y-4">
-                            <div class="bg-blue-50 p-4 rounded-lg">
-                                <h4 class="font-semibold mb-2">Order Summary</h4>
-                                <div class="flex justify-between">
-                                    <span>${selectedCourses.name}</span>
-                                    <span>$${selectedCourses.price.toLocaleString()}</span>
-                                </div>
-                                <div class="text-sm text-gray-600 mt-1">${selectedCourses.type}</div>
-                            </div>
-                            
-                            <div class="grid md:grid-cols-3 gap-4">
-                                <button class="interactive-btn bg-blue-600 text-white p-4 rounded-lg hover:bg-blue-700">
-                                    <i class="fab fa-stripe mr-2"></i>Pay with Stripe
-                                </button>
-                                <button class="interactive-btn bg-yellow-500 text-white p-4 rounded-lg hover:bg-yellow-600">
-                                    <i class="fab fa-paypal mr-2"></i>Pay with PayPal
-                                </button>
-                                <button class="interactive-btn bg-green-600 text-white p-4 rounded-lg hover:bg-green-700">
-                                    <i class="fas fa-university mr-2"></i>Pay with Zelle
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="flex justify-end space-x-4">
-                        <button onclick="closeCheckout()" class="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">Cancel</button>
-                        <button onclick="simulateEnrollment()" class="interactive-btn bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">Continue</button>
-                    </div>
-                </div>
-            `;
-            
-            document.body.appendChild(modal);
-            window.checkoutModal = modal;
-        }
-
-        function closeCheckout() {
-            if (window.checkoutModal) {
-                window.checkoutModal.remove();
-            }
-        }
-
-        function simulateEnrollment() {
-            closeCheckout();
-            
-            // Show success message
-            const success = document.createElement('div');
-            success.className = 'fixed top-4 right-4 bg-green-100 border border-green-400 text-green-700 px-6 py-4 rounded-lg shadow-lg z-50';
-            success.innerHTML = `
-                <div class="flex items-center">
-                    <i class="fas fa-check-circle text-xl mr-3"></i>
-                    <div>
-                        <div class="font-semibold">Enrollment Successful!</div>
-                        <div class="text-sm">Check your dashboard to start learning</div>
-                    </div>
-                </div>
-            `;
-            
-            document.body.appendChild(success);
-            
-            // Update student count
-            const countElement = document.getElementById('studentCount');
-            const currentCount = parseInt(countElement.textContent);
-            countElement.textContent = `${currentCount + 1}+`;
-            
-            setTimeout(() => {
-                success.remove();
-            }, 5000);
-        }
-
-        // Navigation Functions
-        function scrollToCourses() {
-            document.getElementById('courses').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function showDashboard() {
-            document.getElementById('dashboard-modal').classList.add('show');
-        }
-
-        function closeDashboard() {
-            document.getElementById('dashboard-modal').classList.remove('show');
-        }
-
-        function showLoginModal() {
-            document.getElementById('login-modal').classList.add('show');
-        }
-
-        function closeLogin() {
-            document.getElementById('login-modal').classList.remove('show');
-        }
-
-        function showMentorDetails(mentorId) {
-            const mentors = {
-                'rebecca': {
-                    name: 'Dr. Rebecca Chen',
-                    title: 'Chief Security Officer',
-                    bio: 'Former Government Security Specialist with 15+ years experience in enterprise security leadership, threat intelligence, and incident response.',
-                    specialties: ['Strategic Security Planning', 'Threat Intelligence', 'Incident Response', 'Security Leadership'],
-                    certifications: ['CISSP', 'CISM', 'SANS Expert'],
-                    availability: 'Mon, Wed, Fri - 9AM to 5PM',
-                    rate: '$150/hour'
-                },
-                'marcus': {
-                    name: 'Marcus Johnson',
-                    title: 'Senior GRC Manager',
-                    bio: 'Risk & Compliance Leadership Expert with Big Four consulting experience, specializing in governance, risk assessment, and regulatory compliance.',
-                    specialties: ['Risk Assessment', 'Compliance Frameworks', 'Audit Management', 'Policy Development'],
-                    certifications: ['CISA', 'CRISC', 'ISO 27001 Lead Auditor'],
-                    availability: 'Tue, Thu, Sat - 10AM to 6PM',
-                    rate: '$140/hour'
-                },
-                'david': {
-                    name: 'David Thompson',
-                    title: 'Cloud Security Architect',
-                    bio: 'AWS Community Hero with 10+ years cloud security experience, specializing in multi-cloud security architecture and DevSecOps.',
-                    specialties: ['Multi-Cloud Security', 'DevSecOps', 'Container Security', 'Infrastructure as Code'],
-                    certifications: ['AWS Security Specialty', 'CCSP', 'CISSP'],
-                    availability: 'Mon-Fri - 2PM to 8PM',
-                    rate: '$160/hour'
+                if (this.value === 'with-mentor') {
+                    mentorBookingSection.classList.add('show');
+                    // Show mentor prices
+                    courseCards.forEach(card => {
+                        card.querySelector('.self-paced-price').classList.add('hidden');
+                        card.querySelector('.mentor-price').classList.remove('hidden');
+                        card.querySelector('.self-paced-desc').classList.add('hidden');
+                        card.querySelector('.mentor-desc').classList.remove('hidden');
+                    });
+                } else {
+                    mentorBookingSection.classList.remove('show');
+                    // Show self-paced prices
+                    courseCards.forEach(card => {
+                        card.querySelector('.self-paced-price').classList.remove('hidden');
+                        card.querySelector('.mentor-price').classList.add('hidden');
+                        card.querySelector('.self-paced-desc').classList.remove('hidden');
+                        card.querySelector('.mentor-desc').classList.add('hidden');
+                    });
                 }
-            };
-            
-            const mentor = mentors[mentorId];
-            const modal = document.createElement('div');
-            modal.className = 'modal show';
-            modal.innerHTML = `
-                <div class="modal-content">
-                    <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-2xl font-bold text-gray-900">${mentor.name}</h2>
-                        <button onclick="closeMentorModal()" class="text-gray-400 hover:text-gray-600">
-                            <i class="fas fa-times text-xl"></i>
-                        </button>
-                    </div>
-                    
-                    <div class="text-center mb-6">
-                        <div class="w-24 h-24 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full mx-auto mb-4 flex items-center justify-center">
-                            <i class="fas fa-user-shield text-white text-2xl"></i>
-                        </div>
-                        <h3 class="text-xl font-semibold text-blue-600 mb-2">${mentor.title}</h3>
-                        <p class="text-gray-600">${mentor.bio}</p>
-                    </div>
-                    
-                    <div class="grid md:grid-cols-2 gap-6 mb-6">
-                        <div>
-                            <h4 class="font-semibold mb-3">Specialties</h4>
-                            <ul class="space-y-1">
-                                ${mentor.specialties.map(s => `<li class="text-gray-600"><i class="fas fa-check text-green-500 mr-2"></i>${s}</li>`).join('')}
-                            </ul>
-                        </div>
-                        <div>
-                            <h4 class="font-semibold mb-3">Certifications</h4>
-                            <div class="flex flex-wrap gap-2">
-                                ${mentor.certifications.map(c => `<span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm">${c}</span>`).join('')}
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="bg-gray-50 p-4 rounded-lg mb-6">
-                        <div class="grid md:grid-cols-2 gap-4">
-                            <div>
-                                <h5 class="font-semibold mb-1">Availability</h5>
-                                <p class="text-gray-600">${mentor.availability}</p>
-                            </div>
-                            <div>
-                                <h5 class="font-semibold mb-1">Rate</h5>
-                                <p class="text-gray-600">${mentor.rate}</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="text-center">
-                        <button class="interactive-btn bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700">
-                            <i class="fas fa-calendar-plus mr-2"></i>
-                            Book Session with ${mentor.name.split(' ')[0]}
-                        </button>
-                    </div>
-                </div>
-            `;
-            
-            document.body.appendChild(modal);
-            window.mentorModal = modal;
-        }
+                
+                updateCart();
+            });
+        });
 
-        function closeMentorModal() {
-            if (window.mentorModal) {
-                window.mentorModal.remove();
+        // Course selection functionality
+        courseCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const courseCard = this.closest('.course-card');
+                const courseName = courseCard.querySelector('h3').textContent;
+                const selfPrice = parseInt(this.dataset.selfPrice);
+                const mentorPrice = parseInt(this.dataset.mentorPrice);
+
+                if (this.checked) {
+                    courseCard.classList.add('selected');
+                    selectedCourses.push({
+                        name: courseName,
+                        selfPrice: selfPrice,
+                        mentorPrice: mentorPrice
+                    });
+                } else {
+                    courseCard.classList.remove('selected');
+                    selectedCourses = selectedCourses.filter(course => course.name !== courseName);
+                }
+
+                updateCart();
+            });
+        });
+
+        function updateCart() {
+            if (selectedCourses.length === 0) {
+                cartItems.innerHTML = '<p class="text-gray-400">Select courses to see pricing</p>';
+                totalPriceElement.textContent = '$0';
+                paymentBreakdown.classList.add('hidden');
+                return;
             }
+
+            let total = 0;
+            let cartHTML = '';
+
+            selectedCourses.forEach(course => {
+                const price = currentLearningType === 'with-mentor' ? course.mentorPrice : course.selfPrice;
+                total += price;
+                cartHTML += `
+                    <div class="flex justify-between">
+                        <span class="text-sm">${course.name}</span>
+                        <span class="text-sm">$${price.toLocaleString()}</span>
+                    </div>
+                `;
+            });
+
+            cartItems.innerHTML = cartHTML;
+            totalPriceElement.textContent = `$${total.toLocaleString()}`;
+
+            // Update payment breakdown
+            const fullPayment = Math.round(total * 0.95); // 5% discount
+            const monthlyPayment = Math.round(total / 3);
+            const weeklyPayment = Math.round(total / 12);
+
+            fullPaymentElement.textContent = `$${fullPayment.toLocaleString()}`;
+            monthlyPaymentElement.textContent = `$${monthlyPayment.toLocaleString()}/month`;
+            weeklyPaymentElement.textContent = `$${weeklyPayment.toLocaleString()}/week`;
+
+            paymentBreakdown.classList.remove('hidden');
         }
 
-        // Close modals when clicking outside
-        window.onclick = function(event) {
-            if (event.target.classList.contains('modal')) {
-                event.target.classList.remove('show');
-            }
+        // Progress bar animations
+        function animateProgressBars() {
+            const progressBars = document.querySelectorAll('.progress-fill');
+            progressBars.forEach(bar => {
+                const width = bar.style.width || '0%';
+                bar.style.width = '0%';
+                setTimeout(() => {
+                    bar.style.width = width;
+                }, 100);
+            });
         }
 
-        // Animate progress bars when they come into view
-        const observerCallback = (entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const progressBars = entry.target.querySelectorAll('.progress-fill');
-                    progressBars.forEach(bar => {
-                        const width = bar.style.width;
-                        bar.style.width = '0%';
-                        setTimeout(() => {
-                            bar.style.width = width;
-                        }, 100);
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            animateProgressBars();
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
                     });
                 }
             });
-        };
-
-        const observer = new IntersectionObserver(observerCallback);
-        document.querySelectorAll('.progress-bar').forEach(bar => {
-            observer.observe(bar.parentElement);
         });
 
-        // Initialize pricing
-        updateAllCoursePrices();
+        // Add hover effects to cards
+        document.querySelectorAll('.course-card, .mentor-card, .testimonial-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                if (!this.classList.contains('selected')) {
+                    this.style.transform = 'translateY(0)';
+                }
+            });
+        });
     </script>
 </body>
 </html>

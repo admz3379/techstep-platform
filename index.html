@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TechStep - Interactive Cybersecurity Training Platform</title>
+    <title>TechStep - Interactive Cybersecurity Training Platform with Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         .logo-container {
             display: flex;
@@ -185,6 +186,115 @@
             padding: 1rem;
             margin-top: 1rem;
         }
+
+        /* Dashboard Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+            border-radius: 20px;
+            padding: 2rem;
+            width: 90%;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: scale(0.9) translateY(20px);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .modal-overlay.show .modal-content {
+            transform: scale(1) translateY(0);
+        }
+
+        .dashboard-progress-bar {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            overflow: hidden;
+            height: 12px;
+        }
+
+        .dashboard-progress-fill {
+            height: 100%;
+            border-radius: 12px;
+            transition: width 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            background: linear-gradient(90deg, #3b82f6, #60a5fa);
+        }
+
+        .dashboard-action-btn {
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-align: center;
+            cursor: pointer;
+            border: none;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .dashboard-action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-continue {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        }
+
+        .btn-schedule {
+            background: linear-gradient(135deg, #10b981, #047857);
+        }
+
+        .btn-certificates {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+        }
+
+        .btn-podcast {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+
+        .session-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .session-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-2px);
+        }
+
+        .welcome-text {
+            background: linear-gradient(135deg, #60a5fa, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
     </style>
 </head>
 <body class="bg-gray-900 text-white">
@@ -201,8 +311,8 @@
                     <a href="#mentors" class="text-gray-300 hover:text-blue-400 transition duration-300">Mentors</a>
                     <a href="#podcast" class="text-gray-300 hover:text-blue-400 transition duration-300">Podcast</a>
                     <a href="#testimonials" class="text-gray-300 hover:text-blue-400 transition duration-300">Reviews</a>
-                    <button class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition duration-300">
-                        Get Started
+                    <button id="loginBtn" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition duration-300">
+                        <i class="fas fa-user mr-2"></i>Login Dashboard
                     </button>
                 </div>
                 <div class="md:hidden">
@@ -213,6 +323,175 @@
             </div>
         </div>
     </nav>
+
+    <!-- Dashboard Modal -->
+    <div id="dashboardModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <h2 class="text-3xl font-bold welcome-text">Welcome back, Alex!</h2>
+                    <p class="text-gray-300 mt-1">Continue your cybersecurity journey</p>
+                </div>
+                <button id="closeModal" class="text-gray-400 hover:text-white text-2xl">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-6">
+                <!-- Learning Progress Section -->
+                <div class="lg:col-span-2">
+                    <div class="bg-gray-800 rounded-lg p-6 mb-6">
+                        <h3 class="text-xl font-semibold mb-4 flex items-center">
+                            <i class="fas fa-chart-line text-blue-400 mr-2"></i>
+                            Learning Progress
+                        </h3>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-gray-300">SOC Analyst Foundations</span>
+                                    <span class="text-blue-400 font-semibold">75%</span>
+                                </div>
+                                <div class="dashboard-progress-bar">
+                                    <div class="dashboard-progress-fill" data-progress="75" style="width: 0%"></div>
+                                </div>
+                                <p class="text-xs text-gray-400 mt-1">12 of 16 modules completed</p>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-gray-300">GRC Essentials</span>
+                                    <span class="text-blue-400 font-semibold">45%</span>
+                                </div>
+                                <div class="dashboard-progress-bar">
+                                    <div class="dashboard-progress-fill" data-progress="45" style="width: 0%"></div>
+                                </div>
+                                <p class="text-xs text-gray-400 mt-1">9 of 20 modules completed</p>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-gray-300">Cloud Security Fundamentals</span>
+                                    <span class="text-blue-400 font-semibold">20%</span>
+                                </div>
+                                <div class="dashboard-progress-bar">
+                                    <div class="dashboard-progress-fill" data-progress="20" style="width: 0%"></div>
+                                </div>
+                                <p class="text-xs text-gray-400 mt-1">3 of 15 modules completed</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <button class="dashboard-action-btn btn-continue">
+                            <i class="fas fa-play"></i>
+                            Continue Learning
+                        </button>
+                        <button class="dashboard-action-btn btn-schedule">
+                            <i class="fas fa-calendar-plus"></i>
+                            Schedule Session
+                        </button>
+                        <button class="dashboard-action-btn btn-certificates">
+                            <i class="fas fa-certificate"></i>
+                            View Certificates
+                        </button>
+                        <button class="dashboard-action-btn btn-podcast">
+                            <i class="fas fa-podcast"></i>
+                            Latest Podcast
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Upcoming Sessions Section -->
+                <div>
+                    <div class="bg-gray-800 rounded-lg p-6">
+                        <h3 class="text-xl font-semibold mb-4 flex items-center">
+                            <i class="fas fa-calendar text-green-400 mr-2"></i>
+                            Upcoming Sessions
+                        </h3>
+                        
+                        <div class="space-y-3">
+                            <div class="session-card">
+                                <div class="flex items-center mb-2">
+                                    <img src="https://www.shutterstock.com/image-photo/closeup-headshot-face-portrait-beautiful-260nw-2491646077.jpg" 
+                                         alt="Dr. Rebecca Chen" class="w-10 h-10 rounded-full mr-3 object-cover">
+                                    <div>
+                                        <h4 class="font-semibold text-sm">Dr. Rebecca Chen</h4>
+                                        <p class="text-xs text-gray-400">SOC Strategy Review</p>
+                                    </div>
+                                </div>
+                                <div class="text-xs text-blue-400 flex items-center">
+                                    <i class="fas fa-clock mr-1"></i>
+                                    Tomorrow, 2:00 PM EST
+                                </div>
+                                <div class="text-xs text-gray-400 mt-1">60 minutes • Virtual</div>
+                            </div>
+
+                            <div class="session-card">
+                                <div class="flex items-center mb-2">
+                                    <img src="https://www.shutterstock.com/image-photo/cheerful-handsome-young-african-man-260nw-2432719403.jpg" 
+                                         alt="Marcus Johnson" class="w-10 h-10 rounded-full mr-3 object-cover">
+                                    <div>
+                                        <h4 class="font-semibold text-sm">Marcus Johnson</h4>
+                                        <p class="text-xs text-gray-400">GRC Deep Dive</p>
+                                    </div>
+                                </div>
+                                <div class="text-xs text-blue-400 flex items-center">
+                                    <i class="fas fa-clock mr-1"></i>
+                                    Friday, 10:00 AM EST
+                                </div>
+                                <div class="text-xs text-gray-400 mt-1">90 minutes • Virtual</div>
+                            </div>
+
+                            <div class="session-card opacity-60">
+                                <div class="flex items-center mb-2">
+                                    <img src="https://www.shutterstock.com/image-photo/successful-indian-authoritative-confident-young-260nw-2274331045.jpg" 
+                                         alt="David Thompson" class="w-10 h-10 rounded-full mr-3 object-cover">
+                                    <div>
+                                        <h4 class="font-semibold text-sm">David Thompson</h4>
+                                        <p class="text-xs text-gray-400">Cloud Security Basics</p>
+                                    </div>
+                                </div>
+                                <div class="text-xs text-gray-400 flex items-center">
+                                    <i class="fas fa-clock mr-1"></i>
+                                    Next Week • TBD
+                                </div>
+                                <div class="text-xs text-gray-400 mt-1">Pending scheduling</div>
+                            </div>
+                        </div>
+
+                        <button class="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition duration-300 text-sm">
+                            <i class="fas fa-plus mr-2"></i>Book New Session
+                        </button>
+                    </div>
+
+                    <!-- Recent Activity -->
+                    <div class="bg-gray-800 rounded-lg p-6 mt-6">
+                        <h3 class="text-lg font-semibold mb-3 flex items-center">
+                            <i class="fas fa-history text-purple-400 mr-2"></i>
+                            Recent Activity
+                        </h3>
+                        
+                        <div class="space-y-2 text-sm">
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-300">Completed: SIEM Logs Analysis</span>
+                                <span class="text-xs text-gray-400">2 hours ago</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-300">Started: Risk Assessment Lab</span>
+                                <span class="text-xs text-gray-400">1 day ago</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-300">Earned: SOC Analyst Badge</span>
+                                <span class="text-xs text-gray-400">3 days ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Hero Section -->
     <section class="hero-bg py-20">
@@ -296,7 +575,7 @@
                         <div class="mentor-price text-2xl font-bold text-blue-400 hidden">$1,800</div>
                     </div>
                     <div class="text-sm text-gray-400 mt-2">
-                        <div class="self-paced-desc">Learning decks, hands-on labs, real-world projects, 12-week internship, and certificate</div>
+                        <div class="self-paced-desc">Self-paced video lessons & labs</div>
                         <div class="mentor-desc hidden">Includes live mentor sessions</div>
                     </div>
                 </div>
@@ -313,7 +592,7 @@
                         <div class="mentor-price text-2xl font-bold text-blue-400 hidden">$2,000</div>
                     </div>
                     <div class="text-sm text-gray-400 mt-2">
-                        <div class="self-paced-desc">Learning decks, hands-on labs, real-world projects, 12-week internship, and certificate</div>
+                        <div class="self-paced-desc">Self-paced video lessons & labs</div>
                         <div class="mentor-desc hidden">Includes live mentor sessions</div>
                     </div>
                 </div>
@@ -330,7 +609,7 @@
                         <div class="mentor-price text-2xl font-bold text-blue-400 hidden">$1,600</div>
                     </div>
                     <div class="text-sm text-gray-400 mt-2">
-                        <div class="self-paced-desc">Learning decks, hands-on labs, real-world projects, 12-week internship, and certificate</div>
+                        <div class="self-paced-desc">Self-paced video lessons & labs</div>
                         <div class="mentor-desc hidden">Includes live mentor sessions</div>
                     </div>
                 </div>
@@ -347,7 +626,7 @@
                         <div class="mentor-price text-2xl font-bold text-blue-400 hidden">$1,900</div>
                     </div>
                     <div class="text-sm text-gray-400 mt-2">
-                        <div class="self-paced-desc">Learning decks, hands-on labs, real-world projects, 12-week internship, and certificate</div>
+                        <div class="self-paced-desc">Self-paced video lessons & labs</div>
                         <div class="mentor-desc hidden">Includes live mentor sessions</div>
                     </div>
                 </div>
@@ -364,7 +643,7 @@
                         <div class="mentor-price text-2xl font-bold text-blue-400 hidden">$2,200</div>
                     </div>
                     <div class="text-sm text-gray-400 mt-2">
-                        <div class="self-paced-desc">Learning decks, hands-on labs, real-world projects, 12-week internship, and certificate</div>
+                        <div class="self-paced-desc">Self-paced video lessons & labs</div>
                         <div class="mentor-desc hidden">Includes live mentor sessions</div>
                     </div>
                 </div>
@@ -381,7 +660,7 @@
                         <div class="mentor-price text-2xl font-bold text-blue-400 hidden">$2,000</div>
                     </div>
                     <div class="text-sm text-gray-400 mt-2">
-                        <div class="self-paced-desc">Learning decks, hands-on labs, real-world projects, 12-week internship, and certificate</div>
+                        <div class="self-paced-desc">Self-paced video lessons & labs</div>
                         <div class="mentor-desc hidden">Includes live mentor sessions</div>
                     </div>
                 </div>
@@ -830,6 +1109,71 @@
     </footer>
 
     <script>
+        // Dashboard Modal Functionality
+        const loginBtn = document.getElementById('loginBtn');
+        const dashboardModal = document.getElementById('dashboardModal');
+        const closeModal = document.getElementById('closeModal');
+
+        // Open dashboard modal
+        loginBtn.addEventListener('click', function() {
+            dashboardModal.classList.add('show');
+            // Animate progress bars after modal opens
+            setTimeout(() => {
+                animateDashboardProgress();
+            }, 300);
+        });
+
+        // Close dashboard modal
+        closeModal.addEventListener('click', function() {
+            dashboardModal.classList.remove('show');
+        });
+
+        // Close modal when clicking outside
+        dashboardModal.addEventListener('click', function(e) {
+            if (e.target === dashboardModal) {
+                dashboardModal.classList.remove('show');
+            }
+        });
+
+        // Animate dashboard progress bars
+        function animateDashboardProgress() {
+            const progressBars = document.querySelectorAll('.dashboard-progress-fill');
+            progressBars.forEach(bar => {
+                const targetProgress = bar.getAttribute('data-progress');
+                setTimeout(() => {
+                    bar.style.width = targetProgress + '%';
+                }, 200);
+            });
+        }
+
+        // Dashboard action button functionality
+        document.querySelectorAll('.dashboard-action-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const btnClass = this.className;
+                let message = '';
+                
+                if (btnClass.includes('btn-continue')) {
+                    message = 'Redirecting to your current course...';
+                } else if (btnClass.includes('btn-schedule')) {
+                    message = 'Opening scheduling interface...';
+                } else if (btnClass.includes('btn-certificates')) {
+                    message = 'Loading your certificates...';
+                } else if (btnClass.includes('btn-podcast')) {
+                    message = 'Playing latest podcast episode...';
+                }
+                
+                // Show temporary feedback
+                const originalText = this.innerHTML;
+                this.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>' + message;
+                this.style.opacity = '0.7';
+                
+                setTimeout(() => {
+                    this.innerHTML = originalText;
+                    this.style.opacity = '1';
+                }, 2000);
+            });
+        });
+
         // Learning type toggle functionality
         const learningTypeInputs = document.querySelectorAll('input[name="learning-type"]');
         const mentorBookingSection = document.getElementById('mentor-booking-section');
@@ -978,8 +1322,13 @@
                 }
             });
         });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && dashboardModal.classList.contains('show')) {
+                dashboardModal.classList.remove('show');
+            }
+        });
     </script>
 </body>
 </html>
-
-

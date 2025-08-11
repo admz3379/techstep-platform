@@ -953,7 +953,7 @@
         </div>
     </section>
 
-    <!-- TechStep Podcast -->
+   <!-- TechStep Podcast -->
 <section id="podcast" class="py-20 bg-gray-800">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
@@ -964,7 +964,7 @@
         </div>
 
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <!-- Episode 1: Zero Trust -->
+            <!-- Episode 1: Zero Trust - FREE ACCESS -->
             <div class="course-card p-6 rounded-lg">
                 <div class="flex items-center mb-4">
                     <div class="w-16 h-16 bg-blue-600 rounded-lg flex items-center justify-center mr-4">
@@ -972,170 +972,222 @@
                     </div>
                     <div>
                         <h3 class="font-semibold">Episode 45</h3>
-                        <p class="text-blue-400 text-sm">Latest</p>
+                        <p class="text-blue-400 text-sm">Latest • Free</p>
                     </div>
                 </div>
                 <h4 class="text-lg font-semibold mb-2">Zero Trust Architecture in 2024</h4>
                 <p class="text-gray-300 text-sm mb-4">
                     Dr. Rebecca Chen discusses the evolution of zero trust models and implementation strategies for modern enterprises.
                 </p>
-                <div class="mb-4">
-                    <audio 
-                        controls 
-                        preload="metadata" 
-                        class="w-full" 
-                        style="height: 40px;"
-                        controlsList="nodownload"
-                    >
+                
+                <!-- Modern Audio Player -->
+                <div class="modern-audio-player mb-4">
+                    <audio id="zeroTrustAudio" preload="metadata" controlsList="nodownload">
                         <source src="https://cdn1.genspark.ai/user-upload-image/8/17dcaf5f-bfb4-43d3-bfb8-1138be94d24b.mp3" type="audio/mpeg">
                         Your browser does not support the audio element.
                     </audio>
+                    
+                    <div class="audio-controls">
+                        <button class="play-pause-btn" onclick="togglePlay('zeroTrustAudio')">
+                            <i class="fas fa-play"></i>
+                        </button>
+                        
+                        <div class="audio-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progress-zeroTrustAudio"></div>
+                                <div class="progress-handle" id="handle-zeroTrustAudio"></div>
+                            </div>
+                            <div class="time-display">
+                                <span id="current-time-zeroTrustAudio">0:00</span>
+                                <span id="duration-zeroTrustAudio">32:00</span>
+                            </div>
+                        </div>
+                        
+                        <div class="audio-controls-right">
+                            <button class="volume-btn" onclick="toggleMute('zeroTrustAudio')">
+                                <i class="fas fa-volume-up"></i>
+                            </button>
+                            <div class="playback-speed">
+                                <select onchange="changeSpeed('zeroTrustAudio', this.value)">
+                                    <option value="0.75">0.75x</option>
+                                    <option value="1" selected>1x</option>
+                                    <option value="1.25">1.25x</option>
+                                    <option value="1.5">1.5x</option>
+                                    <option value="2">2x</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                
                 <div class="flex items-center justify-between">
                     <span class="text-sm text-gray-400">32 mins</span>
-                    <button onclick="playEpisode('zeroTrustAudio')" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
-                        <i class="fas fa-play mr-1"></i>Play
-                    </button>
+                    <span class="text-xs bg-green-600 text-white px-2 py-1 rounded">FREE ACCESS</span>
                 </div>
             </div>
 
-            <!-- Episode 2: AI Threat Detection -->
-            <div class="course-card p-6 rounded-lg">
+            <!-- Episode 2: AI Threat Detection - LOCKED -->
+            <div class="course-card p-6 rounded-lg relative locked-episode">
                 <div class="flex items-center mb-4">
                     <div class="w-16 h-16 bg-green-600 rounded-lg flex items-center justify-center mr-4">
                         <i class="fas fa-brain text-2xl text-white"></i>
                     </div>
                     <div>
                         <h3 class="font-semibold">Episode 44</h3>
-                        <p class="text-blue-400 text-sm">Popular</p>
+                        <p class="text-blue-400 text-sm">Popular • Premium</p>
                     </div>
                 </div>
                 <h4 class="text-lg font-semibold mb-2">AI-Powered Threat Detection</h4>
                 <p class="text-gray-300 text-sm mb-4">
                     Dr. Michelle Zhang explores how artificial intelligence is revolutionizing cybersecurity threat detection and response.
                 </p>
-                <div class="mb-4">
-                    <div class="w-full h-10 bg-gray-600 rounded flex items-center justify-center">
-                        <span class="text-gray-400 text-sm">Audio Player</span>
+                
+                <!-- Locked Audio Player -->
+                <div class="locked-audio-player mb-4">
+                    <div class="lock-overlay">
+                        <i class="fas fa-lock text-3xl text-gray-400 mb-2"></i>
+                        <p class="text-sm text-gray-400 text-center">Enroll in any course to unlock</p>
+                        <button class="unlock-btn mt-2" onclick="showEnrollmentModal()">
+                            <i class="fas fa-graduation-cap mr-1"></i>View Courses
+                        </button>
                     </div>
                 </div>
+                
                 <div class="flex items-center justify-between">
                     <span class="text-sm text-gray-400">28 mins</span>
-                    <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
-                        <i class="fas fa-play mr-1"></i>Play
-                    </button>
+                    <span class="text-xs bg-yellow-600 text-white px-2 py-1 rounded">PREMIUM</span>
                 </div>
             </div>
 
-            <!-- Episode 3: GRC Best Practices -->
-            <div class="course-card p-6 rounded-lg">
+            <!-- Episode 3: GRC Best Practices - LOCKED -->
+            <div class="course-card p-6 rounded-lg relative locked-episode">
                 <div class="flex items-center mb-4">
                     <div class="w-16 h-16 bg-purple-600 rounded-lg flex items-center justify-center mr-4">
                         <i class="fas fa-shield-alt text-2xl text-white"></i>
                     </div>
                     <div>
                         <h3 class="font-semibold">Episode 43</h3>
-                        <p class="text-blue-400 text-sm">Trending</p>
+                        <p class="text-blue-400 text-sm">Trending • Premium</p>
                     </div>
                 </div>
                 <h4 class="text-lg font-semibold mb-2">GRC Best Practices for SMBs</h4>
                 <p class="text-gray-300 text-sm mb-4">
                     Marcus Johnson shares practical governance, risk, and compliance strategies tailored for small and medium businesses.
                 </p>
-                <div class="mb-4">
-                    <div class="w-full h-10 bg-gray-600 rounded flex items-center justify-center">
-                        <span class="text-gray-400 text-sm">Audio Player</span>
+                
+                <!-- Locked Audio Player -->
+                <div class="locked-audio-player mb-4">
+                    <div class="lock-overlay">
+                        <i class="fas fa-lock text-3xl text-gray-400 mb-2"></i>
+                        <p class="text-sm text-gray-400 text-center">Enroll in GRC course to unlock</p>
+                        <button class="unlock-btn mt-2" onclick="scrollToCourses()">
+                            <i class="fas fa-graduation-cap mr-1"></i>Enroll Now
+                        </button>
                     </div>
                 </div>
+                
                 <div class="flex items-center justify-between">
                     <span class="text-sm text-gray-400">35 mins</span>
-                    <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
-                        <i class="fas fa-play mr-1"></i>Play
-                    </button>
+                    <span class="text-xs bg-yellow-600 text-white px-2 py-1 rounded">PREMIUM</span>
                 </div>
             </div>
 
-            <!-- Episode 4: Cloud Security Trends -->
-            <div class="course-card p-6 rounded-lg">
+            <!-- Episode 4: Cloud Security Trends - LOCKED -->
+            <div class="course-card p-6 rounded-lg relative locked-episode">
                 <div class="flex items-center mb-4">
                     <div class="w-16 h-16 bg-indigo-600 rounded-lg flex items-center justify-center mr-4">
                         <i class="fas fa-cloud text-2xl text-white"></i>
                     </div>
                     <div>
                         <h3 class="font-semibold">Episode 42</h3>
-                        <p class="text-blue-400 text-sm">Featured</p>
+                        <p class="text-blue-400 text-sm">Featured • Premium</p>
                     </div>
                 </div>
                 <h4 class="text-lg font-semibold mb-2">Cloud Security Trends 2024</h4>
                 <p class="text-gray-300 text-sm mb-4">
                     David Thompson breaks down the latest cloud security trends and what organizations need to know for 2024.
                 </p>
-                <div class="mb-4">
-                    <div class="w-full h-10 bg-gray-600 rounded flex items-center justify-center">
-                        <span class="text-gray-400 text-sm">Audio Player</span>
+                
+                <!-- Locked Audio Player -->
+                <div class="locked-audio-player mb-4">
+                    <div class="lock-overlay">
+                        <i class="fas fa-lock text-3xl text-gray-400 mb-2"></i>
+                        <p class="text-sm text-gray-400 text-center">Enroll in Cloud Security course to unlock</p>
+                        <button class="unlock-btn mt-2" onclick="scrollToCourses()">
+                            <i class="fas fa-graduation-cap mr-1"></i>Enroll Now
+                        </button>
                     </div>
                 </div>
+                
                 <div class="flex items-center justify-between">
                     <span class="text-sm text-gray-400">42 mins</span>
-                    <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
-                        <i class="fas fa-play mr-1"></i>Play
-                    </button>
+                    <span class="text-xs bg-yellow-600 text-white px-2 py-1 rounded">PREMIUM</span>
                 </div>
             </div>
 
-            <!-- Episode 5: Penetration Testing -->
-            <div class="course-card p-6 rounded-lg">
+            <!-- Episode 5: Penetration Testing - LOCKED -->
+            <div class="course-card p-6 rounded-lg relative locked-episode">
                 <div class="flex items-center mb-4">
                     <div class="w-16 h-16 bg-red-600 rounded-lg flex items-center justify-center mr-4">
                         <i class="fas fa-bug text-2xl text-white"></i>
                     </div>
                     <div>
                         <h3 class="font-semibold">Episode 41</h3>
-                        <p class="text-blue-400 text-sm">Expert Series</p>
+                        <p class="text-blue-400 text-sm">Expert Series • Premium</p>
                     </div>
                 </div>
                 <h4 class="text-lg font-semibold mb-2">Advanced Penetration Testing</h4>
                 <p class="text-gray-300 text-sm mb-4">
                     Alex Rivera shares insights on advanced penetration testing techniques and career paths in ethical hacking.
                 </p>
-                <div class="mb-4">
-                    <div class="w-full h-10 bg-gray-600 rounded flex items-center justify-center">
-                        <span class="text-gray-400 text-sm">Audio Player</span>
+                
+                <!-- Locked Audio Player -->
+                <div class="locked-audio-player mb-4">
+                    <div class="lock-overlay">
+                        <i class="fas fa-lock text-3xl text-gray-400 mb-2"></i>
+                        <p class="text-sm text-gray-400 text-center">Enroll in any course to unlock</p>
+                        <button class="unlock-btn mt-2" onclick="scrollToCourses()">
+                            <i class="fas fa-graduation-cap mr-1"></i>View Courses
+                        </button>
                     </div>
                 </div>
+                
                 <div class="flex items-center justify-between">
                     <span class="text-sm text-gray-400">38 mins</span>
-                    <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
-                        <i class="fas fa-play mr-1"></i>Play
-                    </button>
+                    <span class="text-xs bg-yellow-600 text-white px-2 py-1 rounded">PREMIUM</span>
                 </div>
             </div>
 
-            <!-- Episode 6: Career Transition -->
-            <div class="course-card p-6 rounded-lg">
+            <!-- Episode 6: Career Transition - LOCKED -->
+            <div class="course-card p-6 rounded-lg relative locked-episode">
                 <div class="flex items-center mb-4">
                     <div class="w-16 h-16 bg-yellow-600 rounded-lg flex items-center justify-center mr-4">
                         <i class="fas fa-rocket text-2xl text-white"></i>
                     </div>
                     <div>
                         <h3 class="font-semibold">Episode 40</h3>
-                        <p class="text-blue-400 text-sm">Career Focus</p>
+                        <p class="text-blue-400 text-sm">Career Focus • Premium</p>
                     </div>
                 </div>
                 <h4 class="text-lg font-semibold mb-2">Career Transition Success Stories</h4>
                 <p class="text-gray-300 text-sm mb-4">
                     Real stories from professionals who successfully transitioned into cybersecurity careers with actionable advice.
                 </p>
-                <div class="mb-4">
-                    <div class="w-full h-10 bg-gray-600 rounded flex items-center justify-center">
-                        <span class="text-gray-400 text-sm">Audio Player</span>
+                
+                <!-- Locked Audio Player -->
+                <div class="locked-audio-player mb-4">
+                    <div class="lock-overlay">
+                        <i class="fas fa-lock text-3xl text-gray-400 mb-2"></i>
+                        <p class="text-sm text-gray-400 text-center">Enroll in any course to unlock</p>
+                        <button class="unlock-btn mt-2" onclick="scrollToCourses()">
+                            <i class="fas fa-graduation-cap mr-1"></i>View Courses
+                        </button>
                     </div>
                 </div>
+                
                 <div class="flex items-center justify-between">
                     <span class="text-sm text-gray-400">45 mins</span>
-                    <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
-                        <i class="fas fa-play mr-1"></i>Play
-                    </button>
+                    <span class="text-xs bg-yellow-600 text-white px-2 py-1 rounded">PREMIUM</span>
                 </div>
             </div>
         </div>
@@ -1148,40 +1200,287 @@
     </div>
 </section>
 
+<style>
+/* Modern Audio Player Styles */
+.modern-audio-player {
+    background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    border-radius: 12px;
+    padding: 16px;
+    backdrop-filter: blur(10px);
+}
+
+.audio-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.play-pause-btn {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    border: none;
+    border-radius: 50%;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.play-pause-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+}
+
+.audio-progress {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.progress-bar {
+    position: relative;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #3b82f6, #60a5fa);
+    border-radius: 3px;
+    width: 0%;
+    transition: width 0.1s ease;
+}
+
+.progress-handle {
+    position: absolute;
+    top: 50%;
+    left: 0%;
+    width: 14px;
+    height: 14px;
+    background: #3b82f6;
+    border: 2px solid white;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.progress-bar:hover .progress-handle {
+    opacity: 1;
+}
+
+.time-display {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #9ca3af;
+}
+
+.audio-controls-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.volume-btn {
+    background: none;
+    border: none;
+    color: #9ca3af;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 8px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.volume-btn:hover {
+    color: #3b82f6;
+    background: rgba(59, 130, 246, 0.1);
+}
+
+.playback-speed select {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    color: white;
+    padding: 4px 8px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+/* Locked Episode Styles */
+.locked-episode {
+    opacity: 0.7;
+    position: relative;
+}
+
+.locked-episode::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: inherit;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.locked-audio-player {
+    background: linear-gradient(135deg, #374151 0%, #4b5563 100%);
+    border: 1px solid rgba(156, 163, 175, 0.3);
+    border-radius: 12px;
+    padding: 24px;
+    position: relative;
+}
+
+.lock-overlay {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: 120px;
+}
+
+.unlock-btn {
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.unlock-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .audio-controls {
+        flex-direction: column;
+        gap: 16px;
+    }
+    
+    .audio-controls-right {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .time-display {
+        margin-top: 4px;
+    }
+}
+</style>
+
 <script>
-// Podcast player functionality
-function playEpisode(audioId) {
-    const audio = document.querySelector(`audio[src*="17dcaf5f-bfb4-43d3-bfb8-1138be94d24b"]`);
-    if (audio) {
-        if (audio.paused) {
-            audio.play();
-        } else {
-            audio.pause();
-        }
+// Modern Audio Player Functionality
+function togglePlay(audioId) {
+    const audio = document.getElementById(audioId);
+    const button = audio.parentElement.querySelector('.play-pause-btn i');
+    
+    if (audio.paused) {
+        audio.play();
+        button.className = 'fas fa-pause';
+    } else {
+        audio.pause();
+        button.className = 'fas fa-play';
     }
 }
 
-// Update play buttons based on audio state
+function toggleMute(audioId) {
+    const audio = document.getElementById(audioId);
+    const button = audio.parentElement.querySelector('.volume-btn i');
+    
+    if (audio.muted) {
+        audio.muted = false;
+        button.className = 'fas fa-volume-up';
+    } else {
+        audio.muted = true;
+        button.className = 'fas fa-volume-mute';
+    }
+}
+
+function changeSpeed(audioId, speed) {
+    const audio = document.getElementById(audioId);
+    audio.playbackRate = parseFloat(speed);
+}
+
+function scrollToCourses() {
+    document.getElementById('courses').scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+    });
+}
+
+function showEnrollmentModal() {
+    // Trigger the course selection section
+    scrollToCourses();
+    // Optional: Show notification
+    showNotification('Select a course below to unlock premium podcast episodes!', 'info');
+}
+
+// Audio Progress Updates
 document.addEventListener('DOMContentLoaded', function() {
     const audioElements = document.querySelectorAll('audio');
+    
     audioElements.forEach(audio => {
-        audio.addEventListener('play', function() {
-            const card = this.closest('.course-card');
-            const button = card.querySelector('button[onclick*="play"]');
-            if (button) {
-                button.innerHTML = '<i class="fas fa-pause mr-1"></i>Pause';
+        const audioId = audio.id;
+        const progressFill = document.getElementById(`progress-${audioId}`);
+        const progressHandle = document.getElementById(`handle-${audioId}`);
+        const currentTimeDisplay = document.getElementById(`current-time-${audioId}`);
+        const durationDisplay = document.getElementById(`duration-${audioId}`);
+        
+        // Update progress
+        audio.addEventListener('timeupdate', function() {
+            if (audio.duration) {
+                const progress = (audio.currentTime / audio.duration) * 100;
+                if (progressFill) progressFill.style.width = progress + '%';
+                if (progressHandle) progressHandle.style.left = progress + '%';
+                if (currentTimeDisplay) currentTimeDisplay.textContent = formatTime(audio.currentTime);
             }
         });
         
-        audio.addEventListener('pause', function() {
-            const card = this.closest('.course-card');
-            const button = card.querySelector('button[onclick*="play"]');
-            if (button) {
-                button.innerHTML = '<i class="fas fa-play mr-1"></i>Play';
-            }
+        // Update duration when loaded
+        audio.addEventListener('loadedmetadata', function() {
+            if (durationDisplay) durationDisplay.textContent = formatTime(audio.duration);
         });
+        
+        // Click to seek
+        const progressBar = audio.parentElement.querySelector('.progress-bar');
+        if (progressBar) {
+            progressBar.addEventListener('click', function(e) {
+                const rect = this.getBoundingClientRect();
+                const pos = (e.clientX - rect.left) / rect.width;
+                audio.currentTime = pos * audio.duration;
+            });
+        }
     });
 });
+
+function formatTime(seconds) {
+    if (isNaN(seconds)) return '0:00';
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return mins + ':' + (secs < 10 ? '0' : '') + secs;
+}
 </script>
 
     <!-- What Our Students Say -->
@@ -2402,6 +2701,7 @@ document.addEventListener('DOMContentLoaded', function() {
     </script>
 </body>
 </html>
+
 
 
 

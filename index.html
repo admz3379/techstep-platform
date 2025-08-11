@@ -954,94 +954,235 @@
     </section>
 
     <!-- TechStep Podcast -->
-    <section id="podcast" class="py-20 bg-gray-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold mb-4">🎧 TechStep Podcast</h2>
-                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
-                    "CyberSecure Weekly" – Your gateway to cybersecurity excellence with industry insights, expert interviews, and career advice.
+<section id="podcast" class="py-20 bg-gray-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl font-bold mb-4">🎧 TechStep Podcast</h2>
+            <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                "CyberSecure Weekly" – Your gateway to cybersecurity excellence with industry insights, expert interviews, and career advice.
+            </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Episode 1: Zero Trust -->
+            <div class="course-card p-6 rounded-lg">
+                <div class="flex items-center mb-4">
+                    <div class="w-16 h-16 bg-blue-600 rounded-lg flex items-center justify-center mr-4">
+                        <i class="fas fa-microphone text-2xl text-white"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold">Episode 45</h3>
+                        <p class="text-blue-400 text-sm">Latest</p>
+                    </div>
+                </div>
+                <h4 class="text-lg font-semibold mb-2">Zero Trust Architecture in 2024</h4>
+                <p class="text-gray-300 text-sm mb-4">
+                    Dr. Rebecca Chen discusses the evolution of zero trust models and implementation strategies for modern enterprises.
                 </p>
-            </div>
-
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Episode 1: Zero Trust -->
-                <div class="bg-gray-700 p-6 rounded-lg">
-                    <div class="flex items-center mb-4">
-                        <div class="w-16 h-16 bg-blue-600 rounded-lg flex items-center justify-center mr-4">
-                            <i class="fas fa-microphone text-2xl text-white"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-semibold">Episode 45</h3>
-                            <p class="text-blue-400 text-sm">Latest</p>
-                        </div>
-                    </div>
-                    <h4 class="text-lg font-semibold mb-2">Zero Trust Architecture in 2024</h4>
-                    <p class="text-gray-300 text-sm mb-4">
-                        Dr. Rebecca Chen discusses the evolution of zero trust models and implementation strategies for modern enterprises.
-                    </p>
-                    <audio id="zeroTrustAudio" src="https://cdn1.genspark.ai/user-upload-image/8/17dcaf5f-bfb4-43d3-bfb8-1138be94d24b.mp3" preload="metadata" class="w-full mb-4" controls></audio>
-                    <div class="flex items-center justify-between">
-                        <span class="text-sm text-gray-400">32 mins</span>
-                        <button onclick="document.getElementById('zeroTrustAudio').play()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
-                            <i class="fas fa-play mr-1"></i>Play
-                        </button>
-                    </div>
+                <div class="mb-4">
+                    <audio 
+                        controls 
+                        preload="metadata" 
+                        class="w-full" 
+                        style="height: 40px;"
+                        controlsList="nodownload"
+                    >
+                        <source src="https://cdn1.genspark.ai/user-upload-image/8/17dcaf5f-bfb4-43d3-bfb8-1138be94d24b.mp3" type="audio/mpeg">
+                        Your browser does not support the audio element.
+                    </audio>
                 </div>
-
-                <!-- Episode 2 -->
-                <div class="bg-gray-700 p-6 rounded-lg">
-                    <div class="flex items-center mb-4">
-                        <div class="w-16 h-16 bg-green-600 rounded-lg flex items-center justify-center mr-4">
-                            <i class="fas fa-brain text-2xl text-white"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-semibold">Episode 44</h3>
-                            <p class="text-blue-400 text-sm">Popular</p>
-                        </div>
-                    </div>
-                    <h4 class="text-lg font-semibold mb-2">AI-Powered Threat Detection</h4>
-                    <p class="text-gray-300 text-sm mb-4">
-                        Dr. Michelle Zhang explores how artificial intelligence is revolutionizing cybersecurity threat detection and response.
-                    </p>
-                    <div class="flex items-center justify-between">
-                        <span class="text-sm text-gray-400">28 mins</span>
-                        <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
-                            <i class="fas fa-play mr-1"></i>Play
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Episode 3 -->
-                <div class="bg-gray-700 p-6 rounded-lg">
-                    <div class="flex items-center mb-4">
-                        <div class="w-16 h-16 bg-purple-600 rounded-lg flex items-center justify-center mr-4">
-                            <i class="fas fa-shield-alt text-2xl text-white"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-semibold">Episode 43</h3>
-                            <p class="text-blue-400 text-sm">Trending</p>
-                        </div>
-                    </div>
-                    <h4 class="text-lg font-semibold mb-2">GRC Best Practices for SMBs</h4>
-                    <p class="text-gray-300 text-sm mb-4">
-                        Marcus Johnson shares practical governance, risk, and compliance strategies tailored for small and medium businesses.
-                    </p>
-                    <div class="flex items-center justify-between">
-                        <span class="text-sm text-gray-400">35 mins</span>
-                        <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
-                            <i class="fas fa-play mr-1"></i>Play
-                        </button>
-                    </div>
+                <div class="flex items-center justify-between">
+                    <span class="text-sm text-gray-400">32 mins</span>
+                    <button onclick="playEpisode('zeroTrustAudio')" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+                        <i class="fas fa-play mr-1"></i>Play
+                    </button>
                 </div>
             </div>
 
-            <div class="text-center mt-12">
-                <button class="bg-gray-700 text-white px-8 py-3 rounded-lg font-semibold hover:bg-gray-600 transition duration-300">
-                    <i class="fas fa-podcast mr-2"></i>View All Episodes
-                </button>
+            <!-- Episode 2: AI Threat Detection -->
+            <div class="course-card p-6 rounded-lg">
+                <div class="flex items-center mb-4">
+                    <div class="w-16 h-16 bg-green-600 rounded-lg flex items-center justify-center mr-4">
+                        <i class="fas fa-brain text-2xl text-white"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold">Episode 44</h3>
+                        <p class="text-blue-400 text-sm">Popular</p>
+                    </div>
+                </div>
+                <h4 class="text-lg font-semibold mb-2">AI-Powered Threat Detection</h4>
+                <p class="text-gray-300 text-sm mb-4">
+                    Dr. Michelle Zhang explores how artificial intelligence is revolutionizing cybersecurity threat detection and response.
+                </p>
+                <div class="mb-4">
+                    <div class="w-full h-10 bg-gray-600 rounded flex items-center justify-center">
+                        <span class="text-gray-400 text-sm">Audio Player</span>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="text-sm text-gray-400">28 mins</span>
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+                        <i class="fas fa-play mr-1"></i>Play
+                    </button>
+                </div>
+            </div>
+
+            <!-- Episode 3: GRC Best Practices -->
+            <div class="course-card p-6 rounded-lg">
+                <div class="flex items-center mb-4">
+                    <div class="w-16 h-16 bg-purple-600 rounded-lg flex items-center justify-center mr-4">
+                        <i class="fas fa-shield-alt text-2xl text-white"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold">Episode 43</h3>
+                        <p class="text-blue-400 text-sm">Trending</p>
+                    </div>
+                </div>
+                <h4 class="text-lg font-semibold mb-2">GRC Best Practices for SMBs</h4>
+                <p class="text-gray-300 text-sm mb-4">
+                    Marcus Johnson shares practical governance, risk, and compliance strategies tailored for small and medium businesses.
+                </p>
+                <div class="mb-4">
+                    <div class="w-full h-10 bg-gray-600 rounded flex items-center justify-center">
+                        <span class="text-gray-400 text-sm">Audio Player</span>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="text-sm text-gray-400">35 mins</span>
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+                        <i class="fas fa-play mr-1"></i>Play
+                    </button>
+                </div>
+            </div>
+
+            <!-- Episode 4: Cloud Security Trends -->
+            <div class="course-card p-6 rounded-lg">
+                <div class="flex items-center mb-4">
+                    <div class="w-16 h-16 bg-indigo-600 rounded-lg flex items-center justify-center mr-4">
+                        <i class="fas fa-cloud text-2xl text-white"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold">Episode 42</h3>
+                        <p class="text-blue-400 text-sm">Featured</p>
+                    </div>
+                </div>
+                <h4 class="text-lg font-semibold mb-2">Cloud Security Trends 2024</h4>
+                <p class="text-gray-300 text-sm mb-4">
+                    David Thompson breaks down the latest cloud security trends and what organizations need to know for 2024.
+                </p>
+                <div class="mb-4">
+                    <div class="w-full h-10 bg-gray-600 rounded flex items-center justify-center">
+                        <span class="text-gray-400 text-sm">Audio Player</span>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="text-sm text-gray-400">42 mins</span>
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+                        <i class="fas fa-play mr-1"></i>Play
+                    </button>
+                </div>
+            </div>
+
+            <!-- Episode 5: Penetration Testing -->
+            <div class="course-card p-6 rounded-lg">
+                <div class="flex items-center mb-4">
+                    <div class="w-16 h-16 bg-red-600 rounded-lg flex items-center justify-center mr-4">
+                        <i class="fas fa-bug text-2xl text-white"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold">Episode 41</h3>
+                        <p class="text-blue-400 text-sm">Expert Series</p>
+                    </div>
+                </div>
+                <h4 class="text-lg font-semibold mb-2">Advanced Penetration Testing</h4>
+                <p class="text-gray-300 text-sm mb-4">
+                    Alex Rivera shares insights on advanced penetration testing techniques and career paths in ethical hacking.
+                </p>
+                <div class="mb-4">
+                    <div class="w-full h-10 bg-gray-600 rounded flex items-center justify-center">
+                        <span class="text-gray-400 text-sm">Audio Player</span>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="text-sm text-gray-400">38 mins</span>
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+                        <i class="fas fa-play mr-1"></i>Play
+                    </button>
+                </div>
+            </div>
+
+            <!-- Episode 6: Career Transition -->
+            <div class="course-card p-6 rounded-lg">
+                <div class="flex items-center mb-4">
+                    <div class="w-16 h-16 bg-yellow-600 rounded-lg flex items-center justify-center mr-4">
+                        <i class="fas fa-rocket text-2xl text-white"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold">Episode 40</h3>
+                        <p class="text-blue-400 text-sm">Career Focus</p>
+                    </div>
+                </div>
+                <h4 class="text-lg font-semibold mb-2">Career Transition Success Stories</h4>
+                <p class="text-gray-300 text-sm mb-4">
+                    Real stories from professionals who successfully transitioned into cybersecurity careers with actionable advice.
+                </p>
+                <div class="mb-4">
+                    <div class="w-full h-10 bg-gray-600 rounded flex items-center justify-center">
+                        <span class="text-gray-400 text-sm">Audio Player</span>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="text-sm text-gray-400">45 mins</span>
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+                        <i class="fas fa-play mr-1"></i>Play
+                    </button>
+                </div>
             </div>
         </div>
-    </section>
+
+        <div class="text-center mt-12">
+            <button class="bg-gray-700 text-white px-8 py-3 rounded-lg font-semibold hover:bg-gray-600 transition duration-300">
+                <i class="fas fa-podcast mr-2"></i>View All Episodes
+            </button>
+        </div>
+    </div>
+</section>
+
+<script>
+// Podcast player functionality
+function playEpisode(audioId) {
+    const audio = document.querySelector(`audio[src*="17dcaf5f-bfb4-43d3-bfb8-1138be94d24b"]`);
+    if (audio) {
+        if (audio.paused) {
+            audio.play();
+        } else {
+            audio.pause();
+        }
+    }
+}
+
+// Update play buttons based on audio state
+document.addEventListener('DOMContentLoaded', function() {
+    const audioElements = document.querySelectorAll('audio');
+    audioElements.forEach(audio => {
+        audio.addEventListener('play', function() {
+            const card = this.closest('.course-card');
+            const button = card.querySelector('button[onclick*="play"]');
+            if (button) {
+                button.innerHTML = '<i class="fas fa-pause mr-1"></i>Pause';
+            }
+        });
+        
+        audio.addEventListener('pause', function() {
+            const card = this.closest('.course-card');
+            const button = card.querySelector('button[onclick*="play"]');
+            if (button) {
+                button.innerHTML = '<i class="fas fa-play mr-1"></i>Play';
+            }
+        });
+    });
+});
+</script>
 
     <!-- What Our Students Say -->
     <section id="testimonials" class="py-20 bg-gray-900">
@@ -2261,6 +2402,7 @@
     </script>
 </body>
 </html>
+
 
 
 

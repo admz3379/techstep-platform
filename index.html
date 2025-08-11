@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TechStep - Interactive Cybersecurity Training Platform with Dashboard</title>
+    <title>TechStep - Complete Cybersecurity Training Platform with Payment System</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID&currency=USD&components=buttons,marks"></script>
     <style>
         .logo-container {
             display: flex;
@@ -109,37 +111,15 @@
             backdrop-filter: blur(10px);
         }
         
-        .toggle-switch {
-            position: relative;
-            width: 60px;
-            height: 30px;
-            background: #374151;
-            border-radius: 15px;
-            cursor: pointer;
+        .course-selection {
+            opacity: 0.7;
             transition: all 0.3s ease;
         }
         
-        .toggle-switch.active {
-            background: #3b82f6;
-        }
-        
-        .toggle-slider {
-            position: absolute;
-            top: 3px;
-            left: 3px;
-            width: 24px;
-            height: 24px;
-            background: white;
-            border-radius: 50%;
-            transition: all 0.3s ease;
-        }
-        
-        .toggle-switch.active .toggle-slider {
-            transform: translateX(30px);
-        }
-        
-        .price-display {
-            transition: all 0.3s ease;
+        .course-selection.selected {
+            opacity: 1;
+            transform: scale(1.02);
+            border-color: rgba(59, 130, 246, 0.5);
         }
         
         .mentor-booking {
@@ -155,39 +135,8 @@
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        
-        .progress-bar {
-            background: rgba(59, 130, 246, 0.2);
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        
-        .progress-fill {
-            height: 8px;
-            background: linear-gradient(90deg, #3b82f6, #1d4ed8);
-            border-radius: 10px;
-            transition: width 1s ease;
-        }
-        
-        .course-selection {
-            opacity: 0.7;
-            transition: all 0.3s ease;
-        }
-        
-        .course-selection.selected {
-            opacity: 1;
-            transform: scale(1.02);
-        }
-        
-        .payment-calculator {
-            background: rgba(16, 185, 129, 0.1);
-            border: 1px solid rgba(16, 185, 129, 0.2);
-            border-radius: 8px;
-            padding: 1rem;
-            margin-top: 1rem;
-        }
 
-        /* Dashboard Modal Styles */
+        /* Modal Styles */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -202,6 +151,7 @@
             opacity: 0;
             visibility: hidden;
             transition: all 0.3s ease;
+            backdrop-filter: blur(4px);
         }
 
         .modal-overlay.show {
@@ -226,6 +176,7 @@
             transform: scale(1) translateY(0);
         }
 
+        /* Dashboard Styles */
         .dashboard-progress-bar {
             background: rgba(255, 255, 255, 0.1);
             border-radius: 12px;
@@ -295,6 +246,146 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
+
+        /* Payment Agreement Styles */
+        .agreement-content {
+            max-height: 60vh;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .agreement-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .agreement-content::-webkit-scrollbar-track {
+            background: #374151;
+            border-radius: 3px;
+        }
+
+        .agreement-content::-webkit-scrollbar-thumb {
+            background: #6b7280;
+            border-radius: 3px;
+        }
+
+        .agreement-content::-webkit-scrollbar-thumb:hover {
+            background: #9ca3af;
+        }
+
+        .agreement-text h4,
+        .agreement-text h5 {
+            color: #f3f4f6;
+        }
+
+        .agreement-text strong {
+            color: #60a5fa;
+        }
+
+        .payment-plan-locked {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        /* Notification Styles */
+        .notification {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 9999;
+            padding: 1rem 1.5rem;
+            border-radius: 0.5rem;
+            color: white;
+            font-weight: 500;
+            max-width: 400px;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            background: linear-gradient(135deg, #10b981, #047857);
+        }
+
+        .notification.error {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+
+        .notification.warning {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+
+        .notification.info {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        }
+
+        /* Payment Button Styles */
+        .payment-button {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .payment-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .stripe-button {
+            background: linear-gradient(135deg, #635bff, #4c46d6);
+            color: white;
+        }
+
+        .apple-pay-button {
+            background: #000;
+            color: white;
+        }
+
+        .google-pay-button {
+            background: #4285f4;
+            color: white;
+        }
+
+        /* Payment Plan Agreement Specific Styles */
+        .payment-plan-agreement {
+            z-index: 1100;
+        }
+
+        .agreement-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .agreement-highlight {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 8px;
+            padding: 1rem;
+        }
+
+        .agreement-warning {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 8px;
+            padding: 1rem;
+        }
+
+        .agreement-info {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 8px;
+            padding: 1rem;
+        }
     </style>
 </head>
 <body class="bg-gray-900 text-white">
@@ -329,7 +420,7 @@
         <div class="modal-content">
             <div class="flex justify-between items-center mb-6">
                 <div>
-                    <h2 class="text-3xl font-bold welcome-text">Welcome back</h2>
+                    <h2 class="text-3xl font-bold welcome-text">Welcome back, Alex!</h2>
                     <p class="text-gray-300 mt-1">Continue your cybersecurity journey</p>
                 </div>
                 <button id="closeModal" class="text-gray-400 hover:text-white text-2xl">
@@ -498,8 +589,9 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h1 class="text-5xl md:text-6xl font-bold mb-6">
                 Accelerate Your <span class="text-blue-400">Cybersecurity Career</span>
-            </h1><p class="text-xl text-gray-300 mb-8 max-w-3xl mx-auto">
-            Master cybersecurity through expert-led training, hands-on labs, and personalized mentoring. From SOC Analyst to GRC Expert — we’ll guide you every step of the way. All backgrounds welcome. No experience required. 
+            </h1>
+            <p class="text-xl text-gray-300 mb-8 max-w-3xl mx-auto">
+                Master cybersecurity through expert-led training, hands-on labs, and personalized mentoring. From SOC Analyst to GRC Expert — we'll guide you every step of the way. All backgrounds welcome. No experience required. 
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
                 <button class="bg-blue-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-700 transition duration-300 transform hover:scale-105">
@@ -695,7 +787,7 @@
                 </div>
             </div>
 
-            <!-- Cart Summary -->
+            <!-- Enhanced Cart Summary -->
             <div class="bg-gray-700 p-6 rounded-lg max-w-md mx-auto">
                 <h3 class="text-xl font-semibold mb-4">Order Summary</h3>
                 <div id="cart-items" class="space-y-2 mb-4">
@@ -706,22 +798,51 @@
                         <span class="text-lg font-semibold">Total:</span>
                         <span id="total-price" class="text-2xl font-bold text-blue-400">$0</span>
                     </div>
-                    <div class="payment-calculator hidden" id="payment-breakdown">
-                        <h4 class="font-semibold mb-2">Payment Plans:</h4>
-                        <div class="text-sm space-y-1">
-                            <div class="flex justify-between">
-                                <span>Full Payment (5% discount):</span>
-                                <span id="full-payment">$0</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span>3 Monthly Payments:</span>
-                                <span id="monthly-payment">$0/month</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span>12 Weekly Payments:</span>
-                                <span id="weekly-payment">$0/week</span>
-                            </div>
+                    
+                    <!-- Payment Plan Selection -->
+                    <div id="payment-plan-selector" class="mb-4 hidden">
+                        <h4 class="font-semibold mb-2">Choose Payment Plan:</h4>
+                        <div class="space-y-2">
+                            <label class="flex items-center cursor-pointer">
+                                <input type="radio" name="payment-plan" value="full" checked class="mr-2">
+                                <span class="text-sm">Full Payment (5% discount): <span id="full-payment-display">$0</span></span>
+                            </label>
+                            <label class="flex items-center cursor-pointer">
+                                <input type="radio" name="payment-plan" value="monthly" class="mr-2">
+                                <span class="text-sm">3 Monthly Payments: <span id="monthly-payment-display">$0/month</span></span>
+                            </label>
+                            <label class="flex items-center cursor-pointer">
+                                <input type="radio" name="payment-plan" value="weekly" class="mr-2">
+                                <span class="text-sm">12 Weekly Payments: <span id="weekly-payment-display">$0/week</span></span>
+                            </label>
                         </div>
+                    </div>
+
+                    <!-- Payment Buttons Container -->
+                    <div id="payment-buttons-container" class="space-y-3 hidden">
+                        <!-- Stripe Payment Button -->
+                        <button id="stripe-button" class="payment-button stripe-button" disabled>
+                            <i class="fas fa-credit-card"></i>
+                            Pay with Card
+                        </button>
+
+                        <!-- PayPal Button Container -->
+                        <div id="paypal-button-container"></div>
+
+                        <!-- Apple Pay Button -->
+                        <button id="apple-pay-button" class="payment-button apple-pay-button hidden">
+                            <i class="fab fa-apple"></i>
+                            Pay with Apple Pay
+                        </button>
+
+                        <!-- Google Pay Button -->
+                        <div id="google-pay-button-container"></div>
+                    </div>
+
+                    <!-- Secure Payment Notice -->
+                    <div id="security-notice" class="mt-4 text-xs text-gray-400 text-center hidden">
+                        <i class="fas fa-lock mr-1"></i>
+                        Your payment information is secure and encrypted
                     </div>
                 </div>
             </div>
@@ -832,95 +953,95 @@
         </div>
     </section>
 
-   <!-- TechStep Podcast -->
-<section id="podcast" class="py-20 bg-gray-800">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="text-center mb-16">
-      <h2 class="text-4xl font-bold mb-4">🎧 TechStep Podcast</h2>
-      <p class="text-xl text-gray-300 max-w-3xl mx-auto">
-        "CyberSecure Weekly" – Your gateway to cybersecurity excellence with industry insights, expert interviews, and career advice.
-      </p>
-    </div>
+    <!-- TechStep Podcast -->
+    <section id="podcast" class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4">🎧 TechStep Podcast</h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    "CyberSecure Weekly" – Your gateway to cybersecurity excellence with industry insights, expert interviews, and career advice.
+                </p>
+            </div>
 
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-      <!-- Episode 1: Zero Trust -->
-      <div class="bg-gray-700 p-6 rounded-lg">
-        <div class="flex items-center mb-4">
-          <div class="w-16 h-16 bg-blue-600 rounded-lg flex items-center justify-center mr-4">
-            <i class="fas fa-microphone text-2xl text-white"></i>
-          </div>
-          <div>
-            <h3 class="font-semibold">Episode 45</h3>
-            <p class="text-blue-400 text-sm">Latest</p>
-          </div>
-        </div>
-        <h4 class="text-lg font-semibold mb-2">Zero Trust Architecture in 2024</h4>
-        <p class="text-gray-300 text-sm mb-4">
-          Dr. Rebecca Chen discusses the evolution of zero trust models and implementation strategies for modern enterprises.
-        </p>
-        <audio id="zeroTrustAudio" src="https://cdn1.genspark.ai/user-upload-image/8/17dcaf5f-bfb4-43d3-bfb8-1138be94d24b.mp3" preload="metadata" class="w-full mb-4" controls></audio>
-        <div class="flex items-center justify-between">
-          <span class="text-sm text-gray-400">32 mins</span>
-          <button onclick="document.getElementById('zeroTrustAudio').play()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
-            <i class="fas fa-play mr-1"></i>Play
-          </button>
-        </div>
-      </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Episode 1: Zero Trust -->
+                <div class="bg-gray-700 p-6 rounded-lg">
+                    <div class="flex items-center mb-4">
+                        <div class="w-16 h-16 bg-blue-600 rounded-lg flex items-center justify-center mr-4">
+                            <i class="fas fa-microphone text-2xl text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold">Episode 45</h3>
+                            <p class="text-blue-400 text-sm">Latest</p>
+                        </div>
+                    </div>
+                    <h4 class="text-lg font-semibold mb-2">Zero Trust Architecture in 2024</h4>
+                    <p class="text-gray-300 text-sm mb-4">
+                        Dr. Rebecca Chen discusses the evolution of zero trust models and implementation strategies for modern enterprises.
+                    </p>
+                    <audio id="zeroTrustAudio" src="https://cdn1.genspark.ai/user-upload-image/8/17dcaf5f-bfb4-43d3-bfb8-1138be94d24b.mp3" preload="metadata" class="w-full mb-4" controls></audio>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-400">32 mins</span>
+                        <button onclick="document.getElementById('zeroTrustAudio').play()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+                            <i class="fas fa-play mr-1"></i>Play
+                        </button>
+                    </div>
+                </div>
 
-      <!-- Episode 2 -->
-      <div class="bg-gray-700 p-6 rounded-lg">
-        <div class="flex items-center mb-4">
-          <div class="w-16 h-16 bg-green-600 rounded-lg flex items-center justify-center mr-4">
-            <i class="fas fa-brain text-2xl text-white"></i>
-          </div>
-          <div>
-            <h3 class="font-semibold">Episode 44</h3>
-            <p class="text-blue-400 text-sm">Popular</p>
-          </div>
-        </div>
-        <h4 class="text-lg font-semibold mb-2">AI-Powered Threat Detection</h4>
-        <p class="text-gray-300 text-sm mb-4">
-          Dr. Michelle Zhang explores how artificial intelligence is revolutionizing cybersecurity threat detection and response.
-        </p>
-        <div class="flex items-center justify-between">
-          <span class="text-sm text-gray-400">28 mins</span>
-          <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
-            <i class="fas fa-play mr-1"></i>Play
-          </button>
-        </div>
-      </div>
+                <!-- Episode 2 -->
+                <div class="bg-gray-700 p-6 rounded-lg">
+                    <div class="flex items-center mb-4">
+                        <div class="w-16 h-16 bg-green-600 rounded-lg flex items-center justify-center mr-4">
+                            <i class="fas fa-brain text-2xl text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold">Episode 44</h3>
+                            <p class="text-blue-400 text-sm">Popular</p>
+                        </div>
+                    </div>
+                    <h4 class="text-lg font-semibold mb-2">AI-Powered Threat Detection</h4>
+                    <p class="text-gray-300 text-sm mb-4">
+                        Dr. Michelle Zhang explores how artificial intelligence is revolutionizing cybersecurity threat detection and response.
+                    </p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-400">28 mins</span>
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+                            <i class="fas fa-play mr-1"></i>Play
+                        </button>
+                    </div>
+                </div>
 
-      <!-- Episode 3 -->
-      <div class="bg-gray-700 p-6 rounded-lg">
-        <div class="flex items-center mb-4">
-          <div class="w-16 h-16 bg-purple-600 rounded-lg flex items-center justify-center mr-4">
-            <i class="fas fa-shield-alt text-2xl text-white"></i>
-          </div>
-          <div>
-            <h3 class="font-semibold">Episode 43</h3>
-            <p class="text-blue-400 text-sm">Trending</p>
-          </div>
-        </div>
-        <h4 class="text-lg font-semibold mb-2">GRC Best Practices for SMBs</h4>
-        <p class="text-gray-300 text-sm mb-4">
-          Marcus Johnson shares practical governance, risk, and compliance strategies tailored for small and medium businesses.
-        </p>
-        <div class="flex items-center justify-between">
-          <span class="text-sm text-gray-400">35 mins</span>
-          <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
-            <i class="fas fa-play mr-1"></i>Play
-          </button>
-        </div>
-      </div>
-    </div>
+                <!-- Episode 3 -->
+                <div class="bg-gray-700 p-6 rounded-lg">
+                    <div class="flex items-center mb-4">
+                        <div class="w-16 h-16 bg-purple-600 rounded-lg flex items-center justify-center mr-4">
+                            <i class="fas fa-shield-alt text-2xl text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold">Episode 43</h3>
+                            <p class="text-blue-400 text-sm">Trending</p>
+                        </div>
+                    </div>
+                    <h4 class="text-lg font-semibold mb-2">GRC Best Practices for SMBs</h4>
+                    <p class="text-gray-300 text-sm mb-4">
+                        Marcus Johnson shares practical governance, risk, and compliance strategies tailored for small and medium businesses.
+                    </p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-400">35 mins</span>
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+                            <i class="fas fa-play mr-1"></i>Play
+                        </button>
+                    </div>
+                </div>
+            </div>
 
-    <div class="text-center mt-12">
-      <button class="bg-gray-700 text-white px-8 py-3 rounded-lg font-semibold hover:bg-gray-600 transition duration-300">
-        <i class="fas fa-podcast mr-2"></i>View All Episodes
-      </button>
-    </div>
-  </div>
-</section>
+            <div class="text-center mt-12">
+                <button class="bg-gray-700 text-white px-8 py-3 rounded-lg font-semibold hover:bg-gray-600 transition duration-300">
+                    <i class="fas fa-podcast mr-2"></i>View All Episodes
+                </button>
+            </div>
+        </div>
+    </section>
 
     <!-- What Our Students Say -->
     <section id="testimonials" class="py-20 bg-gray-900">
@@ -1114,33 +1235,36 @@
     </footer>
 
     <script>
+        // Initialize Stripe
+        const stripe = Stripe('pk_test_your_publishable_key_here'); // Replace with your actual publishable key
+        
+        // Global variables
+        let selectedCourses = [];
+        let currentLearningType = 'self-paced';
+        let paymentPlanAgreed = false;
+
         // Dashboard Modal Functionality
         const loginBtn = document.getElementById('loginBtn');
         const dashboardModal = document.getElementById('dashboardModal');
         const closeModal = document.getElementById('closeModal');
 
-        // Open dashboard modal
         loginBtn.addEventListener('click', function() {
             dashboardModal.classList.add('show');
-            // Animate progress bars after modal opens
             setTimeout(() => {
                 animateDashboardProgress();
             }, 300);
         });
 
-        // Close dashboard modal
         closeModal.addEventListener('click', function() {
             dashboardModal.classList.remove('show');
         });
 
-        // Close modal when clicking outside
         dashboardModal.addEventListener('click', function(e) {
             if (e.target === dashboardModal) {
                 dashboardModal.classList.remove('show');
             }
         });
 
-        // Animate dashboard progress bars
         function animateDashboardProgress() {
             const progressBars = document.querySelectorAll('.dashboard-progress-fill');
             progressBars.forEach(bar => {
@@ -1151,7 +1275,7 @@
             });
         }
 
-        // Dashboard action button functionality
+        // Dashboard action buttons
         document.querySelectorAll('.dashboard-action-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 const btnClass = this.className;
@@ -1167,7 +1291,6 @@
                     message = 'Playing latest podcast episode...';
                 }
                 
-                // Show temporary feedback
                 const originalText = this.innerHTML;
                 this.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>' + message;
                 this.style.opacity = '0.7';
@@ -1179,29 +1302,20 @@
             });
         });
 
-        // Learning type toggle functionality
+        // Learning type functionality
         const learningTypeInputs = document.querySelectorAll('input[name="learning-type"]');
         const mentorBookingSection = document.getElementById('mentor-booking-section');
         const courseCards = document.querySelectorAll('.course-card');
         const courseCheckboxes = document.querySelectorAll('.course-checkbox');
         const cartItems = document.getElementById('cart-items');
         const totalPriceElement = document.getElementById('total-price');
-        const paymentBreakdown = document.getElementById('payment-breakdown');
-        const fullPaymentElement = document.getElementById('full-payment');
-        const monthlyPaymentElement = document.getElementById('monthly-payment');
-        const weeklyPaymentElement = document.getElementById('weekly-payment');
 
-        let selectedCourses = [];
-        let currentLearningType = 'self-paced';
-
-        // Toggle learning type
         learningTypeInputs.forEach(input => {
             input.addEventListener('change', function() {
                 currentLearningType = this.value;
                 
                 if (this.value === 'with-mentor') {
                     mentorBookingSection.classList.add('show');
-                    // Show mentor prices
                     courseCards.forEach(card => {
                         card.querySelector('.self-paced-price').classList.add('hidden');
                         card.querySelector('.mentor-price').classList.remove('hidden');
@@ -1210,7 +1324,6 @@
                     });
                 } else {
                     mentorBookingSection.classList.remove('show');
-                    // Show self-paced prices
                     courseCards.forEach(card => {
                         card.querySelector('.self-paced-price').classList.remove('hidden');
                         card.querySelector('.mentor-price').classList.add('hidden');
@@ -1247,11 +1360,29 @@
             });
         });
 
+        // Payment plan change handlers
+        document.querySelectorAll('input[name="payment-plan"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const selectedPlan = this.value;
+                
+                if (selectedPlan !== 'full') {
+                    showPaymentPlanAgreement(selectedPlan);
+                } else {
+                    hidePaymentPlanRequirements();
+                    enablePaymentButtons();
+                }
+                
+                updatePaymentDisplays();
+            });
+        });
+
         function updateCart() {
             if (selectedCourses.length === 0) {
                 cartItems.innerHTML = '<p class="text-gray-400">Select courses to see pricing</p>';
                 totalPriceElement.textContent = '$0';
-                paymentBreakdown.classList.add('hidden');
+                document.getElementById('payment-buttons-container').classList.add('hidden');
+                document.getElementById('payment-plan-selector').classList.add('hidden');
+                document.getElementById('security-notice').classList.add('hidden');
                 return;
             }
 
@@ -1272,34 +1403,677 @@
             cartItems.innerHTML = cartHTML;
             totalPriceElement.textContent = `$${total.toLocaleString()}`;
 
-            // Update payment breakdown
-            const fullPayment = Math.round(total * 0.95); // 5% discount
+            // Update payment plan displays
+            updatePaymentDisplays();
+
+            // Show payment options
+            document.getElementById('payment-plan-selector').classList.remove('hidden');
+            document.getElementById('payment-buttons-container').classList.remove('hidden');
+            document.getElementById('security-notice').classList.remove('hidden');
+
+            // Initialize payment handlers
+            initializePaymentHandlers();
+        }
+
+        function updatePaymentDisplays() {
+            const total = calculateTotal();
+            const fullPayment = Math.round(total * 0.95);
             const monthlyPayment = Math.round(total / 3);
             const weeklyPayment = Math.round(total / 12);
 
-            fullPaymentElement.textContent = `$${fullPayment.toLocaleString()}`;
-            monthlyPaymentElement.textContent = `$${monthlyPayment.toLocaleString()}/month`;
-            weeklyPaymentElement.textContent = `$${weeklyPayment.toLocaleString()}/week`;
-
-            paymentBreakdown.classList.remove('hidden');
+            document.getElementById('full-payment-display').textContent = `$${fullPayment.toLocaleString()}`;
+            document.getElementById('monthly-payment-display').textContent = `$${monthlyPayment.toLocaleString()}/month`;
+            document.getElementById('weekly-payment-display').textContent = `$${weeklyPayment.toLocaleString()}/week`;
         }
 
-        // Progress bar animations
-        function animateProgressBars() {
-            const progressBars = document.querySelectorAll('.progress-fill');
-            progressBars.forEach(bar => {
-                const width = bar.style.width || '0%';
-                bar.style.width = '0%';
-                setTimeout(() => {
-                    bar.style.width = width;
-                }, 100);
+        function calculateTotal() {
+            let total = 0;
+            selectedCourses.forEach(course => {
+                const price = currentLearningType === 'with-mentor' ? course.mentorPrice : course.selfPrice;
+                total += price;
+            });
+            return total;
+        }
+
+        function calculatePaymentAmount(planType) {
+            const total = calculateTotal();
+            
+            switch(planType) {
+                case 'full':
+                    return Math.round(total * 0.95); // 5% discount
+                case 'monthly':
+                    return Math.round(total / 3);
+                case 'weekly':
+                    return Math.round(total / 12);
+                default:
+                    return total;
+            }
+        }
+
+        // Payment Plan Agreement System
+        function showPaymentPlanAgreement(planType) {
+            const planDetails = getPlanDetails(planType);
+            
+            const agreementHTML = `
+                <div id="payment-plan-agreement-modal" class="modal-overlay show payment-plan-agreement">
+                    <div class="modal-content max-w-4xl max-h-90vh overflow-y-auto">
+                        <div class="flex justify-between items-center mb-6 sticky top-0 bg-gray-700 p-4 -m-4 mb-4 border-b border-gray-600">
+                            <div>
+                                <h3 class="text-2xl font-bold text-blue-400">Payment Plan Agreement</h3>
+                                <p class="text-gray-300 text-sm">${planDetails.description}</p>
+                            </div>
+                            <button id="close-agreement-modal" class="text-gray-400 hover:text-white text-2xl">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="agreement-content">
+                            ${generateAgreementContent(planType, planDetails)}
+                        </div>
+                        
+                        <div class="sticky bottom-0 bg-gray-700 p-4 -m-4 mt-4 border-t border-gray-600">
+                            <div class="flex items-start mb-4">
+                                <input type="checkbox" id="agreement-checkbox" class="mt-1 mr-3 w-5 h-5 text-blue-600">
+                                <label for="agreement-checkbox" class="text-sm text-gray-300 cursor-pointer">
+                                    I have read, understood, and agree to the terms and conditions of this Payment Plan Agreement. I acknowledge that all payments are non-refundable and that late fees will apply for missed payments.
+                                </label>
+                            </div>
+                            
+                            <div class="flex gap-4">
+                                <button id="decline-agreement" class="flex-1 border border-gray-500 text-gray-300 py-3 rounded-lg font-semibold hover:bg-gray-600 transition duration-300">
+                                    <i class="fas fa-times mr-2"></i>Decline
+                                </button>
+                                <button id="accept-agreement" disabled class="flex-1 bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                                    <i class="fas fa-check mr-2"></i>Accept & Continue
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', agreementHTML);
+            
+            // Handle checkbox change
+            document.getElementById('agreement-checkbox').addEventListener('change', function() {
+                document.getElementById('accept-agreement').disabled = !this.checked;
+            });
+            
+            // Handle accept button
+            document.getElementById('accept-agreement').addEventListener('click', function() {
+                paymentPlanAgreed = true;
+                document.getElementById('payment-plan-agreement-modal').remove();
+                showPaymentPlanRequirements(planType);
+                enablePaymentButtons();
+                storeAgreementAcceptance(planType);
+            });
+            
+            // Handle decline button
+            document.getElementById('decline-agreement').addEventListener('click', function() {
+                document.querySelector('input[name="payment-plan"][value="full"]').checked = true;
+                document.getElementById('payment-plan-agreement-modal').remove();
+                paymentPlanAgreed = false;
+                updatePaymentDisplays();
+            });
+            
+            // Handle close button
+            document.getElementById('close-agreement-modal').addEventListener('click', function() {
+                document.querySelector('input[name="payment-plan"][value="full"]').checked = true;
+                document.getElementById('payment-plan-agreement-modal').remove();
+                paymentPlanAgreed = false;
+                updatePaymentDisplays();
             });
         }
 
-        // Initialize on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            animateProgressBars();
-        });
+        function getPlanDetails(planType) {
+            const total = calculateTotal();
+            
+            const plans = {
+                monthly: {
+                    description: "3 Monthly Payments",
+                    amount: Math.round(total / 3),
+                    frequency: "monthly",
+                    totalPayments: 3,
+                    billingCycle: "monthly",
+                    firstPayment: "today",
+                    subsequentPayments: "1st of each month"
+                },
+                weekly: {
+                    description: "12 Weekly Payments",
+                    amount: Math.round(total / 12),
+                    frequency: "weekly",
+                    totalPayments: 12,
+                    billingCycle: "weekly",
+                    firstPayment: "today",
+                    subsequentPayments: "same day each week"
+                }
+            };
+            
+            return plans[planType];
+        }
+
+        function generateAgreementContent(planType, planDetails) {
+            const currentDate = new Date().toLocaleDateString();
+            const total = calculateTotal();
+            
+            return `
+                <div class="agreement-text space-y-6 text-sm leading-relaxed">
+                    <div class="agreement-highlight">
+                        <h4 class="font-semibold text-blue-400 mb-2 flex items-center">
+                            <i class="fas fa-info-circle mr-2"></i>Agreement Summary
+                        </h4>
+                        <div class="grid md:grid-cols-2 gap-4 text-sm">
+                            <div>
+                                <strong>Payment Plan:</strong> ${planDetails.description}<br>
+                                <strong>Payment Amount:</strong> $${planDetails.amount.toLocaleString()} per ${planDetails.frequency}<br>
+                                <strong>Total Payments:</strong> ${planDetails.totalPayments}
+                            </div>
+                            <div>
+                                <strong>Total Course Cost:</strong> $${total.toLocaleString()}<br>
+                                <strong>First Payment:</strong> ${planDetails.firstPayment}<br>
+                                <strong>Billing Cycle:</strong> ${planDetails.subsequentPayments}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="agreement-section">
+                        <h4 class="font-semibold text-lg mb-3 text-white">PAYMENT PLAN AGREEMENT</h4>
+                        <p class="mb-4">
+                            This Payment Plan Agreement ("Agreement") is entered into on <strong>${currentDate}</strong> between TechStep Foundation ("Company," "we," "us," or "our") and the customer ("Customer," "you," or "your") for the purchase of cybersecurity training courses.
+                        </p>
+                    </div>
+
+                    <div class="agreement-section">
+                        <h5 class="font-semibold text-white mb-2">1. PAYMENT TERMS</h5>
+                        <ul class="list-disc list-inside space-y-2 ml-4">
+                            <li>You agree to pay <strong>$${planDetails.amount.toLocaleString()}</strong> ${planDetails.frequency} for <strong>${planDetails.totalPayments}</strong> consecutive ${planDetails.frequency === 'weekly' ? 'weeks' : 'months'}.</li>
+                            <li>Your first payment of <strong>$${planDetails.amount.toLocaleString()}</strong> is due immediately upon acceptance of this agreement.</li>
+                            <li>Subsequent payments will be automatically charged to your selected payment method on the <strong>${planDetails.subsequentPayments}</strong>.</li>
+                            <li>The total amount to be paid under this agreement is <strong>$${total.toLocaleString()}</strong>.</li>
+                        </ul>
+                    </div>
+
+                    <div class="agreement-section">
+                        <h5 class="font-semibold text-white mb-2">2. AUTOMATIC BILLING</h5>
+                        <ul class="list-disc list-inside space-y-2 ml-4">
+                            <li>By accepting this agreement, you authorize TechStep Foundation to automatically charge your payment method for each scheduled payment.</li>
+                            <li>You are responsible for ensuring sufficient funds are available on each billing date.</li>
+                            <li>It is your responsibility to update your payment information if your payment method expires or changes.</li>
+                        </ul>
+                    </div>
+
+                    <div class="agreement-warning">
+                        <h5 class="font-semibold text-red-400 mb-2 flex items-center">
+                            <i class="fas fa-exclamation-triangle mr-2"></i>3. NON-REFUNDABLE POLICY
+                        </h5>
+                        <ul class="list-disc list-inside space-y-2 ml-4">
+                            <li><strong>ALL PAYMENTS ARE FINAL AND NON-REFUNDABLE.</strong></li>
+                            <li>Once a payment is processed, it cannot be reversed, refunded, or credited, regardless of course completion status.</li>
+                            <li>No refunds will be provided for any reason, including but not limited to: course dissatisfaction, technical difficulties, personal circumstances, or early completion.</li>
+                            <li>Course access will remain available for the full duration as specified in your course enrollment.</li>
+                        </ul>
+                    </div>
+
+                    <div class="agreement-info">
+                        <h5 class="font-semibold text-yellow-400 mb-2 flex items-center">
+                            <i class="fas fa-credit-card mr-2"></i>4. LATE PAYMENTS AND FEES
+                        </h5>
+                        <ul class="list-disc list-inside space-y-2 ml-4">
+                            <li>If a scheduled payment fails due to insufficient funds, expired card, or other payment method issues, a <strong>late fee of $25</strong> will be automatically added to your account.</li>
+                            <li>You will have <strong>7 days</strong> from a failed payment to update your payment method and complete the payment plus applicable late fees.</li>
+                            <li>After 7 days of non-payment, an additional <strong>$15 processing fee</strong> will be applied.</li>
+                            <li>Continued non-payment may result in:
+                                <ul class="list-disc list-inside ml-4 mt-2 space-y-1">
+                                    <li>Course access suspension</li>
+                                    <li>Collection agency referral</li>
+                                    <li>Additional collection costs and legal fees</li>
+                                    <li>Credit bureau reporting</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="agreement-section">
+                        <h5 class="font-semibold text-white mb-2">5. COURSE ACCESS</h5>
+                        <ul class="list-disc list-inside space-y-2 ml-4">
+                            <li>Course access will be granted immediately upon acceptance of this agreement and first payment.</li>
+                            <li>Continued access depends on maintaining current payment status.</li>
+                            <li>Access may be suspended if payments become delinquent, but will be restored upon payment of all outstanding amounts.</li>
+                        </ul>
+                    </div>
+
+                    <div class="agreement-section">
+                        <h5 class="font-semibold text-white mb-2">6. MODIFICATION AND CANCELLATION</h5>
+                        <ul class="list-disc list-inside space-y-2 ml-4">
+                            <li>You may not modify or cancel this payment plan once accepted.</li>
+                            <li>TechStep Foundation reserves the right to modify these terms with 30 days written notice.</li>
+                            <li>Changes will not affect existing payment plan agreements already in progress.</li>
+                        </ul>
+                    </div>
+
+                    <div class="agreement-section">
+                        <h5 class="font-semibold text-white mb-2">7. DEFAULT AND REMEDIES</h5>
+                        <ul class="list-disc list-inside space-y-2 ml-4">
+                            <li>Failure to make any payment when due constitutes a default under this agreement.</li>
+                            <li>Upon default, TechStep Foundation may declare the entire remaining balance immediately due and payable.</li>
+                            <li>You will be responsible for all costs of collection, including attorney fees and court costs.</li>
+                        </ul>
+                    </div>
+
+                    <div class="agreement-section">
+                        <h5 class="font-semibold text-white mb-2">8. ACKNOWLEDGMENT</h5>
+                        <p class="ml-4">
+                            By accepting this agreement, you acknowledge that you have read, understood, and agree to be bound by all terms and conditions. You confirm that you are at least 18 years old and have the legal capacity to enter into this agreement.
+                        </p>
+                    </div>
+
+                    <div class="bg-gray-800 border border-gray-600 rounded-lg p-4 mt-6">
+                        <h5 class="font-semibold text-white mb-2">CONTACT INFORMATION</h5>
+                        <p class="text-sm">
+                            For questions regarding this payment plan agreement, please contact:<br>
+                            <strong>TechStep Foundation</strong><br>
+                            Email: billing@techstepfoundation.org<br>
+                            Phone: 1-800-TECHSTEP<br>
+                            Business Hours: Monday-Friday, 9 AM - 5 PM EST
+                        </p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function showPaymentPlanRequirements(planType) {
+            const planDetails = getPlanDetails(planType);
+            
+            const requirementsHTML = `
+                <div id="payment-plan-requirements" class="bg-green-900/20 border border-green-500/30 rounded-lg p-4 mb-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-semibold text-green-400 flex items-center">
+                            <i class="fas fa-check-circle mr-2"></i>Payment Plan Agreement Accepted
+                        </h4>
+                        <button id="view-agreement-again" class="text-xs bg-gray-600 hover:bg-gray-500 px-2 py-1 rounded">
+                            View Agreement
+                        </button>
+                    </div>
+                    <div class="text-sm text-gray-300">
+                        <p><strong>Plan:</strong> ${planDetails.description} of $${planDetails.amount.toLocaleString()}</p>
+                        <p><strong>First Payment:</strong> Today | <strong>Next Payment:</strong> ${getNextPaymentDate(planType)}</p>
+                        <p class="text-yellow-400 mt-1">
+                            <i class="fas fa-exclamation-triangle mr-1"></i>
+                            Remember: All payments are non-refundable. Late fees apply for missed payments.
+                        </p>
+                    </div>
+                </div>
+            `;
+            
+            const paymentPlanSelector = document.getElementById('payment-plan-selector');
+            paymentPlanSelector.insertAdjacentHTML('afterend', requirementsHTML);
+            
+            document.getElementById('view-agreement-again').addEventListener('click', function() {
+                showPaymentPlanAgreement(planType, true);
+            });
+        }
+
+        function hidePaymentPlanRequirements() {
+            const existingRequirements = document.getElementById('payment-plan-requirements');
+            if (existingRequirements) {
+                existingRequirements.remove();
+            }
+            paymentPlanAgreed = false;
+        }
+
+        function getNextPaymentDate(planType) {
+            const now = new Date();
+            let nextDate;
+            
+            if (planType === 'monthly') {
+                nextDate = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+            } else if (planType === 'weekly') {
+                nextDate = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+            }
+            
+            return nextDate.toLocaleDateString();
+        }
+
+        function enablePaymentButtons() {
+            const paymentButtonsContainer = document.getElementById('payment-buttons-container');
+            paymentButtonsContainer.classList.remove('payment-plan-locked');
+            
+            document.getElementById('stripe-button').disabled = false;
+            document.getElementById('paypal-button-container').style.pointerEvents = 'auto';
+        }
+
+        function disablePaymentButtons() {
+            const paymentButtonsContainer = document.getElementById('payment-buttons-container');
+            paymentButtonsContainer.classList.add('payment-plan-locked');
+            
+            document.getElementById('stripe-button').disabled = true;
+            document.getElementById('paypal-button-container').style.pointerEvents = 'none';
+        }
+
+        function validatePaymentPlan() {
+            const selectedPlan = document.querySelector('input[name="payment-plan"]:checked').value;
+            
+            if (selectedPlan !== 'full' && !paymentPlanAgreed) {
+                showNotification('Please accept the payment plan agreement to continue.', 'warning');
+                return false;
+            }
+            
+            return true;
+        }
+
+        function storeAgreementAcceptance(planType) {
+            const agreementData = {
+                accepted: true,
+                timestamp: new Date().toISOString(),
+                planType: planType,
+                userAgent: navigator.userAgent,
+                courses: selectedCourses.map(c => c.name),
+                total: calculateTotal()
+            };
+            
+            localStorage.setItem('techstep_payment_agreement', JSON.stringify(agreementData));
+        }
+
+        // Payment processing functions
+        function initializePaymentHandlers() {
+            // Initialize PayPal
+            initializePayPal();
+
+            // Stripe button handler
+            document.getElementById('stripe-button').onclick = function() {
+                if (!validatePaymentPlan()) return;
+                
+                const selectedPlan = document.querySelector('input[name="payment-plan"]:checked').value;
+                const amount = calculatePaymentAmount(selectedPlan);
+                
+                showStripeModal(amount, selectedPlan);
+            };
+
+            // Check for Apple Pay support
+            if (window.ApplePaySession && ApplePaySession.canMakePayments()) {
+                document.getElementById('apple-pay-button').classList.remove('hidden');
+                document.getElementById('apple-pay-button').onclick = function() {
+                    if (!validatePaymentPlan()) return;
+                    showNotification('Apple Pay integration coming soon!', 'info');
+                };
+            }
+
+            // Initially disable payment buttons if payment plan not agreed
+            const selectedPlan = document.querySelector('input[name="payment-plan"]:checked').value;
+            if (selectedPlan !== 'full' && !paymentPlanAgreed) {
+                disablePaymentButtons();
+            }
+        }
+
+        function initializePayPal() {
+            if (!window.paypal) {
+                console.error('PayPal SDK not loaded');
+                return;
+            }
+
+            // Clear existing PayPal buttons
+            document.getElementById('paypal-button-container').innerHTML = '';
+
+            window.paypal.Buttons({
+                style: {
+                    layout: 'vertical',
+                    color: 'blue',
+                    shape: 'rect',
+                    label: 'paypal'
+                },
+                
+                createOrder: (data, actions) => {
+                    if (!validatePaymentPlan()) return;
+                    
+                    const selectedPlan = document.querySelector('input[name="payment-plan"]:checked').value;
+                    const orderAmount = calculatePaymentAmount(selectedPlan);
+
+                    return actions.order.create({
+                        purchase_units: [{
+                            amount: {
+                                value: orderAmount.toString(),
+                                currency_code: 'USD'
+                            },
+                            description: `TechStep Courses - ${selectedCourses.map(c => c.name).join(', ')}`,
+                            custom_id: `techstep_${Date.now()}`,
+                            invoice_id: `INV_${Date.now()}`
+                        }],
+                        application_context: {
+                            brand_name: 'TechStep Foundation',
+                            landing_page: 'NO_PREFERENCE',
+                            user_action: 'PAY_NOW'
+                        }
+                    });
+                },
+
+                onApprove: async (data, actions) => {
+                    try {
+                        const order = await actions.order.capture();
+                        handlePaymentSuccess(order, 'paypal');
+                    } catch (error) {
+                        console.error('PayPal payment error:', error);
+                        showNotification('Payment failed. Please try again.', 'error');
+                    }
+                },
+
+                onError: (err) => {
+                    console.error('PayPal error:', err);
+                    showNotification('Payment failed. Please try again.', 'error');
+                },
+
+                onCancel: (data) => {
+                    console.log('PayPal payment cancelled:', data);
+                    showNotification('Payment cancelled', 'info');
+                }
+            }).render('#paypal-button-container');
+        }
+
+        function showStripeModal(amount, planType) {
+            const modalHTML = `
+                <div id="stripe-modal" class="modal-overlay show">
+                    <div class="modal-content max-w-md">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-xl font-semibold">Complete Payment</h3>
+                            <button id="close-stripe-modal" class="text-gray-400 hover:text-white text-2xl">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        
+                        <form id="stripe-payment-form">
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium mb-2">Email</label>
+                                <input type="email" id="customer-email" required 
+                                       class="w-full p-3 bg-gray-600 rounded-lg text-white border border-gray-500 focus:border-blue-400">
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium mb-2">Full Name</label>
+                                <input type="text" id="customer-name" required 
+                                       class="w-full p-3 bg-gray-600 rounded-lg text-white border border-gray-500 focus:border-blue-400">
+                            </div>
+                            
+                            <div class="mb-6">
+                                <label class="block text-sm font-medium mb-2">Payment Information</label>
+                                <div id="card-element" class="p-3 bg-gray-600 rounded-lg border border-gray-500">
+                                    <!-- Stripe Elements will create input elements here -->
+                                </div>
+                            </div>
+                            
+                            <button type="submit" id="submit-payment" 
+                                    class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300">
+                                <span id="payment-button-text">Pay $${amount.toLocaleString()}</span>
+                                <i id="payment-spinner" class="fas fa-spinner fa-spin ml-2 hidden"></i>
+                            </button>
+                        </form>
+                        
+                        <div id="payment-messages" class="mt-4 text-sm text-red-400"></div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
+            
+            // Initialize Stripe Elements
+            const elements = stripe.elements({
+                appearance: {
+                    theme: 'night',
+                    variables: {
+                        colorPrimary: '#3b82f6',
+                        colorBackground: '#374151',
+                        colorText: '#ffffff',
+                        colorDanger: '#ef4444',
+                        borderRadius: '8px'
+                    }
+                }
+            });
+
+            const cardElement = elements.create('card');
+            cardElement.mount('#card-element');
+            
+            // Handle form submission
+            document.getElementById('stripe-payment-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const submitButton = document.getElementById('submit-payment');
+                const spinner = document.getElementById('payment-spinner');
+                const buttonText = document.getElementById('payment-button-text');
+                
+                // Show loading state
+                submitButton.disabled = true;
+                buttonText.textContent = 'Processing...';
+                spinner.classList.remove('hidden');
+                
+                try {
+                    const {error, paymentMethod} = await stripe.createPaymentMethod({
+                        type: 'card',
+                        card: cardElement,
+                        billing_details: {
+                            name: document.getElementById('customer-name').value,
+                            email: document.getElementById('customer-email').value,
+                        },
+                    });
+
+                    if (error) {
+                        throw error;
+                    }
+
+                    // For demo purposes, simulate successful payment
+                    setTimeout(() => {
+                        document.getElementById('stripe-modal').remove();
+                        handlePaymentSuccess({
+                            id: 'demo_payment_' + Date.now(),
+                            amount: amount,
+                            method: 'stripe'
+                        }, 'stripe');
+                    }, 2000);
+                    
+                } catch (error) {
+                    document.getElementById('payment-messages').textContent = error.message;
+                    
+                    // Reset button state
+                    submitButton.disabled = false;
+                    buttonText.textContent = `Pay $${amount.toLocaleString()}`;
+                    spinner.classList.add('hidden');
+                }
+            });
+            
+            // Close modal handler
+            document.getElementById('close-stripe-modal').onclick = () => {
+                document.getElementById('stripe-modal').remove();
+            };
+        }
+
+        function handlePaymentSuccess(paymentData, method) {
+            const successHTML = `
+                <div id="success-modal" class="modal-overlay show">
+                    <div class="modal-content max-w-md text-center">
+                        <div class="mb-6">
+                            <i class="fas fa-check-circle text-6xl text-green-400 mb-4"></i>
+                            <h3 class="text-2xl font-bold mb-2">Payment Successful!</h3>
+                            <p class="text-gray-300">Your enrollment is confirmed</p>
+                        </div>
+                        
+                        <div class="bg-gray-700 p-4 rounded-lg mb-6 text-left">
+                            <h4 class="font-semibold mb-2">Order Details:</h4>
+                            <div class="space-y-1 text-sm">
+                                ${selectedCourses.map(course => `
+                                    <div class="flex justify-between">
+                                        <span>${course.name}</span>
+                                        <span>$${currentLearningType === 'with-mentor' ? course.mentorPrice.toLocaleString() : course.selfPrice.toLocaleString()}</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                            <div class="border-t border-gray-600 mt-2 pt-2">
+                                <div class="flex justify-between font-semibold">
+                                    <span>Total Paid:</span>
+                                    <span>$${paymentData.amount ? paymentData.amount.toLocaleString() : calculatePaymentAmount(document.querySelector('input[name="payment-plan"]:checked').value).toLocaleString()}</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-3">
+                            <button onclick="redirectToDashboard()" 
+                                    class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300">
+                                <i class="fas fa-play mr-2"></i>Start Learning
+                            </button>
+                            <button onclick="document.getElementById('success-modal').remove()" 
+                                    class="w-full border border-gray-500 text-gray-300 py-3 rounded-lg font-semibold hover:bg-gray-700 transition duration-300">
+                                Continue Browsing
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', successHTML);
+            
+            // Clear cart
+            selectedCourses = [];
+            updateCart();
+            
+            // Uncheck all course checkboxes
+            courseCheckboxes.forEach(checkbox => {
+                checkbox.checked = false;
+                checkbox.closest('.course-card').classList.remove('selected');
+            });
+        }
+
+        function redirectToDashboard() {
+            document.getElementById('success-modal').remove();
+            loginBtn.click();
+        }
+
+        // Notification system
+        function showNotification(message, type = 'info') {
+            const colors = {
+                success: 'success',
+                error: 'error',
+                info: 'info',
+                warning: 'warning'
+            };
+            
+            const notification = document.createElement('div');
+            notification.className = `notification ${colors[type]}`;
+            notification.innerHTML = `
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <i class="fas fa-${type === 'success' ? 'check' : type === 'error' ? 'exclamation-triangle' : 'info-circle'} mr-2"></i>
+                        <span>${message}</span>
+                    </div>
+                    <button onclick="this.parentElement.parentElement.remove()" class="ml-4 text-xl">&times;</button>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 100);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 5000);
+        }
 
         // Smooth scrolling for navigation links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -1315,39 +2089,19 @@
             });
         });
 
-        // Add hover effects to cards
-        document.querySelectorAll('.course-card, .mentor-card, .testimonial-card').forEach(card => {
-            card.addEventListener('mouseenter', function() {
-                this.style.transform = 'translateY(-5px)';
-            });
-            
-            card.addEventListener('mouseleave', function() {
-                if (!this.classList.contains('selected')) {
-                    this.style.transform = 'translateY(0)';
-                }
-            });
-        });
-
         // Close modal with Escape key
         document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && dashboardModal.classList.contains('show')) {
-                dashboardModal.classList.remove('show');
+            if (e.key === 'Escape') {
+                const modals = document.querySelectorAll('.modal-overlay.show');
+                modals.forEach(modal => modal.classList.remove('show'));
             }
+        });
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Any initialization code here
+            updateCart();
         });
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-

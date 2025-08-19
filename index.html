@@ -1844,18 +1844,18 @@ function formatTime(seconds) {
         const dashboardModal = document.getElementById('dashboardModal');
         const closeModal = document.getElementById('closeModal');
 
-        loginBtn.addEventListener('click', function() {
+        if (loginBtn) loginBtn.addEventListener('click', function() {
             dashboardModal.classList.add('show');
             setTimeout(() => {
                 animateDashboardProgress();
             }, 300);
         });
 
-        closeModal.addEventListener('click', function() {
+        if (closeModal) closeModal.addEventListener('click', function() {
             dashboardModal.classList.remove('show');
         });
 
-        dashboardModal.addEventListener('click', function(e) {
+        if (dashboardModal) dashboardModal.addEventListener('click', function(e) {
             if (e.target === dashboardModal) {
                 dashboardModal.classList.remove('show');
             }
@@ -2091,12 +2091,14 @@ function formatTime(seconds) {
             document.body.insertAdjacentHTML('beforeend', agreementHTML);
             
             // Handle checkbox change
-            document.getElementById('agreement-checkbox').addEventListener('change', function() {
+            const agreementCheckbox = document.getElementById('agreement-checkbox');
+            if (agreementCheckbox) agreementCheckbox.addEventListener('change', function() {
                 document.getElementById('accept-agreement').disabled = !this.checked;
             });
             
             // Handle accept button
-            document.getElementById('accept-agreement').addEventListener('click', function() {
+            const acceptAgreement = document.getElementById('accept-agreement');
+            if (acceptAgreement) acceptAgreement.addEventListener('click', function() {
                 paymentPlanAgreed = true;
                 document.getElementById('payment-plan-agreement-modal').remove();
                 showPaymentPlanRequirements(planType);
@@ -2105,7 +2107,8 @@ function formatTime(seconds) {
             });
             
             // Handle decline button
-            document.getElementById('decline-agreement').addEventListener('click', function() {
+            const declineAgreement = document.getElementById('decline-agreement');
+            if (declineAgreement) declineAgreement.addEventListener('click', function() {
                 document.querySelector('input[name="payment-plan"][value="full"]').checked = true;
                 document.getElementById('payment-plan-agreement-modal').remove();
                 paymentPlanAgreed = false;
@@ -2113,7 +2116,8 @@ function formatTime(seconds) {
             });
             
             // Handle close button
-            document.getElementById('close-agreement-modal').addEventListener('click', function() {
+            const closeAgreementModal = document.getElementById('close-agreement-modal');
+            if (closeAgreementModal) closeAgreementModal.addEventListener('click', function() {
                 document.querySelector('input[name="payment-plan"][value="full"]').checked = true;
                 document.getElementById('payment-plan-agreement-modal').remove();
                 paymentPlanAgreed = false;
@@ -2304,7 +2308,8 @@ function formatTime(seconds) {
             const paymentPlanSelector = document.getElementById('payment-plan-selector');
             paymentPlanSelector.insertAdjacentHTML('afterend', requirementsHTML);
             
-            document.getElementById('view-agreement-again').addEventListener('click', function() {
+            const viewAgreementAgain = document.getElementById('view-agreement-again');
+            if (viewAgreementAgain) viewAgreementAgain.addEventListener('click', function() {
                 showPaymentPlanAgreement(planType, true);
             });
         }
@@ -2527,7 +2532,8 @@ function formatTime(seconds) {
             cardElement.mount('#card-element');
             
             // Handle form submission
-            document.getElementById('stripe-payment-form').addEventListener('submit', async (e) => {
+            const stripePaymentForm = document.getElementById('stripe-payment-form');
+            if (stripePaymentForm) stripePaymentForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 
                 const submitButton = document.getElementById('submit-payment');

@@ -1,3 +1,16 @@
 INFO:     10.12.29.52:60856 - "GET /health HTTP/1.1" 200 OK
 INFO:     10.12.29.52:44872 - "GET / HTTP/1.1" 200 OK
 INFO:     10.12.29.52:60576 - "GET /api/v1/courses/ HTTP/1.1" 200 OK
+INFO:     10.12.29.52:46566 - "GET / HTTP/1.1" 200 OK
+INFO:     10.12.29.52:46566 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     10.12.29.52:46580 - "GET /docs HTTP/1.1" 200 OK
+INFO:     10.12.29.52:46580 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     10.12.29.52:54166 - "GET /health HTTP/1.1" 200 OK
+INFO:     10.12.29.52:49460 - "GET /docs HTTP/1.1" 200 OK
+INFO:     10.12.29.52:49460 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     10.12.29.52:60134 - "GET /api/v1/courses/ HTTP/1.1" 500 Internal Server Error
+INFO:     10.12.29.52:45442 - "GET /api/v1/courses/ HTTP/1.1" 200 OK
+INFO:     10.12.29.52:42944 - "OPTIONS /api/v1/courses/ HTTP/1.1" 200 OK
+INFO:     10.12.29.52:42944 - "GET /api/v1/courses/ HTTP/1.1" 200 OK
+INFO:     10.12.29.52:58518 - "OPTIONS /api/v1/courses/ HTTP/1.1" 200 OK
+INFO:     10.12.29.52:41720 - "GET /api/v1/courses/ HTTP/1.1" 200 OK

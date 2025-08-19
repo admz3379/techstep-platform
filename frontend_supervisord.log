@@ -1,0 +1,6 @@
+2025-08-19 02:21:36,657 INFO RPC interface 'supervisor' initialized
+2025-08-19 02:21:36,657 CRIT Server 'unix_http_server' running without any HTTP authentication checking
+2025-08-19 02:21:36,660 INFO daemonizing the supervisord process
+2025-08-19 02:21:36,661 INFO supervisord started with pid 5836
+2025-08-19 02:21:37,664 INFO spawned: 'techstep-frontend' with pid 5838
+2025-08-19 02:21:38,745 INFO success: techstep-frontend entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)

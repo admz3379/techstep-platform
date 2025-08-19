@@ -7,3 +7,165 @@ INFO:app.main:Starting up TechStep API...
 INFO:app.main:Database tables created successfully
 INFO:app.main:TechStep API started successfully!
 INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'create_sample_data.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:app.main:Shutting down TechStep API...
+INFO:     Application shutdown complete.
+INFO:     Finished server process [3262]
+INFO:     Started server process [4684]
+INFO:     Waiting for application startup.
+INFO:app.main:Starting up TechStep API...
+INFO:app.main:Database tables created successfully
+INFO:app.main:TechStep API started successfully!
+INFO:     Application startup complete.
+ERROR:app.main:Global exception handler caught: 3 validation errors for CourseResponse
+learning_objectives
+  Input should be a valid list [type=list_type, input_value='["Master penetration tes...security fundamentals"]', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.5/v/list_type
+prerequisites
+  Input should be a valid list [type=list_type, input_value='["Basic networking knowl...mand line familiarity"]', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.5/v/list_type
+tags
+  Input should be a valid list [type=list_type, input_value='["ethical hacking", "pen...n testing", "security"]', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.5/v/list_type
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/uvicorn/protocols/http/httptools_impl.py", line 426, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/uvicorn/middleware/proxy_headers.py", line 84, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/fastapi/applications.py", line 1106, in __call__
+    await super().__call__(scope, receive, send)
+  File "/usr/local/lib/python3.12/site-packages/starlette/applications.py", line 122, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/local/lib/python3.12/site-packages/starlette/middleware/errors.py", line 184, in __call__
+    raise exc
+  File "/usr/local/lib/python3.12/site-packages/starlette/middleware/errors.py", line 162, in __call__
+    await self.app(scope, receive, _send)
+  File "/usr/local/lib/python3.12/site-packages/starlette/middleware/cors.py", line 83, in __call__
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.12/site-packages/starlette/middleware/exceptions.py", line 79, in __call__
+    raise exc
+  File "/usr/local/lib/python3.12/site-packages/starlette/middleware/exceptions.py", line 68, in __call__
+    await self.app(scope, receive, sender)
+  File "/usr/local/lib/python3.12/site-packages/fastapi/middleware/asyncexitstack.py", line 20, in __call__
+    raise e
+  File "/usr/local/lib/python3.12/site-packages/fastapi/middleware/asyncexitstack.py", line 17, in __call__
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.12/site-packages/starlette/routing.py", line 718, in __call__
+    await route.handle(scope, receive, send)
+  File "/usr/local/lib/python3.12/site-packages/starlette/routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.12/site-packages/starlette/routing.py", line 66, in app
+    response = await func(request)
+               ^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/fastapi/routing.py", line 274, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/fastapi/routing.py", line 193, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/starlette/concurrency.py", line 41, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/anyio/to_thread.py", line 33, in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/anyio/_backends/_asyncio.py", line 877, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/anyio/_backends/_asyncio.py", line 807, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/webapp/backend/app/api/endpoints/courses.py", line 50, in get_courses
+    return [CourseResponse.from_orm(course) for course in courses]
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/typing_extensions.py", line 2956, in wrapper
+    return arg(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/pydantic/main.py", line 1129, in from_orm
+    return cls.model_validate(obj)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/pydantic/main.py", line 503, in model_validate
+    return cls.__pydantic_validator__.validate_python(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pydantic_core._pydantic_core.ValidationError: 3 validation errors for CourseResponse
+learning_objectives
+  Input should be a valid list [type=list_type, input_value='["Master penetration tes...security fundamentals"]', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.5/v/list_type
+prerequisites
+  Input should be a valid list [type=list_type, input_value='["Basic networking knowl...mand line familiarity"]', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.5/v/list_type
+tags
+  Input should be a valid list [type=list_type, input_value='["ethical hacking", "pen...n testing", "security"]', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.5/v/list_type
+WARNING:  WatchFiles detected changes in 'app/schemas/course.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:app.main:Shutting down TechStep API...
+INFO:     Application shutdown complete.
+INFO:     Finished server process [4684]
+INFO:     Started server process [4848]
+INFO:     Waiting for application startup.
+INFO:app.main:Starting up TechStep API...
+INFO:app.main:Database tables created successfully
+INFO:app.main:TechStep API started successfully!
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'app/schemas/course.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:app.main:Shutting down TechStep API...
+INFO:     Application shutdown complete.
+INFO:     Finished server process [4848]
+INFO:     Started server process [4948]
+INFO:     Waiting for application startup.
+INFO:app.main:Starting up TechStep API...
+INFO:app.main:Database tables created successfully
+INFO:app.main:TechStep API started successfully!
+INFO:     Application startup complete.
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:app.main:Shutting down TechStep API...
+INFO:     Application shutdown complete.
+INFO:     Finished server process [4948]
+INFO:     Stopping reloader process [3260]
+INFO:     Will watch for changes in these directories: ['/home/user/webapp/backend']
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [5024] using WatchFiles
+INFO:     Started server process [5026]
+INFO:     Waiting for application startup.
+INFO:app.main:Starting up TechStep API...
+INFO:app.main:Database tables created successfully
+INFO:app.main:TechStep API started successfully!
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'app/main.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:app.main:Shutting down TechStep API...
+INFO:     Application shutdown complete.
+INFO:     Finished server process [5026]
+WARNING:  WatchFiles detected changes in 'app/main.py'. Reloading...
+INFO:     Started server process [6018]
+INFO:     Waiting for application startup.
+INFO:app.main:Starting up TechStep API...
+INFO:app.main:Database tables created successfully
+INFO:app.main:TechStep API started successfully!
+INFO:     Application startup complete.
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:app.main:Shutting down TechStep API...
+INFO:     Application shutdown complete.
+INFO:     Finished server process [6018]
+INFO:     Stopping reloader process [5024]
+INFO:     Will watch for changes in these directories: ['/home/user/webapp/backend']
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [6068] using WatchFiles
+INFO:     Started server process [6070]
+INFO:     Waiting for application startup.
+INFO:app.main:Starting up TechStep API...
+INFO:app.main:Database tables created successfully
+INFO:app.main:TechStep API started successfully!
+INFO:     Application startup complete.

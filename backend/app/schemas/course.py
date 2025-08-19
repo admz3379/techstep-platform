@@ -1,6 +1,7 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from typing import Optional, List
 from datetime import datetime
+import json
 from ..models.course import CourseLevel, CourseStatus, EnrollmentStatus
 
 
@@ -61,6 +62,16 @@ class CourseResponse(CourseBase):
     rating_count: int
     created_at: datetime
     updated_at: Optional[datetime] = None
+
+    @field_validator('learning_objectives', 'prerequisites', 'tags', mode='before')
+    @classmethod
+    def parse_json_string(cls, v):
+        if isinstance(v, str):
+            try:
+                return json.loads(v)
+            except json.JSONDecodeError:
+                return []
+        return v or []
 
     class Config:
         from_attributes = True

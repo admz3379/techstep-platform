@@ -2698,6 +2698,478 @@ function formatTime(seconds) {
             // Any initialization code here
             updateCart();
         });
+        
+        // API Configuration and Service Layer
+        const API_BASE_URL = 'https://8000-iijrwv71livvm5m4tkmpb-6532622b.e2b.dev/api/v1';
+        
+        // API Service Class
+        class TechStepAPI {
+            constructor() {
+                this.baseUrl = API_BASE_URL;
+                this.authToken = localStorage.getItem('techstep_token');
+            }
+
+            async request(endpoint, options = {}) {
+                const url = `${this.baseUrl}${endpoint}`;
+                const config = {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...options.headers,
+                    },
+                    ...options,
+                };
+
+                if (this.authToken) {
+                    config.headers['Authorization'] = `Bearer ${this.authToken}`;
+                }
+
+                try {
+                    const response = await fetch(url, config);
+                    
+                    if (!response.ok) {
+                        const errorData = await response.json().catch(() => ({}));
+                        throw new Error(errorData.detail || `HTTP error! status: ${response.status}`);
+                    }
+
+                    return await response.json();
+                } catch (error) {
+                    console.error('API Request failed:', error);
+                    throw error;
+                }
+            }
+
+            // Authentication Methods
+            async register(userData) {
+                const response = await this.request('/auth/register', {
+                    method: 'POST',
+                    body: JSON.stringify(userData),
+                });
+                this.setAuthToken(response.access_token);
+                return response;
+            }
+
+            async login(email, password) {
+                const response = await this.request('/auth/login', {
+                    method: 'POST',
+                    body: JSON.stringify({ email, password }),
+                });
+                this.setAuthToken(response.access_token);
+                return response;
+            }
+
+            async getCurrentUser() {
+                return await this.request('/auth/me');
+            }
+
+            setAuthToken(token) {
+                this.authToken = token;
+                localStorage.setItem('techstep_token', token);
+            }
+
+            logout() {
+                this.authToken = null;
+                localStorage.removeItem('techstep_token');
+            }
+
+            isAuthenticated() {
+                return !!this.authToken;
+            }
+
+            // Course Methods
+            async getCourses(params = {}) {
+                const searchParams = new URLSearchParams(params);
+                return await this.request(`/courses/?${searchParams}`);
+            }
+
+            async getCourse(courseId) {
+                return await this.request(`/courses/${courseId}`);
+            }
+
+            async enrollInCourse(courseId) {
+                return await this.request(`/courses/${courseId}/enroll`, {
+                    method: 'POST',
+                });
+            }
+
+            async getMyEnrollments() {
+                return await this.request('/courses/enrollments/my');
+            }
+
+            // User Methods
+            async getUserDashboard() {
+                return await this.request('/users/profile/dashboard');
+            }
+        }
+
+        // Initialize API service
+        const api = new TechStepAPI();
+
+        // Authentication State Management
+        let currentUser = null;
+
+        async function checkAuthStatus() {
+            if (api.isAuthenticated()) {
+                try {
+                    currentUser = await api.getCurrentUser();
+                    updateUIForAuthenticatedUser();
+                } catch (error) {
+                    console.error('Auth check failed:', error);
+                    api.logout();
+                    updateUIForUnauthenticatedUser();
+                }
+            } else {
+                updateUIForUnauthenticatedUser();
+            }
+        }
+
+        function updateUIForAuthenticatedUser() {
+            const loginBtn = document.getElementById('loginBtn');
+            if (loginBtn && currentUser) {
+                loginBtn.innerHTML = `<i class="fas fa-user mr-2"></i>${currentUser.full_name}`;
+                loginBtn.classList.add('bg-green-600', 'hover:bg-green-700');
+                loginBtn.classList.remove('bg-blue-600', 'hover:bg-blue-700');
+            }
+        }
+
+        function updateUIForUnauthenticatedUser() {
+            const loginBtn = document.getElementById('loginBtn');
+            if (loginBtn) {
+                loginBtn.innerHTML = '<i class="fas fa-sign-in-alt mr-2"></i>Login / Register';
+                loginBtn.classList.add('bg-blue-600', 'hover:bg-blue-700');
+                loginBtn.classList.remove('bg-green-600', 'hover:bg-green-700');
+            }
+        }
+
+        // Course Loading Functions
+        async function loadCourses() {
+            try {
+                showLoadingState();
+                const courses = await api.getCourses();
+                displayCourses(courses);
+                hideLoadingState();
+            } catch (error) {
+                console.error('Failed to load courses:', error);
+                showErrorState('Failed to load courses. Please try again.');
+            }
+        }
+
+        function displayCourses(courses) {
+            const coursesContainer = document.querySelector('#courses .grid');
+            if (!coursesContainer) return;
+
+            coursesContainer.innerHTML = courses.map(course => `
+                <div class="course-card course-selection rounded-2xl p-6 cursor-pointer transition-all duration-300" 
+                     data-course-id="${course.id}" data-price="${course.price}">
+                    <div class="relative mb-4">
+                        <img src="${course.thumbnail_url || 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=400&h=250&fit=crop'}" 
+                             alt="${course.title}" class="w-full h-48 object-cover rounded-xl">
+                        <div class="absolute top-4 right-4">
+                            <span class="bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                                ${course.level.charAt(0).toUpperCase() + course.level.slice(1)}
+                            </span>
+                        </div>
+                        ${course.is_featured ? '<div class="absolute top-4 left-4"><span class="bg-yellow-500 text-black px-3 py-1 rounded-full text-sm font-bold">Featured</span></div>' : ''}
+                    </div>
+                    
+                    <h3 class="text-xl font-bold text-white mb-3">${course.title}</h3>
+                    <p class="text-gray-300 mb-4 text-sm">${course.short_description}</p>
+                    
+                    <div class="flex items-center mb-4">
+                        <img src="${course.instructor_avatar_url || 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=50&h=50&fit=crop&crop=face'}" 
+                             alt="${course.instructor_name}" class="w-8 h-8 rounded-full mr-3">
+                        <div>
+                            <p class="text-white text-sm font-semibold">${course.instructor_name}</p>
+                            <p class="text-gray-400 text-xs">${course.duration_hours} hours</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <span class="self-paced-price text-2xl font-bold text-blue-400">$${course.price}</span>
+                            <span class="mentor-price text-2xl font-bold text-green-400 hidden">$${(course.price * 1.5).toFixed(2)}</span>
+                        </div>
+                        <div class="flex items-center text-yellow-400">
+                            <i class="fas fa-star mr-1"></i>
+                            <span class="text-sm">${course.rating.toFixed(1)} (${course.rating_count})</span>
+                        </div>
+                    </div>
+                    
+                    <input type="checkbox" class="course-checkbox hidden" data-course-id="${course.id}" data-price="${course.price}">
+                    
+                    <div class="self-paced-desc mt-4">
+                        <p class="text-gray-400 text-sm">Self-paced learning with lifetime access</p>
+                    </div>
+                    <div class="mentor-desc mt-4 hidden">
+                        <p class="text-gray-400 text-sm">1-on-1 mentorship + course content</p>
+                    </div>
+                </div>
+            `).join('');
+
+            // Re-attach event listeners for course selection
+            attachCourseSelectionListeners();
+        }
+
+        function attachCourseSelectionListeners() {
+            document.querySelectorAll('.course-selection').forEach(card => {
+                card.addEventListener('click', function() {
+                    const checkbox = this.querySelector('.course-checkbox');
+                    const courseId = this.dataset.courseId;
+                    
+                    if (checkbox.checked) {
+                        checkbox.checked = false;
+                        this.classList.remove('selected');
+                        selectedCourses = selectedCourses.filter(id => id !== courseId);
+                    } else {
+                        checkbox.checked = true;
+                        this.classList.add('selected');
+                        selectedCourses.push(courseId);
+                    }
+                    
+                    updateCart();
+                });
+            });
+        }
+
+        function showLoadingState() {
+            const coursesContainer = document.querySelector('#courses .grid');
+            if (coursesContainer) {
+                coursesContainer.innerHTML = `
+                    <div class="col-span-full flex justify-center items-center py-12">
+                        <div class="text-center">
+                            <i class="fas fa-spinner fa-spin text-4xl text-blue-500 mb-4"></i>
+                            <p class="text-white">Loading courses...</p>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function hideLoadingState() {
+            // Loading state is hidden when courses are displayed
+        }
+
+        function showErrorState(message) {
+            const coursesContainer = document.querySelector('#courses .grid');
+            if (coursesContainer) {
+                coursesContainer.innerHTML = `
+                    <div class="col-span-full flex justify-center items-center py-12">
+                        <div class="text-center">
+                            <i class="fas fa-exclamation-triangle text-4xl text-red-500 mb-4"></i>
+                            <p class="text-white mb-4">${message}</p>
+                            <button onclick="loadCourses()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg">
+                                <i class="fas fa-refresh mr-2"></i>Try Again
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // Enhanced login/register functionality
+        function showAuthModal() {
+            if (api.isAuthenticated()) {
+                // Show dashboard
+                showDashboard();
+            } else {
+                // Show login/register modal
+                showLoginRegisterModal();
+            }
+        }
+
+        async function showDashboard() {
+            try {
+                const dashboardData = await api.getUserDashboard();
+                updateDashboardWithRealData(dashboardData);
+                document.getElementById('dashboardModal').classList.add('show');
+                setTimeout(() => {
+                    animateDashboardProgress();
+                }, 300);
+            } catch (error) {
+                console.error('Failed to load dashboard:', error);
+                alert('Failed to load dashboard data');
+            }
+        }
+
+        function updateDashboardWithRealData(data) {
+            // Update user info
+            const userNameEl = document.querySelector('#dashboardModal .text-2xl.font-bold');
+            if (userNameEl && data.user) {
+                userNameEl.textContent = data.user.full_name;
+            }
+
+            // Update stats
+            if (data.stats) {
+                const statsElements = document.querySelectorAll('#dashboardModal .stats-card');
+                if (statsElements.length >= 4) {
+                    statsElements[0].querySelector('.text-3xl').textContent = data.stats.total_courses || 0;
+                    statsElements[1].querySelector('.text-3xl').textContent = data.stats.completed_courses || 0;
+                    statsElements[2].querySelector('.text-3xl').textContent = data.stats.total_bookings || 0;
+                    statsElements[3].querySelector('.text-3xl').textContent = `$${data.stats.total_spent || 0}`;
+                }
+            }
+        }
+
+        function showLoginRegisterModal() {
+            // Create a simple login/register modal
+            const modalHTML = `
+                <div id="authModal" class="modal-overlay">
+                    <div class="modal-content max-w-md">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-2xl font-bold text-white">Welcome to TechStep</h2>
+                            <button id="closeAuthModal" class="text-gray-400 hover:text-white">
+                                <i class="fas fa-times text-xl"></i>
+                            </button>
+                        </div>
+                        
+                        <div id="authTabs" class="flex mb-6">
+                            <button id="loginTab" class="flex-1 py-2 px-4 bg-blue-600 text-white rounded-l-lg">Login</button>
+                            <button id="registerTab" class="flex-1 py-2 px-4 bg-gray-600 text-white rounded-r-lg">Register</button>
+                        </div>
+                        
+                        <form id="authForm">
+                            <div id="registerFields" style="display: none;">
+                                <input type="text" id="fullName" placeholder="Full Name" class="w-full p-3 mb-4 rounded-lg bg-gray-700 text-white border border-gray-600 focus:border-blue-500 focus:outline-none">
+                                <input type="text" id="username" placeholder="Username" class="w-full p-3 mb-4 rounded-lg bg-gray-700 text-white border border-gray-600 focus:border-blue-500 focus:outline-none">
+                            </div>
+                            
+                            <input type="email" id="email" placeholder="Email" required class="w-full p-3 mb-4 rounded-lg bg-gray-700 text-white border border-gray-600 focus:border-blue-500 focus:outline-none">
+                            <input type="password" id="password" placeholder="Password" required class="w-full p-3 mb-6 rounded-lg bg-gray-700 text-white border border-gray-600 focus:border-blue-500 focus:outline-none">
+                            
+                            <button type="submit" id="authSubmit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300">
+                                Login
+                            </button>
+                        </form>
+                        
+                        <div id="authError" class="mt-4 text-red-400 text-sm hidden"></div>
+                    </div>
+                </div>
+            `;
+
+            // Remove existing auth modal if any
+            const existingModal = document.getElementById('authModal');
+            if (existingModal) {
+                existingModal.remove();
+            }
+
+            // Add modal to page
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
+            
+            // Setup modal functionality
+            setupAuthModal();
+        }
+
+        function setupAuthModal() {
+            const authModal = document.getElementById('authModal');
+            const closeBtn = document.getElementById('closeAuthModal');
+            const loginTab = document.getElementById('loginTab');
+            const registerTab = document.getElementById('registerTab');
+            const authForm = document.getElementById('authForm');
+            const registerFields = document.getElementById('registerFields');
+            const authSubmit = document.getElementById('authSubmit');
+            const authError = document.getElementById('authError');
+            
+            let isLoginMode = true;
+
+            // Show modal
+            authModal.classList.add('show');
+
+            // Close modal
+            closeBtn.addEventListener('click', () => {
+                authModal.classList.remove('show');
+                setTimeout(() => authModal.remove(), 300);
+            });
+
+            // Tab switching
+            loginTab.addEventListener('click', () => {
+                isLoginMode = true;
+                loginTab.classList.add('bg-blue-600');
+                loginTab.classList.remove('bg-gray-600');
+                registerTab.classList.add('bg-gray-600');
+                registerTab.classList.remove('bg-blue-600');
+                registerFields.style.display = 'none';
+                authSubmit.textContent = 'Login';
+            });
+
+            registerTab.addEventListener('click', () => {
+                isLoginMode = false;
+                registerTab.classList.add('bg-blue-600');
+                registerTab.classList.remove('bg-gray-600');
+                loginTab.classList.add('bg-gray-600');
+                loginTab.classList.remove('bg-blue-600');
+                registerFields.style.display = 'block';
+                authSubmit.textContent = 'Register';
+            });
+
+            // Form submission
+            authForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                authError.classList.add('hidden');
+                
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                
+                try {
+                    authSubmit.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Please wait...';
+                    authSubmit.disabled = true;
+
+                    if (isLoginMode) {
+                        const response = await api.login(email, password);
+                        currentUser = response.user;
+                    } else {
+                        const fullName = document.getElementById('fullName').value;
+                        const username = document.getElementById('username').value;
+                        
+                        if (!fullName || !username) {
+                            throw new Error('Please fill in all fields');
+                        }
+                        
+                        const response = await api.register({
+                            email,
+                            password,
+                            full_name: fullName,
+                            username
+                        });
+                        currentUser = response.user;
+                    }
+
+                    updateUIForAuthenticatedUser();
+                    authModal.classList.remove('show');
+                    setTimeout(() => authModal.remove(), 300);
+                    
+                    // Show success message
+                    alert(isLoginMode ? 'Login successful!' : 'Registration successful!');
+                    
+                } catch (error) {
+                    authError.textContent = error.message;
+                    authError.classList.remove('hidden');
+                } finally {
+                    authSubmit.textContent = isLoginMode ? 'Login' : 'Register';
+                    authSubmit.disabled = false;
+                }
+            });
+        }
+
+        // Update the existing login button event listener
+        const originalLoginBtn = document.getElementById('loginBtn');
+        if (originalLoginBtn) {
+            // Remove existing event listener and add new one
+            originalLoginBtn.replaceWith(originalLoginBtn.cloneNode(true));
+            const loginBtn = document.getElementById('loginBtn');
+            loginBtn.addEventListener('click', showAuthModal);
+        }
+
+        // Override DOMContentLoaded to include API initialization
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Check authentication status
+            await checkAuthStatus();
+            
+            // Load courses from API
+            await loadCourses();
+            
+            // Initialize cart
+            updateCart();
+        });
+        
     </script>
 </body>
 </html>

@@ -49,3 +49,15 @@ INFO:     10.12.29.52:33650 - "OPTIONS /api/v1/courses/ HTTP/1.1" 200 OK
 INFO:     10.12.29.52:33650 - "GET /api/v1/courses/ HTTP/1.1" 200 OK
 INFO:     10.12.29.52:43032 - "GET /docs HTTP/1.1" 200 OK
 INFO:     10.12.29.52:41856 - "GET /health HTTP/1.1" 200 OK
+INFO:     10.12.29.52:33424 - "GET /health HTTP/1.1" 200 OK
+INFO:     10.12.29.52:45224 - "GET / HTTP/1.1" 200 OK
+INFO:     10.12.29.52:42062 - "GET /api/v1/courses HTTP/1.1" 307 Temporary Redirect
+INFO:     10.12.29.52:42078 - "GET /api/v1/courses HTTP/1.1" 307 Temporary Redirect
+INFO:     10.12.29.52:37616 - "GET / HTTP/1.1" 200 OK
+INFO:     10.12.29.52:37616 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     10.12.29.52:60424 - "OPTIONS /api/v1/courses/ HTTP/1.1" 200 OK
+INFO:     10.12.29.52:60424 - "GET /api/v1/courses/ HTTP/1.1" 200 OK
+INFO:     10.12.29.52:38954 - "OPTIONS /api/v1/courses/ HTTP/1.1" 200 OK
+INFO:     10.12.29.52:38954 - "GET /api/v1/courses/ HTTP/1.1" 200 OK
+INFO:     10.12.29.52:36086 - "OPTIONS /api/v1/courses/ HTTP/1.1" 200 OK
+INFO:     10.12.29.52:36086 - "GET /api/v1/courses/ HTTP/1.1" 200 OK

@@ -2923,13 +2923,34 @@ function formatTime(seconds) {
                     </div>
                     
                     <div class="space-y-3">
-                        <button class="buy-now-btn w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300" 
-                                data-course-id="${course.id}" data-course-title="${course.title}" data-price="${course.price}" data-type="self-paced">
-                            <i class="fas fa-shopping-cart mr-2"></i>Self-Service Course - $${course.price.toLocaleString()}
+                        <!-- Self-Paced Tier -->
+                        <button class="buy-now-btn w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 text-sm" 
+                                data-course-id="${course.id}" data-course-title="${course.title}" data-price="2900" data-type="self-paced">
+                            <i class="fas fa-laptop mr-2"></i>Self-Paced - $2,900
+                            <div class="text-xs text-blue-200">Learning decks, labs, certificate, lifetime access</div>
                         </button>
-                        <button class="mentor-btn w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300"
-                                data-course-id="${course.id}" data-course-title="${course.title}" data-price="4999" data-type="mentor">
-                            <i class="fas fa-user-tie mr-2"></i>Live Mentor + Course - $4,999
+                        
+                        <!-- Self-Paced + Internship Tier -->
+                        <button class="buy-now-btn w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 text-sm"
+                                data-course-id="${course.id}" data-course-title="${course.title}" data-price="3500" data-type="self-paced-internship">
+                            <i class="fas fa-briefcase mr-2"></i>Self-Paced + Internship - $3,500
+                            <div class="text-xs text-purple-200">Above + virtual internship project + assignment feedback</div>
+                        </button>
+                        
+                        <!-- Live with Mentor Tier -->
+                        <button class="mentor-btn w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 text-sm"
+                                data-course-id="${course.id}" data-course-title="${course.title}" data-price="5800" data-type="live-mentor">
+                            <i class="fas fa-user-tie mr-2"></i>Live with Mentor - $5,800
+                            <div class="text-xs text-green-200">Above + weekly mentor sessions + capstone project + career toolkit</div>
+                            <div class="text-xs text-yellow-300 font-semibold">🎉 First week FREE!</div>
+                        </button>
+                        
+                        <!-- Live with Mentor + Guided Career Placement Tier -->
+                        <button class="mentor-btn w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 text-sm"
+                                data-course-id="${course.id}" data-course-title="${course.title}" data-price="7800" data-type="live-mentor-career">
+                            <i class="fas fa-rocket mr-2"></i>Guided Career Placement - $7,800
+                            <div class="text-xs text-orange-200">All above + mock interviews, job placement support, extended mentorship</div>
+                            <div class="text-xs text-yellow-300 font-semibold">🎉 First week FREE!</div>
                         </button>
                         <div class="text-center">
                             <button class="consultation-btn text-blue-400 hover:text-blue-300 text-sm underline transition duration-300"
@@ -3016,11 +3037,75 @@ function formatTime(seconds) {
             }
         }
 
+        // Tier Helper Functions
+        function getTierIcon(type) {
+            const icons = {
+                'self-paced': 'laptop',
+                'self-paced-internship': 'briefcase', 
+                'live-mentor': 'user-tie',
+                'live-mentor-career': 'rocket'
+            };
+            return icons[type] || 'laptop';
+        }
+        
+        function getTierTitle(type) {
+            const titles = {
+                'self-paced': 'Self-Paced (6 months)',
+                'self-paced-internship': 'Self-Paced + Internship (6 months)',
+                'live-mentor': 'Live with Mentor (6 months)', 
+                'live-mentor-career': 'Guided Career Placement (6 months)'
+            };
+            return titles[type] || 'Course (6 months)';
+        }
+        
+        function getTierFeatures(type) {
+            const features = {
+                'self-paced': `
+                    • Learning decks and interactive labs
+                    • Certificate of completion
+                    • Lifetime access to materials
+                    • Self-paced learning
+                    • Community access
+                `,
+                'self-paced-internship': `
+                    • All Self-Paced features
+                    • Virtual internship project
+                    • Assignment feedback from experts
+                    • Industry-relevant case studies
+                    • Enhanced portfolio development
+                `,
+                'live-mentor': `
+                    • All Self-Paced + Internship features
+                    • Weekly 1-on-1 mentor sessions
+                    • Capstone project with guidance
+                    • Career toolkit and resources
+                    • Project reviews & feedback
+                    • Industry networking opportunities
+                `,
+                'live-mentor-career': `
+                    • All Live with Mentor features
+                    • Mock interview sessions
+                    • Job placement support and guidance
+                    • Extended mentorship (3 months post-course)
+                    • Resume and LinkedIn optimization
+                    • Direct introductions to employers
+                    • Salary negotiation coaching
+                `
+            };
+            return features[type] || '• Comprehensive cybersecurity training';
+        }
+
         // Payment Modal Functions
         function showPaymentModal(courseId, courseTitle, basePrice, type) {
-            const mentorPrice = 4999;
-            const selfServicePrice = parseInt(basePrice);
-            const finalPrice = type === 'mentor' ? mentorPrice : selfServicePrice;
+            // New 4-tier pricing structure
+            const pricingTiers = {
+                'self-paced': 2900,
+                'self-paced-internship': 3500,  
+                'live-mentor': 5800,
+                'live-mentor-career': 7800
+            };
+            
+            const finalPrice = pricingTiers[type] || parseInt(basePrice);
             
             // Calculate payment options with 5% discount for both types
             const fullPaymentDiscount = Math.round(finalPrice * 0.05);
@@ -3047,14 +3132,26 @@ function formatTime(seconds) {
                                 <div class="bg-gray-800 rounded-lg p-6 mb-6">
                                     <h3 class="text-xl font-bold text-white mb-2">${courseTitle}</h3>
                                     <p class="text-gray-300 mb-4">
-                                        <i class="fas fa-${type === 'mentor' ? 'user-tie' : 'laptop'} mr-2"></i>
-                                        ${type === 'mentor' ? 'Live Mentor + Course (6 months)' : 'Self-Service Course (6 months)'}
+                                        <i class="fas fa-${getTierIcon(type)} mr-2"></i>
+                                        ${getTierTitle(type)}
                                     </p>
                                     <div class="text-sm text-gray-400">
-                                        • 180+ hours of content
-                                        • Lifetime access to materials
-                                        ${type === 'mentor' ? '• Weekly 1-on-1 mentor sessions\n• Career guidance & support\n• Project reviews & feedback' : '• Self-paced learning\n• Community access\n• Certificate of completion'}
+                                        ${getTierFeatures(type)}
                                     </div>
+                                    ${(type === 'live-mentor' || type === 'live-mentor-career') ? `
+                                    <div class="bg-yellow-900 rounded-lg p-3 mt-4">
+                                        <div class="flex items-center text-yellow-300">
+                                            <i class="fas fa-gift mr-2"></i>
+                                            <span class="font-semibold">First Week FREE!</span>
+                                        </div>
+                                        <div class="text-xs text-yellow-200 mt-1">
+                                            Try our mentorship program risk-free. Cancel within 7 days for a full refund.
+                                        </div>
+                                        <button id="scheduleFirstSession" class="mt-2 bg-yellow-600 hover:bg-yellow-700 text-black font-semibold py-2 px-4 rounded text-xs transition duration-300">
+                                            <i class="fas fa-calendar mr-1"></i>Schedule Your FREE First Session
+                                        </button>
+                                    </div>
+                                    ` : ''}
                                 </div>
 
                                 <div class="space-y-4 mb-6">
@@ -3358,6 +3455,14 @@ function formatTime(seconds) {
                     btn.addEventListener('click', showMenteeAgreement);
                 }
             });
+            
+            // Handle schedule first session button
+            const scheduleFirstSessionBtn = document.getElementById('scheduleFirstSession');
+            if (scheduleFirstSessionBtn) {
+                scheduleFirstSessionBtn.addEventListener('click', () => {
+                    showScheduleSessionModal(courseTitle, type);
+                });
+            }
 
             // Initialize Stripe Elements
             let stripe, elements, cardElement;
@@ -3584,6 +3689,141 @@ function formatTime(seconds) {
                     agreementCheck.checked = true;
                 }
                 agreementModal.remove();
+            });
+        }
+
+        function showScheduleSessionModal(courseTitle, type) {
+            const scheduleHTML = `
+                <div id="scheduleModal" class="modal-overlay show">
+                    <div class="modal-content max-w-2xl">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-2xl font-bold text-white">Schedule Your FREE First Session</h2>
+                            <button id="closeScheduleModal" class="text-gray-400 hover:text-white">
+                                <i class="fas fa-times text-xl"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="bg-blue-900 rounded-lg p-4 mb-6">
+                            <h3 class="text-lg font-bold text-white mb-2">
+                                <i class="fas fa-gift mr-2"></i>${courseTitle} - First Week FREE
+                            </h3>
+                            <p class="text-blue-200 text-sm">
+                                ${type === 'live-mentor-career' ? 'Guided Career Placement Program' : 'Live with Mentor Program'} - 
+                                Try our mentorship program risk-free for one week!
+                            </p>
+                        </div>
+                        
+                        <form id="scheduleForm" class="space-y-4">
+                            <div class="grid grid-cols-2 gap-4">
+                                <input type="text" id="scheduleFirstName" placeholder="First Name" required 
+                                       class="w-full p-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:border-blue-500 focus:outline-none">
+                                <input type="text" id="scheduleLastName" placeholder="Last Name" required 
+                                       class="w-full p-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:border-blue-500 focus:outline-none">
+                            </div>
+                            
+                            <input type="email" id="scheduleEmail" placeholder="Email Address" required 
+                                   class="w-full p-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:border-blue-500 focus:outline-none">
+                            
+                            <input type="tel" id="schedulePhone" placeholder="Phone Number" required 
+                                   class="w-full p-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:border-blue-500 focus:outline-none">
+                            
+                            <div class="grid grid-cols-2 gap-4">
+                                <select id="scheduleTimezone" required 
+                                        class="w-full p-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:border-blue-500 focus:outline-none">
+                                    <option value="">Select Timezone</option>
+                                    <option value="America/New_York">Eastern Time (ET)</option>
+                                    <option value="America/Chicago">Central Time (CT)</option>
+                                    <option value="America/Denver">Mountain Time (MT)</option>
+                                    <option value="America/Los_Angeles">Pacific Time (PT)</option>
+                                    <option value="Europe/London">London (GMT)</option>
+                                    <option value="Europe/Paris">Paris (CET)</option>
+                                    <option value="Asia/Tokyo">Tokyo (JST)</option>
+                                    <option value="Australia/Sydney">Sydney (AEST)</option>
+                                </select>
+                                
+                                <select id="schedulePreferredTime" required 
+                                        class="w-full p-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:border-blue-500 focus:outline-none">
+                                    <option value="">Preferred Time</option>
+                                    <option value="Morning (9-12 PM)">Morning (9-12 PM)</option>
+                                    <option value="Afternoon (12-5 PM)">Afternoon (12-5 PM)</option>
+                                    <option value="Evening (5-8 PM)">Evening (5-8 PM)</option>
+                                    <option value="Flexible">I'm Flexible</option>
+                                </select>
+                            </div>
+                            
+                            <textarea id="scheduleGoals" placeholder="What are your career goals and what would you like to focus on in your first session?" 
+                                      rows="3" class="w-full p-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:border-blue-500 focus:outline-none"></textarea>
+                            
+                            <div class="bg-gray-800 rounded-lg p-4">
+                                <h4 class="text-white font-semibold mb-2">What happens next?</h4>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• Our team will contact you within 24 hours</li>
+                                    <li>• We'll schedule your FREE first mentorship session</li>
+                                    <li>• You'll meet your assigned mentor and discuss your goals</li>
+                                    <li>• If you're not satisfied, cancel within 7 days for a full refund</li>
+                                </ul>
+                            </div>
+                            
+                            <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-6 rounded-lg transition duration-300">
+                                <i class="fas fa-calendar-check mr-2"></i>Schedule My FREE Session
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', scheduleHTML);
+            
+            const scheduleModal = document.getElementById('scheduleModal');
+            const closeBtn = document.getElementById('closeScheduleModal');
+            const scheduleForm = document.getElementById('scheduleForm');
+            
+            closeBtn.addEventListener('click', () => {
+                scheduleModal.remove();
+            });
+            
+            scheduleForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                const formData = {
+                    firstName: document.getElementById('scheduleFirstName').value,
+                    lastName: document.getElementById('scheduleLastName').value,
+                    email: document.getElementById('scheduleEmail').value,
+                    phone: document.getElementById('schedulePhone').value,
+                    timezone: document.getElementById('scheduleTimezone').value,
+                    preferredTime: document.getElementById('schedulePreferredTime').value,
+                    goals: document.getElementById('scheduleGoals').value,
+                    course: courseTitle,
+                    tier: type,
+                    timestamp: new Date().toISOString()
+                };
+                
+                // In a real implementation, this would send to support@techstepfoundation.org
+                console.log('Scheduling request sent to support@techstepfoundation.org:', formData);
+                
+                // Show success message
+                scheduleModal.innerHTML = `
+                    <div class="modal-content max-w-md text-center">
+                        <div class="mb-6">
+                            <i class="fas fa-check-circle text-6xl text-green-500 mb-4"></i>
+                            <h2 class="text-2xl font-bold text-white mb-2">Session Request Sent!</h2>
+                            <p class="text-gray-300">Our team will contact you within 24 hours to schedule your FREE first session.</p>
+                        </div>
+                        
+                        <div class="bg-blue-900 rounded-lg p-4 mb-6">
+                            <p class="text-white text-sm mb-2">
+                                <i class="fas fa-envelope mr-2"></i>
+                                Confirmation sent to:
+                            </p>
+                            <p class="text-blue-300 font-semibold">${formData.email}</p>
+                        </div>
+                        
+                        <button onclick="document.getElementById('scheduleModal').remove();" 
+                                class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300">
+                            Got it!
+                        </button>
+                    </div>
+                `;
             });
         }
 
@@ -4099,7 +4339,7 @@ function formatTime(seconds) {
                     } else if (msg.includes('mentor') || msg.includes('support')) {
                         response = "Our mentors are industry professionals with 10+ years experience. You get weekly 1-on-1 sessions, project reviews, and career guidance. It's like having a senior cybersecurity professional as your personal coach!";
                     } else if (msg.includes('time') || msg.includes('schedule') || msg.includes('hours')) {
-                        response = "The program is designed to fit your schedule! It's 180+ hours of content over 6 months - about 7-10 hours per week. Most students do evenings and weekends. Our mentors work around your availability.";
+                        response = "The program is a comprehensive 6-month guided career placement program - about 7-10 hours per week. Most students do evenings and weekends. Our mentors work around your availability.";
                     } else {
                         response = "That's a great question! I'd love to give you a detailed answer. Let me connect you with our team who can provide specific guidance. Would you like me to have someone contact you at your email?";
                     }

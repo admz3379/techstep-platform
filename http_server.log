@@ -1,0 +1,40 @@
+127.0.0.1 - - [19/Aug/2025 04:17:25] "GET /test.html HTTP/1.1" 200 -
+127.0.0.1 - - [19/Aug/2025 04:17:25] "GET / HTTP/1.1" 200 -
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 38300)
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/usr/local/lib/python3.12/http/server.py", line 1311, in finish_request
+    self.RequestHandlerClass(request, client_address, self,
+  File "/usr/local/lib/python3.12/http/server.py", line 672, in __init__
+    super().__init__(*args, **kwargs)
+  File "/usr/local/lib/python3.12/socketserver.py", line 766, in __init__
+    self.handle()
+  File "/usr/local/lib/python3.12/http/server.py", line 436, in handle
+    self.handle_one_request()
+  File "/usr/local/lib/python3.12/http/server.py", line 424, in handle_one_request
+    method()
+  File "/usr/local/lib/python3.12/http/server.py", line 679, in do_GET
+    self.copyfile(f, self.wfile)
+  File "/usr/local/lib/python3.12/http/server.py", line 878, in copyfile
+    shutil.copyfileobj(source, outputfile)
+  File "/usr/local/lib/python3.12/shutil.py", line 204, in copyfileobj
+    fdst_write(buf)
+  File "/usr/local/lib/python3.12/socketserver.py", line 845, in write
+    self._sock.sendall(b)
+BrokenPipeError: [Errno 32] Broken pipe
+----------------------------------------
+10.12.29.52 - - [19/Aug/2025 04:17:42] "GET / HTTP/1.1" 200 -
+10.12.29.52 - - [19/Aug/2025 04:17:43] code 404, message File not found
+10.12.29.52 - - [19/Aug/2025 04:17:43] "GET /favicon.ico HTTP/1.1" 404 -
+10.12.29.52 - - [19/Aug/2025 04:18:48] "GET / HTTP/1.1" 200 -
+10.12.29.52 - - [19/Aug/2025 04:18:49] code 404, message File not found
+10.12.29.52 - - [19/Aug/2025 04:18:49] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [19/Aug/2025 04:19:40] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [19/Aug/2025 04:19:40] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [19/Aug/2025 04:19:40] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [19/Aug/2025 04:19:40] "GET / HTTP/1.1" 200 -
+10.12.29.52 - - [19/Aug/2025 04:20:31] "GET / HTTP/1.1" 200 -
+10.12.29.52 - - [19/Aug/2025 04:20:31] code 404, message File not found
+10.12.29.52 - - [19/Aug/2025 04:20:31] "GET /favicon.ico HTTP/1.1" 404 -

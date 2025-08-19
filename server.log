@@ -1,0 +1,9 @@
+Traceback (most recent call last):
+  File "<string>", line 15, in <module>
+  File "/usr/local/lib/python3.12/socketserver.py", line 457, in __init__
+    self.server_bind()
+  File "/usr/local/lib/python3.12/socketserver.py", line 478, in server_bind
+    self.socket.bind(self.server_address)
+OSError: [Errno 98] Address already in use
+Starting server on port 8081 in directory /home/user/webapp
+Files: ['.git', '17dcaf5f-bfb4-43d3-bfb8-1138be94d24b.mp3', 'CNAME', 'README.md', 'index.html', 'backend', 'serve_frontend.py', 'frontend_supervisord.conf', 'frontend_supervisord.log', 'frontend_supervisord.pid', 'frontend_supervisor.sock', 'frontend.log', 'frontend_error.log', 'server.py', 'test.html', 'server.log']

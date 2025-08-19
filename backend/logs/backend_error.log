@@ -1,0 +1,9 @@
+INFO:     Will watch for changes in these directories: ['/home/user/webapp/backend']
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [3260] using WatchFiles
+INFO:     Started server process [3262]
+INFO:     Waiting for application startup.
+INFO:app.main:Starting up TechStep API...
+INFO:app.main:Database tables created successfully
+INFO:app.main:TechStep API started successfully!
+INFO:     Application startup complete.

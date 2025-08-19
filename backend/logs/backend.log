@@ -132,3 +132,7 @@ INFO:     10.12.87.110:48282 - "OPTIONS /api/v1/courses/ HTTP/1.1" 200 OK
 INFO:     10.12.87.110:48282 - "GET /api/v1/courses/ HTTP/1.1" 200 OK
 INFO:     10.12.87.110:40330 - "OPTIONS /api/v1/courses/ HTTP/1.1" 200 OK
 INFO:     10.12.87.110:40330 - "GET /api/v1/courses/ HTTP/1.1" 200 OK
+INFO:     10.12.87.110:40812 - "OPTIONS /api/v1/courses/ HTTP/1.1" 200 OK
+INFO:     10.12.87.110:40812 - "GET /api/v1/courses/ HTTP/1.1" 200 OK
+INFO:     10.12.87.110:39084 - "OPTIONS /api/v1/courses/ HTTP/1.1" 200 OK
+INFO:     10.12.87.110:39084 - "GET /api/v1/courses/ HTTP/1.1" 200 OK

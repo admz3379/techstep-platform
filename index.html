@@ -3585,8 +3585,19 @@ function formatTime(seconds) {
                     if (error) {
                         throw new Error(error.message);
                     } else {
-                        // Payment successful!
-                        showPaymentSuccess(courseTitle, document.getElementById('customerEmail').value, selectedPaymentOption);
+                        // Payment successful with Stripe, now confirm with backend
+                        try {
+                            const confirmResponse = await api.confirmPayment(paymentIntentResponse.payment_intent_id);
+                            console.log('Payment confirmed with backend:', confirmResponse);
+                            
+                            // Payment successfully recorded in database
+                            showPaymentSuccess(courseTitle, document.getElementById('customerEmail').value, selectedPaymentOption);
+                        } catch (backendError) {
+                            console.error('Backend confirmation failed:', backendError);
+                            // Payment processed by Stripe but not recorded in database
+                            cardErrors.textContent = 'Payment processed but enrollment failed. Please contact support with your payment confirmation.';
+                            cardErrors.classList.remove('hidden');
+                        }
                     }
 
                 } catch (error) {

@@ -84,9 +84,12 @@ def create_payment_intent(
         )
 
 
+class PaymentConfirm(BaseModel):
+    payment_intent_id: str
+
 @router.post("/confirm")
 def confirm_payment(
-    payment_intent_id: str,
+    payment_data: PaymentConfirm,
     db: Session = Depends(get_db)
 ):
     """
@@ -94,7 +97,7 @@ def confirm_payment(
     """
     try:
         # Retrieve payment intent from Stripe
-        intent = stripe.PaymentIntent.retrieve(payment_intent_id)
+        intent = stripe.PaymentIntent.retrieve(payment_data.payment_intent_id)
         
         if intent.status != 'succeeded':
             raise HTTPException(

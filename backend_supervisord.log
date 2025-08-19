@@ -1,0 +1,22 @@
+2025-08-19 05:49:39,852 INFO RPC interface 'supervisor' initialized
+2025-08-19 05:49:39,852 CRIT Server 'unix_http_server' running without any HTTP authentication checking
+2025-08-19 05:49:39,854 INFO daemonizing the supervisord process
+2025-08-19 05:49:39,855 INFO supervisord started with pid 24989
+2025-08-19 05:49:40,859 INFO spawned: 'techstep-backend' with pid 24991
+2025-08-19 05:49:41,092 WARN exited: techstep-backend (exit status 1; not expected)
+2025-08-19 05:49:42,096 INFO spawned: 'techstep-backend' with pid 24994
+2025-08-19 05:49:42,326 WARN exited: techstep-backend (exit status 1; not expected)
+2025-08-19 05:49:44,937 INFO spawned: 'techstep-backend' with pid 24999
+2025-08-19 05:49:45,200 WARN exited: techstep-backend (exit status 1; not expected)
+2025-08-19 05:49:48,206 INFO spawned: 'techstep-backend' with pid 25004
+2025-08-19 05:49:48,486 WARN exited: techstep-backend (exit status 1; not expected)
+2025-08-19 05:49:49,487 INFO gave up: techstep-backend entered FATAL state, too many start retries too quickly
+2025-08-19 05:50:09,147 INFO spawned: 'techstep-backend' with pid 25039
+2025-08-19 05:50:09,391 WARN exited: techstep-backend (exit status 1; not expected)
+2025-08-19 05:50:10,395 INFO spawned: 'techstep-backend' with pid 25041
+2025-08-19 05:50:10,615 WARN exited: techstep-backend (exit status 1; not expected)
+2025-08-19 05:50:12,622 INFO spawned: 'techstep-backend' with pid 25044
+2025-08-19 05:50:12,845 WARN exited: techstep-backend (exit status 1; not expected)
+2025-08-19 05:50:15,851 INFO spawned: 'techstep-backend' with pid 25048
+2025-08-19 05:50:16,071 WARN exited: techstep-backend (exit status 1; not expected)
+2025-08-19 05:50:17,073 INFO gave up: techstep-backend entered FATAL state, too many start retries too quickly

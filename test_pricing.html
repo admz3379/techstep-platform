@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Pricing Calculations</title>
+</head>
+<body>
+    <h1>Pricing Test</h1>
+    <div id="results"></div>
+    
+    <script>
+        // Test pricing calculations with the new prices
+        const courses = [
+            { name: "SOC Analyst Foundations", price: 1200 },
+            { name: "Cyber Threat Analyst & Incident Response", price: 1400 },
+            { name: "SIEM Engineering - Splunk Specialization", price: 1100 },
+            { name: "Cloud Security Analyst", price: 1300 },
+            { name: "Malware Analyst & Network Defense", price: 1500 },
+            { name: "Risk & Compliance Analyst - GRC Fundamentals", price: 1400 }
+        ];
+        
+        function calculatePricing(basePrice, type) {
+            const finalPrice = type === 'mentor' ? Math.round(basePrice * 1.5) : basePrice;
+            
+            // Calculate payment options with 5% discount
+            const fullPaymentDiscount = Math.round(finalPrice * 0.05);
+            const fullPaymentPrice = finalPrice - fullPaymentDiscount;
+            
+            // Monthly payment structure: 40% down payment + 5 equal monthly payments
+            const downPayment = Math.ceil(finalPrice * 0.4);
+            const monthlyPayment = Math.ceil((finalPrice - downPayment) / 5);
+            const totalInstallmentPrice = downPayment + (monthlyPayment * 5);
+            
+            return {
+                finalPrice,
+                fullPaymentPrice,
+                fullPaymentDiscount,
+                downPayment,
+                monthlyPayment,
+                totalInstallmentPrice
+            };
+        }
+        
+        let results = '<h2>Course Pricing Test Results</h2>';
+        
+        courses.forEach(course => {
+            const selfPaced = calculatePricing(course.price, 'self-paced');
+            const mentor = calculatePricing(course.price, 'mentor');
+            
+            results += `
+                <h3>${course.name}</h3>
+                <p><strong>Self-Paced ($${course.price}):</strong></p>
+                <ul>
+                    <li>Full Payment: $${selfPaced.fullPaymentPrice} (Save $${selfPaced.fullPaymentDiscount})</li>
+                    <li>Installments: $${selfPaced.downPayment} down + $${selfPaced.monthlyPayment} x 5 months (Total: $${selfPaced.totalInstallmentPrice})</li>
+                </ul>
+                
+                <p><strong>Live Mentor ($${mentor.finalPrice}):</strong></p>
+                <ul>
+                    <li>Full Payment: $${mentor.fullPaymentPrice} (Save $${mentor.fullPaymentDiscount})</li>
+                    <li>Installments: $${mentor.downPayment} down + $${mentor.monthlyPayment} x 5 months (Total: $${mentor.totalInstallmentPrice})</li>
+                </ul>
+                <hr>
+            `;
+        });
+        
+        document.getElementById('results').innerHTML = results;
+    </script>
+</body>
+</html>

@@ -334,3 +334,39 @@ INFO:app.main:Starting up TechStep API...
 INFO:app.main:Database tables created successfully
 INFO:app.main:TechStep API started successfully!
 INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'create_sample_data.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:app.main:Shutting down TechStep API...
+INFO:     Application shutdown complete.
+INFO:     Finished server process [20001]
+INFO:     Started server process [24373]
+INFO:     Waiting for application startup.
+INFO:app.main:Starting up TechStep API...
+INFO:app.main:Database tables created successfully
+INFO:app.main:TechStep API started successfully!
+INFO:     Application startup complete.
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:app.main:Shutting down TechStep API...
+INFO:     Application shutdown complete.
+INFO:     Finished server process [24373]
+INFO:     Stopping reloader process [9013]
+INFO:     Will watch for changes in these directories: ['/home/user/webapp/backend']
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [24959] using WatchFiles
+INFO:     Started server process [24962]
+INFO:     Waiting for application startup.
+INFO:app.main:Starting up TechStep API...
+INFO:app.main:Database tables created successfully
+INFO:app.main:TechStep API started successfully!
+INFO:     Application startup complete.
+INFO:     Will watch for changes in these directories: ['/home/user/webapp/backend']
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [25025] using WatchFiles
+INFO:     Started server process [25027]
+INFO:     Waiting for application startup.
+INFO:app.main:Starting up TechStep API...
+INFO:app.main:Database tables created successfully
+INFO:app.main:TechStep API started successfully!
+INFO:     Application startup complete.

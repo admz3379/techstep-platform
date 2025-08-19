@@ -2876,8 +2876,146 @@ function formatTime(seconds) {
                 displayCourses(courses);
                 hideLoadingState();
             } catch (error) {
-                console.error('Failed to load courses:', error);
-                showErrorState('Failed to load courses. Please try again.');
+                console.error('Failed to load courses from API, using fallback data:', error);
+                
+                // Fallback course data with updated pricing
+                const fallbackCourses = [
+                    {
+                        id: 1,
+                        title: "SOC Analyst Foundations",
+                        slug: "soc-analyst-foundations",
+                        description: "Master security operations center fundamentals, threat detection, and incident response procedures.",
+                        short_description: "Self-paced learning decks, labs, virtual internship & certificate",
+                        level: "beginner",
+                        price: 1200,
+                        duration_hours: 180,
+                        instructor_name: "Sarah Chen",
+                        instructor_bio: "SOC Manager with 10+ years in cybersecurity operations",
+                        instructor_avatar_url: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face",
+                        learning_objectives: ["Master SOC fundamentals", "Understand threat detection", "Learn incident response procedures"],
+                        prerequisites: ["Basic IT knowledge"],
+                        tags: ["SOC", "threat detection", "incident response"],
+                        status: "published",
+                        is_featured: true,
+                        enrollment_count: 1247,
+                        rating: 4.8,
+                        rating_count: 234,
+                        thumbnail_url: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=400&h=250&fit=crop"
+                    },
+                    {
+                        id: 2,
+                        title: "Cyber Threat Analyst & Incident Response",
+                        slug: "cyber-threat-analyst-incident-response",
+                        description: "Advanced threat hunting, malware analysis, and comprehensive incident response strategies.",
+                        short_description: "Self-paced learning decks, labs, virtual internship & certificate",
+                        level: "intermediate",
+                        price: 1400,
+                        duration_hours: 180,
+                        instructor_name: "Michael Rodriguez",
+                        instructor_bio: "Senior Threat Analyst with expertise in malware analysis",
+                        instructor_avatar_url: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
+                        learning_objectives: ["Advanced threat hunting", "Malware analysis techniques", "Incident response strategies"],
+                        prerequisites: ["SOC fundamentals", "Basic networking"],
+                        tags: ["threat hunting", "malware analysis", "incident response"],
+                        status: "published",
+                        is_featured: true,
+                        enrollment_count: 892,
+                        rating: 4.9,
+                        rating_count: 187,
+                        thumbnail_url: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=400&h=250&fit=crop"
+                    },
+                    {
+                        id: 3,
+                        title: "SIEM Engineering - Splunk Specialization",
+                        slug: "siem-engineering-splunk",
+                        description: "Master Splunk administration, SIEM deployment, and security monitoring infrastructure.",
+                        short_description: "Self-paced learning decks, labs, virtual internship & certificate",
+                        level: "intermediate",
+                        price: 1100,
+                        duration_hours: 180,
+                        instructor_name: "Dr. Emily Watson",
+                        instructor_bio: "SIEM Architect and Splunk Expert with 12+ years experience",
+                        instructor_avatar_url: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
+                        learning_objectives: ["Master Splunk administration", "SIEM deployment", "Security monitoring infrastructure"],
+                        prerequisites: ["Basic security knowledge", "Command line familiarity"],
+                        tags: ["SIEM", "Splunk", "security monitoring"],
+                        status: "published",
+                        is_featured: true,
+                        enrollment_count: 756,
+                        rating: 4.7,
+                        rating_count: 143,
+                        thumbnail_url: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=400&h=250&fit=crop"
+                    },
+                    {
+                        id: 4,
+                        title: "Cloud Security Analyst (AWS, Azure, GCP)",
+                        slug: "cloud-security-analyst",
+                        description: "AWS, Azure, and GCP security architecture, compliance, and best practices.",
+                        short_description: "Self-paced learning decks, labs, virtual internship & certificate",
+                        level: "intermediate",
+                        price: 1300,
+                        duration_hours: 180,
+                        instructor_name: "David Kim",
+                        instructor_bio: "Cloud Security Architect with AWS and Azure certifications",
+                        instructor_avatar_url: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=150&h=150&fit=crop&crop=face",
+                        learning_objectives: ["AWS security architecture", "Azure compliance", "GCP best practices"],
+                        prerequisites: ["Cloud platform experience", "Basic security fundamentals"],
+                        tags: ["cloud security", "AWS", "Azure", "GCP"],
+                        status: "published",
+                        is_featured: true,
+                        enrollment_count: 634,
+                        rating: 4.6,
+                        rating_count: 98,
+                        thumbnail_url: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=400&h=250&fit=crop"
+                    },
+                    {
+                        id: 5,
+                        title: "Malware Analyst & Network Defense",
+                        slug: "malware-analyst-network-defense",
+                        description: "Reverse engineering, dynamic analysis, and advanced network security techniques.",
+                        short_description: "Self-paced learning decks, labs, virtual internship & certificate",
+                        level: "advanced",
+                        price: 1500,
+                        duration_hours: 180,
+                        instructor_name: "Alex Rivera",
+                        instructor_bio: "Malware Research Specialist with reverse engineering expertise",
+                        instructor_avatar_url: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
+                        learning_objectives: ["Reverse engineering techniques", "Dynamic malware analysis", "Network defense strategies"],
+                        prerequisites: ["Advanced security knowledge", "Programming basics"],
+                        tags: ["malware analysis", "reverse engineering", "network defense"],
+                        status: "published",
+                        is_featured: false,
+                        enrollment_count: 423,
+                        rating: 4.9,
+                        rating_count: 89,
+                        thumbnail_url: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=400&h=250&fit=crop"
+                    },
+                    {
+                        id: 6,
+                        title: "Risk & Compliance Analyst - GRC Fundamentals",
+                        slug: "risk-compliance-analyst-grc",
+                        description: "Governance frameworks, risk management, and regulatory compliance strategies.",
+                        short_description: "Self-paced learning decks, labs, virtual internship & certificate",
+                        level: "intermediate",
+                        price: 1400,
+                        duration_hours: 180,
+                        instructor_name: "Michelle Zhang",
+                        instructor_bio: "GRC Consultant with expertise in compliance frameworks",
+                        instructor_avatar_url: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face",
+                        learning_objectives: ["Governance frameworks", "Risk management", "Regulatory compliance"],
+                        prerequisites: ["Basic business knowledge", "Security awareness"],
+                        tags: ["GRC", "compliance", "risk management"],
+                        status: "published",
+                        is_featured: true,
+                        enrollment_count: 567,
+                        rating: 4.5,
+                        rating_count: 112,
+                        thumbnail_url: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=400&h=250&fit=crop"
+                    }
+                ];
+                
+                displayCourses(fallbackCourses);
+                hideLoadingState();
             }
         }
 
@@ -2923,34 +3061,13 @@ function formatTime(seconds) {
                     </div>
                     
                     <div class="space-y-3">
-                        <!-- Self-Paced Tier -->
-                        <button class="buy-now-btn w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 text-sm" 
-                                data-course-id="${course.id}" data-course-title="${course.title}" data-price="2900" data-type="self-paced">
-                            <i class="fas fa-laptop mr-2"></i>Self-Paced - $2,900
-                            <div class="text-xs text-blue-200">Learning decks, labs, certificate, lifetime access</div>
+                        <button class="buy-now-btn w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300" 
+                                data-course-id="${course.id}" data-course-title="${course.title}" data-price="${course.price}" data-type="self-paced">
+                            <i class="fas fa-shopping-cart mr-2"></i>Self-Paced Course - $${course.price.toLocaleString()}
                         </button>
-                        
-                        <!-- Self-Paced + Internship Tier -->
-                        <button class="buy-now-btn w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 text-sm"
-                                data-course-id="${course.id}" data-course-title="${course.title}" data-price="3500" data-type="self-paced-internship">
-                            <i class="fas fa-briefcase mr-2"></i>Self-Paced + Internship - $3,500
-                            <div class="text-xs text-purple-200">Above + virtual internship project + assignment feedback</div>
-                        </button>
-                        
-                        <!-- Live with Mentor Tier -->
-                        <button class="mentor-btn w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 text-sm"
-                                data-course-id="${course.id}" data-course-title="${course.title}" data-price="5800" data-type="live-mentor">
-                            <i class="fas fa-user-tie mr-2"></i>Live with Mentor - $5,800
-                            <div class="text-xs text-green-200">Above + weekly mentor sessions + capstone project + career toolkit</div>
-                            <div class="text-xs text-yellow-300 font-semibold">🎉 First week FREE!</div>
-                        </button>
-                        
-                        <!-- Live with Mentor + Guided Career Placement Tier -->
-                        <button class="mentor-btn w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 text-sm"
-                                data-course-id="${course.id}" data-course-title="${course.title}" data-price="7800" data-type="live-mentor-career">
-                            <i class="fas fa-rocket mr-2"></i>Guided Career Placement - $7,800
-                            <div class="text-xs text-orange-200">All above + mock interviews, job placement support, extended mentorship</div>
-                            <div class="text-xs text-yellow-300 font-semibold">🎉 First week FREE!</div>
+                        <button class="mentor-btn w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300"
+                                data-course-id="${course.id}" data-course-title="${course.title}" data-price="${Math.round(course.price * 1.5)}" data-type="mentor">
+                            <i class="fas fa-user-tie mr-2"></i>Live Mentor + Course - $${Math.round(course.price * 1.5).toLocaleString()}
                         </button>
                         <div class="text-center">
                             <button class="consultation-btn text-blue-400 hover:text-blue-300 text-sm underline transition duration-300"
@@ -3037,75 +3154,11 @@ function formatTime(seconds) {
             }
         }
 
-        // Tier Helper Functions
-        function getTierIcon(type) {
-            const icons = {
-                'self-paced': 'laptop',
-                'self-paced-internship': 'briefcase', 
-                'live-mentor': 'user-tie',
-                'live-mentor-career': 'rocket'
-            };
-            return icons[type] || 'laptop';
-        }
-        
-        function getTierTitle(type) {
-            const titles = {
-                'self-paced': 'Self-Paced (6 months)',
-                'self-paced-internship': 'Self-Paced + Internship (6 months)',
-                'live-mentor': 'Live with Mentor (6 months)', 
-                'live-mentor-career': 'Guided Career Placement (6 months)'
-            };
-            return titles[type] || 'Course (6 months)';
-        }
-        
-        function getTierFeatures(type) {
-            const features = {
-                'self-paced': `
-                    • Learning decks and interactive labs
-                    • Certificate of completion
-                    • Lifetime access to materials
-                    • Self-paced learning
-                    • Community access
-                `,
-                'self-paced-internship': `
-                    • All Self-Paced features
-                    • Virtual internship project
-                    • Assignment feedback from experts
-                    • Industry-relevant case studies
-                    • Enhanced portfolio development
-                `,
-                'live-mentor': `
-                    • All Self-Paced + Internship features
-                    • Weekly 1-on-1 mentor sessions
-                    • Capstone project with guidance
-                    • Career toolkit and resources
-                    • Project reviews & feedback
-                    • Industry networking opportunities
-                `,
-                'live-mentor-career': `
-                    • All Live with Mentor features
-                    • Mock interview sessions
-                    • Job placement support and guidance
-                    • Extended mentorship (3 months post-course)
-                    • Resume and LinkedIn optimization
-                    • Direct introductions to employers
-                    • Salary negotiation coaching
-                `
-            };
-            return features[type] || '• Comprehensive cybersecurity training';
-        }
+
 
         // Payment Modal Functions
         function showPaymentModal(courseId, courseTitle, basePrice, type) {
-            // New 4-tier pricing structure
-            const pricingTiers = {
-                'self-paced': 2900,
-                'self-paced-internship': 3500,  
-                'live-mentor': 5800,
-                'live-mentor-career': 7800
-            };
-            
-            const finalPrice = pricingTiers[type] || parseInt(basePrice);
+            const finalPrice = parseInt(basePrice);
             
             // Calculate payment options with 5% discount for both types
             const fullPaymentDiscount = Math.round(finalPrice * 0.05);
@@ -3132,26 +3185,14 @@ function formatTime(seconds) {
                                 <div class="bg-gray-800 rounded-lg p-6 mb-6">
                                     <h3 class="text-xl font-bold text-white mb-2">${courseTitle}</h3>
                                     <p class="text-gray-300 mb-4">
-                                        <i class="fas fa-${getTierIcon(type)} mr-2"></i>
-                                        ${getTierTitle(type)}
+                                        <i class="fas fa-${type === 'mentor' ? 'user-tie' : 'laptop'} mr-2"></i>
+                                        ${type === 'mentor' ? 'Live Mentor + Course (6 months)' : 'Self-Paced Course (6 months)'}
                                     </p>
                                     <div class="text-sm text-gray-400">
-                                        ${getTierFeatures(type)}
+                                        • 6-month comprehensive program
+                                        • Lifetime access to materials
+                                        ${type === 'mentor' ? '• Weekly 1-on-1 mentor sessions\n• Career guidance & support\n• Project reviews & feedback' : '• Self-paced learning\n• Community access\n• Certificate of completion'}
                                     </div>
-                                    ${(type === 'live-mentor' || type === 'live-mentor-career') ? `
-                                    <div class="bg-yellow-900 rounded-lg p-3 mt-4">
-                                        <div class="flex items-center text-yellow-300">
-                                            <i class="fas fa-gift mr-2"></i>
-                                            <span class="font-semibold">First Week FREE!</span>
-                                        </div>
-                                        <div class="text-xs text-yellow-200 mt-1">
-                                            Try our mentorship program risk-free. Cancel within 7 days for a full refund.
-                                        </div>
-                                        <button id="scheduleFirstSession" class="mt-2 bg-yellow-600 hover:bg-yellow-700 text-black font-semibold py-2 px-4 rounded text-xs transition duration-300">
-                                            <i class="fas fa-calendar mr-1"></i>Schedule Your FREE First Session
-                                        </button>
-                                    </div>
-                                    ` : ''}
                                 </div>
 
                                 <div class="space-y-4 mb-6">

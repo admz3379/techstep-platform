@@ -28,8 +28,8 @@ class Settings(BaseSettings):
     ]
     
     # Payment
-    STRIPE_PUBLISHABLE_KEY: str = "pk_test_placeholder"
-    STRIPE_SECRET_KEY: str = "sk_test_placeholder"
+    STRIPE_PUBLISHABLE_KEY: str = "pk_test_51234567890abcdefghijklmnopqrstuvwxyz"
+    STRIPE_SECRET_KEY: str = "sk_test_51234567890abcdefghijklmnopqrstuvwxyz"
     PAYPAL_CLIENT_ID: str = "paypal_client_id_placeholder"
     PAYPAL_CLIENT_SECRET: str = "paypal_client_secret_placeholder"
     PAYPAL_MODE: str = "sandbox"

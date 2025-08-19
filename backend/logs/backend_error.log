@@ -169,3 +169,60 @@ INFO:app.main:Starting up TechStep API...
 INFO:app.main:Database tables created successfully
 INFO:app.main:TechStep API started successfully!
 INFO:     Application startup complete.
+WARNING:passlib.handlers.bcrypt:(trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+WARNING:  WatchFiles detected changes in 'app/api/endpoints/payments.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:app.main:Shutting down TechStep API...
+INFO:     Application shutdown complete.
+INFO:     Finished server process [6070]
+INFO:     Started server process [8599]
+INFO:     Waiting for application startup.
+INFO:app.main:Starting up TechStep API...
+INFO:app.main:Database tables created successfully
+INFO:app.main:TechStep API started successfully!
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'app/main.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:app.main:Shutting down TechStep API...
+INFO:     Application shutdown complete.
+INFO:     Finished server process [8599]
+INFO:     Started server process [8636]
+INFO:     Waiting for application startup.
+INFO:app.main:Starting up TechStep API...
+INFO:app.main:Database tables created successfully
+INFO:app.main:TechStep API started successfully!
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'app/core/config.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:app.main:Shutting down TechStep API...
+INFO:     Application shutdown complete.
+INFO:     Finished server process [8636]
+INFO:     Started server process [8812]
+INFO:     Waiting for application startup.
+INFO:app.main:Starting up TechStep API...
+INFO:app.main:Database tables created successfully
+INFO:app.main:TechStep API started successfully!
+INFO:     Application startup complete.
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:app.main:Shutting down TechStep API...
+INFO:     Application shutdown complete.
+INFO:     Finished server process [8812]
+INFO:     Stopping reloader process [6068]
+INFO:     Will watch for changes in these directories: ['/home/user/webapp/backend']
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [9013] using WatchFiles
+INFO:     Started server process [9015]
+INFO:     Waiting for application startup.
+INFO:app.main:Starting up TechStep API...
+INFO:app.main:Database tables created successfully
+INFO:app.main:TechStep API started successfully!
+INFO:     Application startup complete.

@@ -402,8 +402,8 @@
                     <a href="#mentors" class="text-gray-300 hover:text-blue-400 transition duration-300">Mentors</a>
                     <a href="#podcast" class="text-gray-300 hover:text-blue-400 transition duration-300">Podcast</a>
                     <a href="#testimonials" class="text-gray-300 hover:text-blue-400 transition duration-300">Reviews</a>
-                    <button id="loginBtn" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition duration-300">
-                        <i class="fas fa-user mr-2"></i>Dashboard
+                    <button id="adminLoginBtn" class="bg-gray-600 text-white px-6 py-2 rounded-lg hover:bg-gray-700 transition duration-300">
+                        <i class="fas fa-lock mr-2"></i>Student Login
                     </button>
                 </div>
                 <div class="md:hidden">
@@ -2799,6 +2799,28 @@ function formatTime(seconds) {
             async getUserDashboard() {
                 return await this.request('/users/profile/dashboard');
             }
+
+            // Payment Methods
+            async createPaymentIntent(paymentData) {
+                return await this.request('/payments/create-intent', {
+                    method: 'POST',
+                    body: JSON.stringify(paymentData)
+                });
+            }
+
+            async confirmPayment(paymentIntentId) {
+                return await this.request('/payments/confirm', {
+                    method: 'POST',
+                    body: JSON.stringify({ payment_intent_id: paymentIntentId })
+                });
+            }
+
+            async bookConsultation(bookingData) {
+                return await this.request('/payments/consultations/book', {
+                    method: 'POST',
+                    body: JSON.stringify(bookingData)
+                });
+            }
         }
 
         // Initialize API service
@@ -2823,20 +2845,20 @@ function formatTime(seconds) {
         }
 
         function updateUIForAuthenticatedUser() {
-            const loginBtn = document.getElementById('loginBtn');
-            if (loginBtn && currentUser) {
-                loginBtn.innerHTML = `<i class="fas fa-user mr-2"></i>${currentUser.full_name}`;
-                loginBtn.classList.add('bg-green-600', 'hover:bg-green-700');
-                loginBtn.classList.remove('bg-blue-600', 'hover:bg-blue-700');
+            const adminLoginBtn = document.getElementById('adminLoginBtn');
+            if (adminLoginBtn && currentUser) {
+                adminLoginBtn.innerHTML = `<i class="fas fa-user mr-2"></i>${currentUser.full_name}`;
+                adminLoginBtn.classList.add('bg-green-600', 'hover:bg-green-700');
+                adminLoginBtn.classList.remove('bg-gray-600', 'hover:bg-gray-700');
             }
         }
 
         function updateUIForUnauthenticatedUser() {
-            const loginBtn = document.getElementById('loginBtn');
-            if (loginBtn) {
-                loginBtn.innerHTML = '<i class="fas fa-sign-in-alt mr-2"></i>Login / Register';
-                loginBtn.classList.add('bg-blue-600', 'hover:bg-blue-700');
-                loginBtn.classList.remove('bg-green-600', 'hover:bg-green-700');
+            const adminLoginBtn = document.getElementById('adminLoginBtn');
+            if (adminLoginBtn) {
+                adminLoginBtn.innerHTML = '<i class="fas fa-lock mr-2"></i>Student Login';
+                adminLoginBtn.classList.add('bg-gray-600', 'hover:bg-gray-700');
+                adminLoginBtn.classList.remove('bg-green-600', 'hover:bg-green-700');
             }
         }
 
@@ -2858,7 +2880,7 @@ function formatTime(seconds) {
             if (!coursesContainer) return;
 
             coursesContainer.innerHTML = courses.map(course => `
-                <div class="course-card course-selection rounded-2xl p-6 cursor-pointer transition-all duration-300" 
+                <div class="course-card rounded-2xl p-6 transition-all duration-300" 
                      data-course-id="${course.id}" data-price="${course.price}">
                     <div class="relative mb-4">
                         <img src="${course.thumbnail_url || 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=400&h=250&fit=crop'}" 
@@ -2883,10 +2905,9 @@ function formatTime(seconds) {
                         </div>
                     </div>
                     
-                    <div class="flex justify-between items-center">
+                    <div class="flex justify-between items-center mb-4">
                         <div>
-                            <span class="self-paced-price text-2xl font-bold text-blue-400">$${course.price}</span>
-                            <span class="mentor-price text-2xl font-bold text-green-400 hidden">$${(course.price * 1.5).toFixed(2)}</span>
+                            <span class="text-2xl font-bold text-blue-400">$${course.price}</span>
                         </div>
                         <div class="flex items-center text-yellow-400">
                             <i class="fas fa-star mr-1"></i>
@@ -2894,38 +2915,61 @@ function formatTime(seconds) {
                         </div>
                     </div>
                     
-                    <input type="checkbox" class="course-checkbox hidden" data-course-id="${course.id}" data-price="${course.price}">
-                    
-                    <div class="self-paced-desc mt-4">
-                        <p class="text-gray-400 text-sm">Self-paced learning with lifetime access</p>
-                    </div>
-                    <div class="mentor-desc mt-4 hidden">
-                        <p class="text-gray-400 text-sm">1-on-1 mentorship + course content</p>
+                    <div class="space-y-3">
+                        <button class="buy-now-btn w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300" 
+                                data-course-id="${course.id}" data-course-title="${course.title}" data-price="${course.price}" data-type="self-paced">
+                            <i class="fas fa-shopping-cart mr-2"></i>Self-Paced Course - $${course.price}
+                        </button>
+                        <button class="mentor-btn w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300"
+                                data-course-id="${course.id}" data-course-title="${course.title}" data-price="${(course.price * 1.5).toFixed(2)}" data-type="mentor">
+                            <i class="fas fa-user-tie mr-2"></i>Live Mentor + Course - $${(course.price * 1.5).toFixed(2)}
+                        </button>
+                        <div class="text-center">
+                            <button class="consultation-btn text-blue-400 hover:text-blue-300 text-sm underline transition duration-300"
+                                    data-course-id="${course.id}" data-course-title="${course.title}">
+                                <i class="fas fa-calendar mr-1"></i>Book FREE 30-min Consultation First
+                            </button>
+                        </div>
                     </div>
                 </div>
             `).join('');
 
-            // Re-attach event listeners for course selection
-            attachCourseSelectionListeners();
+            // Attach event listeners for buy buttons
+            attachBuyNowListeners();
         }
 
-        function attachCourseSelectionListeners() {
-            document.querySelectorAll('.course-selection').forEach(card => {
-                card.addEventListener('click', function() {
-                    const checkbox = this.querySelector('.course-checkbox');
+        function attachBuyNowListeners() {
+            // Self-paced buy now buttons
+            document.querySelectorAll('.buy-now-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
                     const courseId = this.dataset.courseId;
+                    const courseTitle = this.dataset.courseTitle;
+                    const price = this.dataset.price;
+                    const type = this.dataset.type;
                     
-                    if (checkbox.checked) {
-                        checkbox.checked = false;
-                        this.classList.remove('selected');
-                        selectedCourses = selectedCourses.filter(id => id !== courseId);
-                    } else {
-                        checkbox.checked = true;
-                        this.classList.add('selected');
-                        selectedCourses.push(courseId);
-                    }
+                    showPaymentModal(courseId, courseTitle, price, type);
+                });
+            });
+
+            // Live mentor buttons  
+            document.querySelectorAll('.mentor-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const courseId = this.dataset.courseId;
+                    const courseTitle = this.dataset.courseTitle;
+                    const price = this.dataset.price;
+                    const type = this.dataset.type;
                     
-                    updateCart();
+                    showPaymentModal(courseId, courseTitle, price, type);
+                });
+            });
+
+            // Consultation booking buttons
+            document.querySelectorAll('.consultation-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const courseId = this.dataset.courseId;
+                    const courseTitle = this.dataset.courseTitle;
+                    
+                    showConsultationBooking(courseId, courseTitle);
                 });
             });
         }
@@ -2965,14 +3009,381 @@ function formatTime(seconds) {
             }
         }
 
-        // Enhanced login/register functionality
+        // Payment Modal Functions
+        function showPaymentModal(courseId, courseTitle, price, type) {
+            const modalHTML = `
+                <div id="paymentModal" class="modal-overlay">
+                    <div class="modal-content max-w-2xl">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-2xl font-bold text-white">Complete Your Purchase</h2>
+                            <button id="closePaymentModal" class="text-gray-400 hover:text-white">
+                                <i class="fas fa-times text-xl"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="bg-gray-800 rounded-lg p-6 mb-6">
+                            <h3 class="text-xl font-bold text-white mb-2">${courseTitle}</h3>
+                            <p class="text-gray-300 mb-4">${type === 'self-paced' ? 'Self-Paced Course' : 'Live Mentor + Course'}</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-lg text-gray-300">Total:</span>
+                                <span class="text-2xl font-bold text-green-400">$${price}</span>
+                            </div>
+                        </div>
+
+                        <form id="paymentForm" class="space-y-4">
+                            <div class="grid grid-cols-2 gap-4">
+                                <input type="text" id="firstName" placeholder="First Name" required 
+                                       class="w-full p-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:border-blue-500 focus:outline-none">
+                                <input type="text" id="lastName" placeholder="Last Name" required 
+                                       class="w-full p-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:border-blue-500 focus:outline-none">
+                            </div>
+                            
+                            <input type="email" id="customerEmail" placeholder="Email Address" required 
+                                   class="w-full p-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:border-blue-500 focus:outline-none">
+                            
+                            <div id="card-element" class="p-3 border border-gray-600 rounded-lg bg-gray-700">
+                                <!-- Stripe Elements will create form elements here -->
+                            </div>
+                            
+                            <div id="card-errors" class="text-red-400 text-sm hidden"></div>
+                            
+                            <button type="submit" id="paymentSubmit" 
+                                    class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-6 rounded-lg transition duration-300">
+                                <i class="fas fa-lock mr-2"></i>Complete Payment - $${price}
+                            </button>
+                            
+                            <p class="text-xs text-gray-400 text-center">
+                                <i class="fas fa-shield-alt mr-1"></i>
+                                Your payment is secured by Stripe. After payment, you'll receive login credentials via email.
+                            </p>
+                        </form>
+                    </div>
+                </div>
+            `;
+
+            // Remove existing modal if any
+            const existingModal = document.getElementById('paymentModal');
+            if (existingModal) existingModal.remove();
+
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
+            setupPaymentModal(courseId, courseTitle, price, type);
+        }
+
+        function setupPaymentModal(courseId, courseTitle, price, type) {
+            const paymentModal = document.getElementById('paymentModal');
+            const closeBtn = document.getElementById('closePaymentModal');
+            const paymentForm = document.getElementById('paymentForm');
+            
+            // Show modal
+            paymentModal.classList.add('show');
+
+            // Close modal
+            closeBtn.addEventListener('click', () => {
+                paymentModal.classList.remove('show');
+                setTimeout(() => paymentModal.remove(), 300);
+            });
+
+            // Initialize Stripe Elements
+            const stripe = Stripe('pk_test_51234567890abcdefghijklmnopqrstuvwxyz');
+            const elements = stripe.elements();
+            
+            const cardElement = elements.create('card', {
+                style: {
+                    base: {
+                        color: '#ffffff',
+                        fontFamily: 'system-ui, sans-serif',
+                        fontSize: '16px',
+                        '::placeholder': {
+                            color: '#9CA3AF',
+                        },
+                    },
+                },
+            });
+            
+            cardElement.mount('#card-element');
+
+            // Handle form submission
+            paymentForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const submitBtn = document.getElementById('paymentSubmit');
+                const cardErrors = document.getElementById('card-errors');
+                
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Processing...';
+                submitBtn.disabled = true;
+                cardErrors.classList.add('hidden');
+
+                try {
+                    // Create payment intent
+                    const paymentIntentResponse = await api.createPaymentIntent({
+                        course_id: parseInt(courseId),
+                        amount: Math.round(parseFloat(price) * 100), // Convert to cents
+                        currency: 'usd',
+                        payment_type: type,
+                        customer_info: {
+                            first_name: document.getElementById('firstName').value,
+                            last_name: document.getElementById('lastName').value,
+                            email: document.getElementById('customerEmail').value
+                        }
+                    });
+
+                    // Confirm payment with Stripe
+                    const {error} = await stripe.confirmCardPayment(paymentIntentResponse.client_secret, {
+                        payment_method: {
+                            card: cardElement,
+                            billing_details: {
+                                name: `${document.getElementById('firstName').value} ${document.getElementById('lastName').value}`,
+                                email: document.getElementById('customerEmail').value,
+                            },
+                        }
+                    });
+
+                    if (error) {
+                        throw new Error(error.message);
+                    } else {
+                        // Payment successful!
+                        showPaymentSuccess(courseTitle, document.getElementById('customerEmail').value);
+                    }
+
+                } catch (error) {
+                    cardErrors.textContent = error.message;
+                    cardErrors.classList.remove('hidden');
+                } finally {
+                    submitBtn.innerHTML = `<i class="fas fa-lock mr-2"></i>Complete Payment - $${price}`;
+                    submitBtn.disabled = false;
+                }
+            });
+        }
+
+        function showPaymentSuccess(courseTitle, email) {
+            const successHTML = `
+                <div id="successModal" class="modal-overlay show">
+                    <div class="modal-content max-w-md text-center">
+                        <div class="mb-6">
+                            <i class="fas fa-check-circle text-6xl text-green-500 mb-4"></i>
+                            <h2 class="text-2xl font-bold text-white mb-2">Payment Successful!</h2>
+                            <p class="text-gray-300">Thank you for purchasing "${courseTitle}"</p>
+                        </div>
+                        
+                        <div class="bg-blue-900 rounded-lg p-4 mb-6">
+                            <p class="text-white text-sm mb-2">
+                                <i class="fas fa-envelope mr-2"></i>
+                                Login credentials have been sent to:
+                            </p>
+                            <p class="text-blue-300 font-semibold">${email}</p>
+                        </div>
+                        
+                        <p class="text-gray-400 text-sm mb-6">
+                            Please check your email (including spam folder) for your login details. 
+                            You'll have immediate access to your course content.
+                        </p>
+                        
+                        <button onclick="document.getElementById('successModal').remove(); document.getElementById('paymentModal').remove();" 
+                                class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300">
+                            Got it!
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', successHTML);
+        }
+
+        // Consultation Booking Functions
+        function showConsultationBooking(courseId, courseTitle) {
+            const modalHTML = `
+                <div id="consultationModal" class="modal-overlay">
+                    <div class="modal-content max-w-3xl">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-2xl font-bold text-white">Book FREE 30-Minute Consultation</h2>
+                            <button id="closeConsultationModal" class="text-gray-400 hover:text-white">
+                                <i class="fas fa-times text-xl"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="bg-blue-900 rounded-lg p-4 mb-6">
+                            <h3 class="text-lg font-bold text-white mb-2">
+                                <i class="fas fa-gift mr-2"></i>FREE Consultation for "${courseTitle}"
+                            </h3>
+                            <p class="text-blue-200 text-sm">
+                                Discuss your learning goals with our expert mentor before purchasing the full course.
+                            </p>
+                        </div>
+
+                        <form id="consultationForm" class="space-y-4">
+                            <div class="grid grid-cols-2 gap-4">
+                                <input type="text" id="consultFirstName" placeholder="First Name" required 
+                                       class="w-full p-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:border-blue-500 focus:outline-none">
+                                <input type="text" id="consultLastName" placeholder="Last Name" required 
+                                       class="w-full p-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:border-blue-500 focus:outline-none">
+                            </div>
+                            
+                            <input type="email" id="consultEmail" placeholder="Email Address" required 
+                                   class="w-full p-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:border-blue-500 focus:outline-none">
+                            
+                            <input type="tel" id="consultPhone" placeholder="Phone Number" required 
+                                   class="w-full p-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:border-blue-500 focus:outline-none">
+                            
+                            <div>
+                                <label class="block text-white text-sm font-bold mb-2">Select Available Time Slot:</label>
+                                <div id="timeSlots" class="grid grid-cols-2 gap-2">
+                                    <!-- Time slots will be populated by calendar -->
+                                </div>
+                            </div>
+                            
+                            <textarea id="consultMessage" placeholder="What specific topics or goals would you like to discuss? (Optional)" 
+                                      class="w-full p-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:border-blue-500 focus:outline-none h-24"></textarea>
+                            
+                            <button type="submit" id="consultationSubmit" 
+                                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-lg transition duration-300">
+                                <i class="fas fa-calendar-plus mr-2"></i>Book FREE Consultation
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            `;
+
+            // Remove existing modal if any
+            const existingModal = document.getElementById('consultationModal');
+            if (existingModal) existingModal.remove();
+
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
+            setupConsultationModal(courseId, courseTitle);
+        }
+
+        function setupConsultationModal(courseId, courseTitle) {
+            const consultationModal = document.getElementById('consultationModal');
+            const closeBtn = document.getElementById('closeConsultationModal');
+            const consultationForm = document.getElementById('consultationForm');
+            
+            // Show modal
+            consultationModal.classList.add('show');
+
+            // Close modal
+            closeBtn.addEventListener('click', () => {
+                consultationModal.classList.remove('show');
+                setTimeout(() => consultationModal.remove(), 300);
+            });
+
+            // Load available time slots
+            loadAvailableTimeSlots();
+
+            // Handle form submission
+            consultationForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const submitBtn = document.getElementById('consultationSubmit');
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Booking...';
+                submitBtn.disabled = true;
+
+                try {
+                    const selectedSlot = document.querySelector('input[name="timeSlot"]:checked');
+                    if (!selectedSlot) {
+                        throw new Error('Please select a time slot');
+                    }
+
+                    const bookingData = {
+                        course_id: courseId,
+                        course_title: courseTitle,
+                        first_name: document.getElementById('consultFirstName').value,
+                        last_name: document.getElementById('consultLastName').value,
+                        email: document.getElementById('consultEmail').value,
+                        phone: document.getElementById('consultPhone').value,
+                        time_slot: selectedSlot.value,
+                        message: document.getElementById('consultMessage').value
+                    };
+
+                    const response = await api.bookConsultation(bookingData);
+
+                    showConsultationSuccess(bookingData.email, selectedSlot.dataset.readable);
+
+                } catch (error) {
+                    alert('Booking failed: ' + error.message);
+                } finally {
+                    submitBtn.innerHTML = '<i class="fas fa-calendar-plus mr-2"></i>Book FREE Consultation';
+                    submitBtn.disabled = false;
+                }
+            });
+        }
+
+        function loadAvailableTimeSlots() {
+            // Generate next 7 days with available times
+            const timeSlotsContainer = document.getElementById('timeSlots');
+            const timeSlots = [];
+            
+            const today = new Date();
+            const times = ['10:00 AM', '11:00 AM', '2:00 PM', '3:00 PM', '4:00 PM'];
+            
+            for (let i = 1; i <= 7; i++) {
+                const date = new Date(today);
+                date.setDate(today.getDate() + i);
+                
+                if (date.getDay() !== 0 && date.getDay() !== 6) { // Skip weekends
+                    times.forEach(time => {
+                        const datetime = `${date.toISOString().split('T')[0]}T${time.includes('PM') && !time.startsWith('12') ? 
+                            (parseInt(time.split(':')[0]) + 12) + ':' + time.split(':')[1].split(' ')[0] : 
+                            time.split(' ')[0]}:00`;
+                        
+                        timeSlots.push({
+                            value: datetime,
+                            readable: `${date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })} at ${time}`
+                        });
+                    });
+                }
+            }
+
+            timeSlotsContainer.innerHTML = timeSlots.map(slot => `
+                <label class="flex items-center p-3 bg-gray-700 rounded-lg hover:bg-blue-700 cursor-pointer transition duration-300">
+                    <input type="radio" name="timeSlot" value="${slot.value}" data-readable="${slot.readable}" 
+                           class="mr-3 text-blue-600">
+                    <span class="text-white text-sm">${slot.readable}</span>
+                </label>
+            `).join('');
+        }
+
+        function showConsultationSuccess(email, timeSlot) {
+            const successHTML = `
+                <div id="consultationSuccessModal" class="modal-overlay show">
+                    <div class="modal-content max-w-md text-center">
+                        <div class="mb-6">
+                            <i class="fas fa-calendar-check text-6xl text-green-500 mb-4"></i>
+                            <h2 class="text-2xl font-bold text-white mb-2">Consultation Booked!</h2>
+                            <p class="text-gray-300">Your FREE consultation is scheduled</p>
+                        </div>
+                        
+                        <div class="bg-green-900 rounded-lg p-4 mb-6">
+                            <p class="text-white font-semibold mb-2">
+                                <i class="fas fa-clock mr-2"></i>${timeSlot}
+                            </p>
+                            <p class="text-green-300 text-sm">
+                                Confirmation details sent to: ${email}
+                            </p>
+                        </div>
+                        
+                        <p class="text-gray-400 text-sm mb-6">
+                            You'll receive a calendar invite and Zoom link via email. 
+                            Our mentor will contact you 5 minutes before the session.
+                        </p>
+                        
+                        <button onclick="document.getElementById('consultationSuccessModal').remove(); document.getElementById('consultationModal').remove();" 
+                                class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300">
+                            Perfect!
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', successHTML);
+        }
+
+        // Enhanced login/register functionality (for existing customers)
         function showAuthModal() {
             if (api.isAuthenticated()) {
                 // Show dashboard
                 showDashboard();
             } else {
-                // Show login/register modal
-                showLoginRegisterModal();
+                // Show login modal for existing customers only
+                showStudentLoginModal();
             }
         }
 
@@ -3009,38 +3420,46 @@ function formatTime(seconds) {
             }
         }
 
-        function showLoginRegisterModal() {
-            // Create a simple login/register modal
+        function showStudentLoginModal() {
+            // Login modal for existing customers only
             const modalHTML = `
                 <div id="authModal" class="modal-overlay">
                     <div class="modal-content max-w-md">
                         <div class="flex justify-between items-center mb-6">
-                            <h2 class="text-2xl font-bold text-white">Welcome to TechStep</h2>
+                            <h2 class="text-2xl font-bold text-white">Student Login</h2>
                             <button id="closeAuthModal" class="text-gray-400 hover:text-white">
                                 <i class="fas fa-times text-xl"></i>
                             </button>
                         </div>
                         
-                        <div id="authTabs" class="flex mb-6">
-                            <button id="loginTab" class="flex-1 py-2 px-4 bg-blue-600 text-white rounded-l-lg">Login</button>
-                            <button id="registerTab" class="flex-1 py-2 px-4 bg-gray-600 text-white rounded-r-lg">Register</button>
+                        <div class="bg-blue-900 rounded-lg p-4 mb-6">
+                            <p class="text-blue-200 text-sm">
+                                <i class="fas fa-info-circle mr-2"></i>
+                                This login is for existing customers who have already purchased courses.
+                            </p>
                         </div>
                         
-                        <form id="authForm">
-                            <div id="registerFields" style="display: none;">
-                                <input type="text" id="fullName" placeholder="Full Name" class="w-full p-3 mb-4 rounded-lg bg-gray-700 text-white border border-gray-600 focus:border-blue-500 focus:outline-none">
-                                <input type="text" id="username" placeholder="Username" class="w-full p-3 mb-4 rounded-lg bg-gray-700 text-white border border-gray-600 focus:border-blue-500 focus:outline-none">
-                            </div>
+                        <form id="studentLoginForm">
+                            <input type="email" id="studentEmail" placeholder="Email Address" required 
+                                   class="w-full p-3 mb-4 rounded-lg bg-gray-700 text-white border border-gray-600 focus:border-blue-500 focus:outline-none">
+                            <input type="password" id="studentPassword" placeholder="Password" required 
+                                   class="w-full p-3 mb-6 rounded-lg bg-gray-700 text-white border border-gray-600 focus:border-blue-500 focus:outline-none">
                             
-                            <input type="email" id="email" placeholder="Email" required class="w-full p-3 mb-4 rounded-lg bg-gray-700 text-white border border-gray-600 focus:border-blue-500 focus:outline-none">
-                            <input type="password" id="password" placeholder="Password" required class="w-full p-3 mb-6 rounded-lg bg-gray-700 text-white border border-gray-600 focus:border-blue-500 focus:outline-none">
-                            
-                            <button type="submit" id="authSubmit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300">
-                                Login
+                            <button type="submit" id="studentLoginSubmit" 
+                                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300">
+                                <i class="fas fa-sign-in-alt mr-2"></i>Access My Courses
                             </button>
                         </form>
                         
-                        <div id="authError" class="mt-4 text-red-400 text-sm hidden"></div>
+                        <div id="loginError" class="mt-4 text-red-400 text-sm hidden"></div>
+                        
+                        <div class="mt-6 text-center">
+                            <p class="text-gray-400 text-sm mb-2">Don't have an account yet?</p>
+                            <button onclick="document.getElementById('authModal').remove(); document.querySelector('#courses').scrollIntoView();" 
+                                    class="text-blue-400 hover:text-blue-300 underline text-sm">
+                                Browse Courses & Purchase
+                            </button>
+                        </div>
                     </div>
                 </div>
             `;
@@ -3055,20 +3474,15 @@ function formatTime(seconds) {
             document.body.insertAdjacentHTML('beforeend', modalHTML);
             
             // Setup modal functionality
-            setupAuthModal();
+            setupStudentLoginModal();
         }
 
-        function setupAuthModal() {
+        function setupStudentLoginModal() {
             const authModal = document.getElementById('authModal');
             const closeBtn = document.getElementById('closeAuthModal');
-            const loginTab = document.getElementById('loginTab');
-            const registerTab = document.getElementById('registerTab');
-            const authForm = document.getElementById('authForm');
-            const registerFields = document.getElementById('registerFields');
-            const authSubmit = document.getElementById('authSubmit');
-            const authError = document.getElementById('authError');
-            
-            let isLoginMode = true;
+            const loginForm = document.getElementById('studentLoginForm');
+            const loginSubmit = document.getElementById('studentLoginSubmit');
+            const loginError = document.getElementById('loginError');
 
             // Show modal
             authModal.classList.add('show');
@@ -3079,95 +3493,56 @@ function formatTime(seconds) {
                 setTimeout(() => authModal.remove(), 300);
             });
 
-            // Tab switching
-            loginTab.addEventListener('click', () => {
-                isLoginMode = true;
-                loginTab.classList.add('bg-blue-600');
-                loginTab.classList.remove('bg-gray-600');
-                registerTab.classList.add('bg-gray-600');
-                registerTab.classList.remove('bg-blue-600');
-                registerFields.style.display = 'none';
-                authSubmit.textContent = 'Login';
-            });
-
-            registerTab.addEventListener('click', () => {
-                isLoginMode = false;
-                registerTab.classList.add('bg-blue-600');
-                registerTab.classList.remove('bg-gray-600');
-                loginTab.classList.add('bg-gray-600');
-                loginTab.classList.remove('bg-blue-600');
-                registerFields.style.display = 'block';
-                authSubmit.textContent = 'Register';
-            });
-
             // Form submission
-            authForm.addEventListener('submit', async (e) => {
+            loginForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
-                authError.classList.add('hidden');
+                loginError.classList.add('hidden');
                 
-                const email = document.getElementById('email').value;
-                const password = document.getElementById('password').value;
+                const email = document.getElementById('studentEmail').value;
+                const password = document.getElementById('studentPassword').value;
                 
                 try {
-                    authSubmit.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Please wait...';
-                    authSubmit.disabled = true;
+                    loginSubmit.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Signing in...';
+                    loginSubmit.disabled = true;
 
-                    if (isLoginMode) {
-                        const response = await api.login(email, password);
-                        currentUser = response.user;
-                    } else {
-                        const fullName = document.getElementById('fullName').value;
-                        const username = document.getElementById('username').value;
-                        
-                        if (!fullName || !username) {
-                            throw new Error('Please fill in all fields');
-                        }
-                        
-                        const response = await api.register({
-                            email,
-                            password,
-                            full_name: fullName,
-                            username
-                        });
-                        currentUser = response.user;
-                    }
+                    const response = await api.login(email, password);
+                    currentUser = response.user;
 
                     updateUIForAuthenticatedUser();
                     authModal.classList.remove('show');
                     setTimeout(() => authModal.remove(), 300);
                     
-                    // Show success message
-                    alert(isLoginMode ? 'Login successful!' : 'Registration successful!');
+                    // Show dashboard
+                    setTimeout(() => showDashboard(), 500);
                     
                 } catch (error) {
-                    authError.textContent = error.message;
-                    authError.classList.remove('hidden');
+                    loginError.textContent = error.message || 'Invalid email or password';
+                    loginError.classList.remove('hidden');
                 } finally {
-                    authSubmit.textContent = isLoginMode ? 'Login' : 'Register';
-                    authSubmit.disabled = false;
+                    loginSubmit.innerHTML = '<i class="fas fa-sign-in-alt mr-2"></i>Access My Courses';
+                    loginSubmit.disabled = false;
                 }
             });
         }
 
-        // Update the existing login button event listener
-        const originalLoginBtn = document.getElementById('loginBtn');
-        if (originalLoginBtn) {
-            // Remove existing event listener and add new one
-            originalLoginBtn.replaceWith(originalLoginBtn.cloneNode(true));
-            const loginBtn = document.getElementById('loginBtn');
-            loginBtn.addEventListener('click', showAuthModal);
+        // Update the admin login button event listener
+        function setupAdminLoginButton() {
+            const adminLoginBtn = document.getElementById('adminLoginBtn');
+            if (adminLoginBtn) {
+                adminLoginBtn.addEventListener('click', showAuthModal);
+            }
         }
 
         // Override DOMContentLoaded to include API initialization
         document.addEventListener('DOMContentLoaded', async function() {
+            // Setup event listeners
+            setupAdminLoginButton();
+            
             // Check authentication status
             await checkAuthStatus();
             
             // Load courses from API
             await loadCourses();
-            
-            // Initialize cart
-            updateCart();
         });
         
     </script>

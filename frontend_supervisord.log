@@ -4,3 +4,7 @@
 2025-08-19 02:21:36,661 INFO supervisord started with pid 5836
 2025-08-19 02:21:37,664 INFO spawned: 'techstep-frontend' with pid 5838
 2025-08-19 02:21:38,745 INFO success: techstep-frontend entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2025-08-19 02:52:00,592 INFO waiting for techstep-frontend to stop
+2025-08-19 02:52:00,594 WARN stopped: techstep-frontend (terminated by SIGTERM)
+2025-08-19 02:52:00,598 INFO spawned: 'techstep-frontend' with pid 9059
+2025-08-19 02:52:01,688 INFO success: techstep-frontend entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)

@@ -4,3 +4,11 @@ Serving directory: /home/user/webapp
 19/Aug/2025 02:21:59 - "GET / HTTP/1.1" 200 -
 19/Aug/2025 02:22:00 - code 404, message File not found
 19/Aug/2025 02:22:00 - "GET /favicon.ico HTTP/1.1" 404 -
+19/Aug/2025 02:25:05 - "GET / HTTP/1.1" 200 -
+19/Aug/2025 02:25:05 - code 404, message File not found
+19/Aug/2025 02:25:05 - "GET /favicon.ico HTTP/1.1" 404 -
+TechStep Frontend Server running at http://0.0.0.0:3000
+Serving directory: /home/user/webapp
+19/Aug/2025 02:52:09 - "GET / HTTP/1.1" 200 -
+19/Aug/2025 02:52:11 - code 404, message File not found
+19/Aug/2025 02:52:11 - "GET /favicon.ico HTTP/1.1" 404 -

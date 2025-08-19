@@ -94,6 +94,10 @@ app.include_router(auth.router, prefix=f"{settings.API_V1_STR}/auth", tags=["Aut
 app.include_router(users.router, prefix=f"{settings.API_V1_STR}/users", tags=["Users"])
 app.include_router(courses.router, prefix=f"{settings.API_V1_STR}/courses", tags=["Courses"])
 
+# Import and include payments router
+from .api.endpoints import payments
+app.include_router(payments.router, prefix=f"{settings.API_V1_STR}/payments", tags=["Payments"])
+
 # Global exception handler
 @app.exception_handler(Exception)
 async def global_exception_handler(request, exc):

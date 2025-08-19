@@ -136,7 +136,7 @@ def confirm_payment(
         
         payment = Payment(
             user_id=user.id,
-            payment_intent_id=payment_intent_id,
+            payment_intent_id=payment_data.payment_intent_id,
             payment_method=PaymentMethod.STRIPE,
             payment_type=payment_type_value,
             status=PaymentStatus.COMPLETED,
@@ -279,6 +279,164 @@ def send_consultation_confirmation_email(email: str, first_name: str, course_tit
     TechStep Team
     =================================
     """)
+
+
+def generate_random_password():
+    """Generate a random password for new users"""
+    return ''.join(secrets.choice(string.ascii_letters + string.digits) for _ in range(12))
+
+
+# NEW ENDPOINTS AS REQUESTED
+
+class PaymentIntentRequest(BaseModel):
+    amount: int  # in cents
+    currency: str = "usd"
+    course_id: int
+    customer_name: str
+    customer_email: str
+    customer_phone: str
+
+class PaymentConfirmRequest(BaseModel):
+    payment_intent_id: str
+    course_id: int
+    customer_name: str
+    customer_email: str
+    customer_phone: str
+    amount: int
+
+@router.post("/create-payment-intent")
+async def create_payment_intent_new(request: PaymentIntentRequest):
+    """
+    Create Stripe payment intent - NEW ENDPOINT
+    """
+    try:
+        intent = stripe.PaymentIntent.create(
+            amount=request.amount,
+            currency=request.currency,
+            metadata={
+                'course_id': request.course_id,
+                'customer_name': request.customer_name,
+                'customer_email': request.customer_email,
+                'customer_phone': request.customer_phone
+            }
+        )
+        return {"client_secret": intent.client_secret}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+@router.post("/confirm-payment")
+async def confirm_payment_new(request: PaymentConfirmRequest, db: Session = Depends(get_db)):
+    """
+    Confirm payment and create user account - NEW ENDPOINT
+    """
+    try:
+        # Verify payment intent was successful
+        intent = stripe.PaymentIntent.retrieve(request.payment_intent_id)
+        
+        if intent.status != 'succeeded':
+            raise HTTPException(status_code=400, detail="Payment not successful")
+        
+        # Check if user already exists
+        existing_user = db.query(User).filter(User.email == request.customer_email).first()
+        
+        if existing_user:
+            user = existing_user
+            new_user_created = False
+        else:
+            # Create user account automatically
+            username = request.customer_email.split('@')[0] + '_' + ''.join(secrets.choice(string.digits) for _ in range(4))
+            random_password = generate_random_password()
+            
+            user = User(
+                email=request.customer_email,
+                username=username,
+                full_name=request.customer_name,
+                phone=request.customer_phone,
+                hashed_password=get_password_hash(random_password),
+                role="student",
+                is_verified=True  # Auto-verify paid users
+            )
+            
+            db.add(user)
+            db.flush()  # Flush to get user ID
+            new_user_created = True
+        
+        # Create payment record
+        payment = Payment(
+            user_id=user.id,
+            payment_intent_id=request.payment_intent_id,
+            payment_method=PaymentMethod.STRIPE,
+            payment_type=PaymentType.COURSE_PURCHASE,
+            status=PaymentStatus.COMPLETED,
+            amount=request.amount / 100,  # Convert from cents
+            currency=request.currency.upper(),
+            description=f"Course purchase: Course ID {request.course_id}",
+            course_id=request.course_id,
+            transaction_fee=0.0,
+            net_amount=request.amount / 100,
+            processed_at=datetime.utcnow()
+        )
+        
+        db.add(payment)
+
+        # Auto-enroll user in the course
+        from ...models.course import CourseEnrollment
+        
+        # Check if already enrolled
+        existing_enrollment = db.query(CourseEnrollment).filter(
+            CourseEnrollment.user_id == user.id,
+            CourseEnrollment.course_id == request.course_id
+        ).first()
+        
+        if not existing_enrollment:
+            enrollment = CourseEnrollment(
+                user_id=user.id,
+                course_id=request.course_id,
+                status="active"
+            )
+            db.add(enrollment)
+            
+            # Update course enrollment count
+            course = db.query(Course).filter(Course.id == request.course_id).first()
+            if course:
+                course.enrollment_count += 1
+        
+        db.commit()
+
+        # Send login credentials via email if new user
+        if new_user_created:
+            # TODO: Implement actual email sending
+            print(f"""
+            === LOGIN CREDENTIALS EMAIL ===
+            To: {request.customer_email}
+            Subject: Welcome to TechStep - Your Login Credentials
+            
+            Dear {request.customer_name},
+            
+            Welcome to TechStep! Your account has been created.
+            
+            Login Details:
+            Email: {request.customer_email}
+            Username: {user.username}
+            Password: {random_password}
+            
+            Login at: {settings.FRONTEND_URL}
+            
+            Best regards,
+            TechStep Team
+            ===============================
+            """)
+        
+        return {
+            "status": "success", 
+            "message": "Payment confirmed and account created",
+            "user_id": user.id,
+            "new_user": new_user_created
+        }
+        
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=400, detail=str(e))
 
 
 @router.get("/")

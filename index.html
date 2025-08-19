@@ -403,7 +403,7 @@
                     <a href="#podcast" class="text-gray-300 hover:text-blue-400 transition duration-300">Podcast</a>
                     <a href="#testimonials" class="text-gray-300 hover:text-blue-400 transition duration-300">Reviews</a>
                     <button id="adminLoginBtn" class="bg-gray-600 text-white px-6 py-2 rounded-lg hover:bg-gray-700 transition duration-300">
-                        <i class="fas fa-lock mr-2"></i>Student Login
+                        <i class="fas fa-lock mr-2"></i>Mentee Login
                     </button>
                 </div>
                 <div class="md:hidden">
@@ -2856,7 +2856,7 @@ function formatTime(seconds) {
         function updateUIForUnauthenticatedUser() {
             const adminLoginBtn = document.getElementById('adminLoginBtn');
             if (adminLoginBtn) {
-                adminLoginBtn.innerHTML = '<i class="fas fa-lock mr-2"></i>Student Login';
+                adminLoginBtn.innerHTML = '<i class="fas fa-lock mr-2"></i>Mentee Login';
                 adminLoginBtn.classList.add('bg-gray-600', 'hover:bg-gray-700');
                 adminLoginBtn.classList.remove('bg-green-600', 'hover:bg-green-700');
             }
@@ -2907,7 +2907,8 @@ function formatTime(seconds) {
                     
                     <div class="flex justify-between items-center mb-4">
                         <div>
-                            <span class="text-2xl font-bold text-blue-400">$${course.price}</span>
+                            <div class="text-sm text-gray-400">Starting at</div>
+                            <span class="text-2xl font-bold text-blue-400">$${course.price.toLocaleString()}</span>
                         </div>
                         <div class="flex items-center text-yellow-400">
                             <i class="fas fa-star mr-1"></i>
@@ -2918,11 +2919,11 @@ function formatTime(seconds) {
                     <div class="space-y-3">
                         <button class="buy-now-btn w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300" 
                                 data-course-id="${course.id}" data-course-title="${course.title}" data-price="${course.price}" data-type="self-paced">
-                            <i class="fas fa-shopping-cart mr-2"></i>Self-Paced Course - $${course.price}
+                            <i class="fas fa-shopping-cart mr-2"></i>Self-Service Course - $${course.price.toLocaleString()}
                         </button>
                         <button class="mentor-btn w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300"
-                                data-course-id="${course.id}" data-course-title="${course.title}" data-price="${(course.price * 1.5).toFixed(2)}" data-type="mentor">
-                            <i class="fas fa-user-tie mr-2"></i>Live Mentor + Course - $${(course.price * 1.5).toFixed(2)}
+                                data-course-id="${course.id}" data-course-title="${course.title}" data-price="4999" data-type="mentor">
+                            <i class="fas fa-user-tie mr-2"></i>Live Mentor + Course - $4,999
                         </button>
                         <div class="text-center">
                             <button class="consultation-btn text-blue-400 hover:text-blue-300 text-sm underline transition duration-300"
@@ -3010,10 +3011,23 @@ function formatTime(seconds) {
         }
 
         // Payment Modal Functions
-        function showPaymentModal(courseId, courseTitle, price, type) {
+        function showPaymentModal(courseId, courseTitle, basePrice, type) {
+            const mentorPrice = 4999;
+            const selfServicePrice = parseInt(basePrice);
+            const finalPrice = type === 'mentor' ? mentorPrice : selfServicePrice;
+            
+            // Calculate payment options with 5% discount for both types
+            const fullPaymentDiscount = Math.round(finalPrice * 0.05);
+            const fullPaymentPrice = finalPrice - fullPaymentDiscount;
+            
+            // Monthly payment structure: larger down payment + 5 equal monthly payments
+            const downPayment = Math.ceil(finalPrice * 0.4); // 40% down payment
+            const monthlyPayment = Math.ceil((finalPrice - downPayment) / 5); // 5 equal monthly payments
+            const totalInstallmentPrice = downPayment + (monthlyPayment * 5);
+            
             const modalHTML = `
                 <div id="paymentModal" class="modal-overlay">
-                    <div class="modal-content max-w-2xl">
+                    <div class="modal-content max-w-4xl">
                         <div class="flex justify-between items-center mb-6">
                             <h2 class="text-2xl font-bold text-white">Complete Your Purchase</h2>
                             <button id="closePaymentModal" class="text-gray-400 hover:text-white">
@@ -3021,42 +3035,182 @@ function formatTime(seconds) {
                             </button>
                         </div>
                         
-                        <div class="bg-gray-800 rounded-lg p-6 mb-6">
-                            <h3 class="text-xl font-bold text-white mb-2">${courseTitle}</h3>
-                            <p class="text-gray-300 mb-4">${type === 'self-paced' ? 'Self-Paced Course' : 'Live Mentor + Course'}</p>
-                            <div class="flex justify-between items-center">
-                                <span class="text-lg text-gray-300">Total:</span>
-                                <span class="text-2xl font-bold text-green-400">$${price}</span>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                            <!-- Left Column: Course & Payment Options -->
+                            <div>
+                                <div class="bg-gray-800 rounded-lg p-6 mb-6">
+                                    <h3 class="text-xl font-bold text-white mb-2">${courseTitle}</h3>
+                                    <p class="text-gray-300 mb-4">
+                                        <i class="fas fa-${type === 'mentor' ? 'user-tie' : 'laptop'} mr-2"></i>
+                                        ${type === 'mentor' ? 'Live Mentor + Course (6 months)' : 'Self-Service Course (6 months)'}
+                                    </p>
+                                    <div class="text-sm text-gray-400">
+                                        • 180+ hours of content
+                                        • Lifetime access to materials
+                                        ${type === 'mentor' ? '• Weekly 1-on-1 mentor sessions\n• Career guidance & support\n• Project reviews & feedback' : '• Self-paced learning\n• Community access\n• Certificate of completion'}
+                                    </div>
+                                </div>
+
+                                <div class="space-y-4 mb-6">
+                                    <h4 class="text-lg font-bold text-white">Choose Payment Option:</h4>
+                                    
+                                    <label class="payment-option-card block p-4 bg-gray-800 rounded-lg border-2 border-transparent hover:border-green-500 cursor-pointer transition-all">
+                                        <input type="radio" name="paymentOption" value="full" class="mr-3" checked>
+                                        <div class="inline-block">
+                                            <div class="flex items-center">
+                                                <span class="text-white font-semibold">Full Payment (Save 5%)</span>
+                                                <span class="ml-2 bg-green-600 text-white px-2 py-1 rounded text-xs">BEST VALUE</span>
+                                            </div>
+                                            <div class="text-gray-400 text-sm">
+                                                <span class="line-through">$${finalPrice.toLocaleString()}</span> 
+                                                <span class="text-green-400 font-bold text-lg ml-2">$${fullPaymentPrice.toLocaleString()}</span>
+                                                <span class="text-green-400 ml-2">(Save $${fullPaymentDiscount})</span>
+                                            </div>
+                                        </div>
+                                    </label>
+                                    
+                                    <label class="payment-option-card block p-4 bg-gray-800 rounded-lg border-2 border-transparent hover:border-blue-500 cursor-pointer transition-all">
+                                        <input type="radio" name="paymentOption" value="installments" class="mr-3">
+                                        <div class="inline-block">
+                                            <div class="text-white font-semibold">6 Monthly Payments</div>
+                                            <div class="text-gray-400 text-sm">
+                                                <div class="mb-1">
+                                                    <span class="text-blue-400 font-bold">Down Payment: $${downPayment.toLocaleString()}</span>
+                                                </div>
+                                                <div>
+                                                    <span class="text-blue-400 font-bold">$${monthlyPayment.toLocaleString()}</span>
+                                                    <span class="ml-1">/month x 5 months</span>
+                                                </div>
+                                                <div class="text-xs text-gray-500 mt-1">
+                                                    Total: $${totalInstallmentPrice.toLocaleString()}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </label>
+                                </div>
+                                
+                                <!-- Discount Options -->
+                                <div class="space-y-4 mb-6">
+                                    <h4 class="text-lg font-bold text-white">Special Discounts:</h4>
+                                    
+                                    <div class="grid grid-cols-1 gap-3">
+                                        <label class="discount-option flex items-center p-3 bg-gray-800 rounded-lg border border-gray-600 hover:border-purple-500 cursor-pointer transition-all">
+                                            <input type="checkbox" id="siblingDiscount" class="mr-3">
+                                            <div class="flex-1">
+                                                <span class="text-white font-semibold">Sibling Discount (10% off)</span>
+                                                <div class="text-gray-400 text-sm">Family member already enrolled</div>
+                                            </div>
+                                            <span class="text-purple-400 font-bold">-10%</span>
+                                        </label>
+                                        
+                                        <label class="discount-option flex items-center p-3 bg-gray-800 rounded-lg border border-gray-600 hover:border-orange-500 cursor-pointer transition-all">
+                                            <input type="checkbox" id="groupDiscount" class="mr-3">
+                                            <div class="flex-1">
+                                                <span class="text-white font-semibold">Group of 3 Discount (15% off)</span>
+                                                <div class="text-gray-400 text-sm">Enrolling with 2 friends/colleagues</div>
+                                            </div>
+                                            <span class="text-orange-400 font-bold">-15%</span>
+                                        </label>
+                                    </div>
+                                    
+                                    <div id="siblingInfo" class="hidden bg-purple-900 p-3 rounded-lg">
+                                        <input type="email" id="siblingEmail" placeholder="Sibling's email address" 
+                                               class="w-full p-2 rounded bg-gray-700 text-white border border-gray-600 focus:border-purple-500 focus:outline-none">
+                                        <div class="text-xs text-gray-400 mt-1">We'll verify enrollment to apply the discount</div>
+                                    </div>
+                                    
+                                    <div id="groupInfo" class="hidden bg-orange-900 p-3 rounded-lg space-y-2">
+                                        <input type="email" id="groupMember1" placeholder="Friend 1 email address" 
+                                               class="w-full p-2 rounded bg-gray-700 text-white border border-gray-600 focus:border-orange-500 focus:outline-none">
+                                        <input type="email" id="groupMember2" placeholder="Friend 2 email address" 
+                                               class="w-full p-2 rounded bg-gray-700 text-white border border-gray-600 focus:border-orange-500 focus:outline-none">
+                                        <div class="text-xs text-gray-400">All 3 must enroll within 48 hours to qualify</div>
+                                    </div>
+                                </div>
+
+                                <div class="bg-blue-900 rounded-lg p-4 mb-6">
+                                    <div class="flex items-center mb-2">
+                                        <i class="fas fa-file-contract text-blue-400 mr-2"></i>
+                                        <span class="text-white font-semibold">Mentee Agreement</span>
+                                    </div>
+                                    <button id="viewAgreement" class="text-blue-300 hover:text-blue-200 underline text-sm">
+                                        Click to read full terms and conditions
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Right Column: Payment Summary & Form -->
+                            <div>
+                                <div class="bg-gray-800 rounded-lg p-6 mb-6">
+                                    <h4 class="text-lg font-bold text-white mb-4">Payment Summary</h4>
+                                    <div id="paymentSummary">
+                                        <div class="flex justify-between items-center mb-2">
+                                            <span class="text-gray-300">Course Fee:</span>
+                                            <span class="text-white">$${finalPrice.toLocaleString()}</span>
+                                        </div>
+                                        <div class="flex justify-between items-center mb-2" id="discountRow">
+                                            <span class="text-gray-300">Full Payment Discount (5%):</span>
+                                            <span class="text-green-400">-$${fullPaymentDiscount}</span>
+                                        </div>
+                                        <div class="flex justify-between items-center mb-2 hidden" id="siblingDiscountRow">
+                                            <span class="text-gray-300">Sibling Discount (10%):</span>
+                                            <span class="text-purple-400" id="siblingDiscountAmount">-$0</span>
+                                        </div>
+                                        <div class="flex justify-between items-center mb-2 hidden" id="groupDiscountRow">
+                                            <span class="text-gray-300">Group Discount (15%):</span>
+                                            <span class="text-orange-400" id="groupDiscountAmount">-$0</span>
+                                        </div>
+                                        <div class="flex justify-between items-center mb-2" id="paymentPlanRow">
+                                            <span class="text-gray-300" id="paymentPlanLabel">Payment Plan:</span>
+                                            <span class="text-blue-400" id="paymentPlanDetails">Full Payment</span>
+                                        </div>
+                                        <hr class="border-gray-600 my-3">
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-lg font-bold text-white">Total Due Today:</span>
+                                            <span id="totalAmount" class="text-2xl font-bold text-green-400">$${fullPaymentPrice.toLocaleString()}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <form id="paymentForm" class="space-y-4">
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <input type="text" id="firstName" placeholder="First Name" required 
+                                               class="w-full p-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:border-blue-500 focus:outline-none">
+                                        <input type="text" id="lastName" placeholder="Last Name" required 
+                                               class="w-full p-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:border-blue-500 focus:outline-none">
+                                    </div>
+                                    
+                                    <input type="email" id="customerEmail" placeholder="Email Address" required 
+                                           class="w-full p-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:border-blue-500 focus:outline-none">
+                                    
+                                    <div id="card-element" class="p-4 border border-gray-600 rounded-lg bg-gray-700">
+                                        <!-- Stripe Elements will create form elements here -->
+                                    </div>
+                                    
+                                    <div id="card-errors" class="text-red-400 text-sm hidden"></div>
+                                    
+                                    <label class="flex items-start space-x-3 mb-4">
+                                        <input type="checkbox" id="agreementCheck" required class="mt-1">
+                                        <span class="text-sm text-gray-300">
+                                            I have read and agree to the 
+                                            <button type="button" id="agreementLink" class="text-blue-400 hover:text-blue-300 underline">
+                                                Mentee Agreement and Terms of Service
+                                            </button>
+                                        </span>
+                                    </label>
+                                    
+                                    <button type="submit" id="paymentSubmit" 
+                                            class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-6 rounded-lg transition duration-300">
+                                        <i class="fas fa-lock mr-2"></i>Complete Payment - $${fullPaymentPrice.toLocaleString()}
+                                    </button>
+                                    
+                                    <p class="text-xs text-gray-400 text-center">
+                                        <i class="fas fa-shield-alt mr-1"></i>
+                                        Your payment is secured by Stripe. After payment, you'll receive login credentials via email.
+                                    </p>
+                                </form>
                             </div>
                         </div>
-
-                        <form id="paymentForm" class="space-y-4">
-                            <div class="grid grid-cols-2 gap-4">
-                                <input type="text" id="firstName" placeholder="First Name" required 
-                                       class="w-full p-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:border-blue-500 focus:outline-none">
-                                <input type="text" id="lastName" placeholder="Last Name" required 
-                                       class="w-full p-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:border-blue-500 focus:outline-none">
-                            </div>
-                            
-                            <input type="email" id="customerEmail" placeholder="Email Address" required 
-                                   class="w-full p-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:border-blue-500 focus:outline-none">
-                            
-                            <div id="card-element" class="p-3 border border-gray-600 rounded-lg bg-gray-700">
-                                <!-- Stripe Elements will create form elements here -->
-                            </div>
-                            
-                            <div id="card-errors" class="text-red-400 text-sm hidden"></div>
-                            
-                            <button type="submit" id="paymentSubmit" 
-                                    class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-6 rounded-lg transition duration-300">
-                                <i class="fas fa-lock mr-2"></i>Complete Payment - $${price}
-                            </button>
-                            
-                            <p class="text-xs text-gray-400 text-center">
-                                <i class="fas fa-shield-alt mr-1"></i>
-                                Your payment is secured by Stripe. After payment, you'll receive login credentials via email.
-                            </p>
-                        </form>
                     </div>
                 </div>
             `;
@@ -3066,13 +3220,17 @@ function formatTime(seconds) {
             if (existingModal) existingModal.remove();
 
             document.body.insertAdjacentHTML('beforeend', modalHTML);
-            setupPaymentModal(courseId, courseTitle, price, type);
+            setupPaymentModal(courseId, courseTitle, finalPrice, type, fullPaymentPrice, downPayment, monthlyPayment, totalInstallmentPrice);
         }
 
-        function setupPaymentModal(courseId, courseTitle, price, type) {
+        function setupPaymentModal(courseId, courseTitle, basePrice, type, fullPaymentPrice, downPayment, monthlyPayment, totalInstallmentPrice) {
             const paymentModal = document.getElementById('paymentModal');
             const closeBtn = document.getElementById('closePaymentModal');
             const paymentForm = document.getElementById('paymentForm');
+            let currentAmount = fullPaymentPrice;
+            let appliedDiscounts = { sibling: false, group: false };
+            let originalFullPrice = fullPaymentPrice;
+            let originalDownPayment = downPayment;
             
             // Show modal
             paymentModal.classList.add('show');
@@ -3081,6 +3239,118 @@ function formatTime(seconds) {
             closeBtn.addEventListener('click', () => {
                 paymentModal.classList.remove('show');
                 setTimeout(() => paymentModal.remove(), 300);
+            });
+
+            // Update payment calculations
+            function updatePaymentCalculations() {
+                let finalFullPrice = originalFullPrice;
+                let finalDownPayment = originalDownPayment;
+                
+                // Apply additional discounts
+                if (appliedDiscounts.sibling) {
+                    finalFullPrice *= 0.9; // 10% off
+                    finalDownPayment *= 0.9;
+                }
+                if (appliedDiscounts.group) {
+                    finalFullPrice *= 0.85; // 15% off
+                    finalDownPayment *= 0.85;
+                }
+                
+                finalFullPrice = Math.round(finalFullPrice);
+                finalDownPayment = Math.round(finalDownPayment);
+                
+                const discountRow = document.getElementById('discountRow');
+                const siblingDiscountRow = document.getElementById('siblingDiscountRow');
+                const groupDiscountRow = document.getElementById('groupDiscountRow');
+                const totalAmount = document.getElementById('totalAmount');
+                const submitBtn = document.getElementById('paymentSubmit');
+                const paymentPlanDetails = document.getElementById('paymentPlanDetails');
+                
+                // Update discount displays
+                if (appliedDiscounts.sibling) {
+                    const siblingDiscount = Math.round(originalFullPrice * 0.1);
+                    document.getElementById('siblingDiscountAmount').textContent = `-$${siblingDiscount.toLocaleString()}`;
+                    siblingDiscountRow.classList.remove('hidden');
+                } else {
+                    siblingDiscountRow.classList.add('hidden');
+                }
+                
+                if (appliedDiscounts.group) {
+                    const groupDiscount = Math.round(originalFullPrice * 0.15);
+                    document.getElementById('groupDiscountAmount').textContent = `-$${groupDiscount.toLocaleString()}`;
+                    groupDiscountRow.classList.remove('hidden');
+                } else {
+                    groupDiscountRow.classList.add('hidden');
+                }
+                
+                // Check which payment option is selected
+                const selectedPaymentOption = document.querySelector('input[name="paymentOption"]:checked')?.value;
+                
+                if (selectedPaymentOption === 'full') {
+                    currentAmount = finalFullPrice;
+                    discountRow.style.display = 'flex';
+                    paymentPlanDetails.textContent = 'Full Payment';
+                    totalAmount.textContent = `$${finalFullPrice.toLocaleString()}`;
+                    submitBtn.innerHTML = `<i class="fas fa-lock mr-2"></i>Complete Payment - $${finalFullPrice.toLocaleString()}`;
+                } else {
+                    currentAmount = finalDownPayment;
+                    discountRow.style.display = 'none';
+                    const adjustedMonthlyPayment = Math.round((finalFullPrice - finalDownPayment) / 5);
+                    paymentPlanDetails.innerHTML = `Down Payment Today<br><span class="text-xs">Then $${adjustedMonthlyPayment.toLocaleString()}/month x 5</span>`;
+                    totalAmount.textContent = `$${finalDownPayment.toLocaleString()}`;
+                    submitBtn.innerHTML = `<i class="fas fa-lock mr-2"></i>Pay Down Payment - $${finalDownPayment.toLocaleString()}`;
+                }
+            }
+
+            // Handle payment option changes
+            const paymentOptions = document.querySelectorAll('input[name="paymentOption"]');
+            paymentOptions.forEach(option => {
+                option.addEventListener('change', updatePaymentCalculations);
+            });
+            
+            // Handle discount options
+            const siblingDiscount = document.getElementById('siblingDiscount');
+            const groupDiscount = document.getElementById('groupDiscount');
+            const siblingInfo = document.getElementById('siblingInfo');
+            const groupInfo = document.getElementById('groupInfo');
+            
+            siblingDiscount.addEventListener('change', function() {
+                appliedDiscounts.sibling = this.checked;
+                if (this.checked) {
+                    siblingInfo.classList.remove('hidden');
+                    groupDiscount.checked = false; // Can't combine with group discount
+                    appliedDiscounts.group = false;
+                    groupInfo.classList.add('hidden');
+                } else {
+                    siblingInfo.classList.add('hidden');
+                }
+                updatePaymentCalculations();
+            });
+            
+            groupDiscount.addEventListener('change', function() {
+                appliedDiscounts.group = this.checked;
+                if (this.checked) {
+                    groupInfo.classList.remove('hidden');
+                    siblingDiscount.checked = false; // Can't combine with sibling discount
+                    appliedDiscounts.sibling = false;
+                    siblingInfo.classList.add('hidden');
+                } else {
+                    groupInfo.classList.add('hidden');
+                }
+                updatePaymentCalculations();
+            });
+            
+            // Initial calculation
+            updatePaymentCalculations();
+
+            // Handle agreement viewing
+            const viewAgreementBtn = document.getElementById('viewAgreement');
+            const agreementLink = document.getElementById('agreementLink');
+            
+            [viewAgreementBtn, agreementLink].forEach(btn => {
+                if (btn) {
+                    btn.addEventListener('click', showMenteeAgreement);
+                }
             });
 
             // Initialize Stripe Elements
@@ -3108,18 +3378,29 @@ function formatTime(seconds) {
                 
                 const submitBtn = document.getElementById('paymentSubmit');
                 const cardErrors = document.getElementById('card-errors');
+                const agreementCheck = document.getElementById('agreementCheck');
+                
+                if (!agreementCheck.checked) {
+                    cardErrors.textContent = 'Please read and accept the mentee agreement to continue.';
+                    cardErrors.classList.remove('hidden');
+                    return;
+                }
                 
                 submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Processing...';
                 submitBtn.disabled = true;
                 cardErrors.classList.add('hidden');
 
                 try {
+                    const selectedPaymentOption = type === 'mentor' ? 
+                        document.querySelector('input[name="paymentOption"]:checked').value : 'full';
+                    
                     // Create payment intent
                     const paymentIntentResponse = await api.createPaymentIntent({
                         course_id: parseInt(courseId),
-                        amount: Math.round(parseFloat(price) * 100), // Convert to cents
+                        amount: Math.round(currentAmount * 100), // Convert to cents
                         currency: 'usd',
                         payment_type: type,
+                        payment_option: selectedPaymentOption,
                         customer_info: {
                             first_name: document.getElementById('firstName').value,
                             last_name: document.getElementById('lastName').value,
@@ -3142,20 +3423,155 @@ function formatTime(seconds) {
                         throw new Error(error.message);
                     } else {
                         // Payment successful!
-                        showPaymentSuccess(courseTitle, document.getElementById('customerEmail').value);
+                        showPaymentSuccess(courseTitle, document.getElementById('customerEmail').value, selectedPaymentOption);
                     }
 
                 } catch (error) {
                     cardErrors.textContent = error.message;
                     cardErrors.classList.remove('hidden');
                 } finally {
-                    submitBtn.innerHTML = `<i class="fas fa-lock mr-2"></i>Complete Payment - $${price}`;
+                    const selectedOption = type === 'mentor' ? document.querySelector('input[name="paymentOption"]:checked').value : 'full';
+                    const btnText = selectedOption === 'installments' ? 
+                        `<i class="fas fa-lock mr-2"></i>Complete First Payment - $${installmentPrice.toLocaleString()}` :
+                        `<i class="fas fa-lock mr-2"></i>Complete Payment - $${currentAmount.toLocaleString()}`;
+                    submitBtn.innerHTML = btnText;
                     submitBtn.disabled = false;
                 }
             });
         }
 
-        function showPaymentSuccess(courseTitle, email) {
+        function showMenteeAgreement() {
+            const agreementHTML = `
+                <div id="agreementModal" class="modal-overlay show">
+                    <div class="modal-content max-w-4xl max-h-[90vh] overflow-y-auto">
+                        <div class="flex justify-between items-center mb-6 sticky top-0 bg-gray-800 p-4 -m-4 mb-4">
+                            <h2 class="text-2xl font-bold text-white">TechStep Mentee Agreement</h2>
+                            <button id="closeAgreementModal" class="text-gray-400 hover:text-white">
+                                <i class="fas fa-times text-xl"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="text-gray-300 space-y-4 text-sm leading-relaxed">
+                            <h3 class="text-lg font-bold text-white">1. Program Overview</h3>
+                            <p>The TechStep Cybersecurity Training Program ("Program") is a comprehensive 6-month educational experience designed to provide mentees with practical cybersecurity skills and knowledge. The Program includes course materials, live instruction, and one-on-one mentorship sessions.</p>
+                            
+                            <h3 class="text-lg font-bold text-white">2. Mentee Responsibilities</h3>
+                            <ul class="list-disc list-inside space-y-2">
+                                <li>Attend scheduled mentorship sessions as agreed upon with your assigned mentor</li>
+                                <li>Complete assigned coursework and projects within the specified timeframes</li>
+                                <li>Actively participate in learning activities and provide feedback when requested</li>
+                                <li>Maintain professional conduct during all interactions with mentors and staff</li>
+                                <li>Respect intellectual property rights of all course materials and content</li>
+                            </ul>
+                            
+                            <h3 class="text-lg font-bold text-white">3. Mentor Commitment</h3>
+                            <ul class="list-disc list-inside space-y-2">
+                                <li>Provide weekly one-on-one mentorship sessions (minimum 1 hour per week)</li>
+                                <li>Review and provide feedback on projects and assignments</li>
+                                <li>Offer career guidance and industry insights</li>
+                                <li>Respond to questions and concerns within 48 hours during business days</li>
+                                <li>Maintain professional standards and confidentiality</li>
+                            </ul>
+                            
+                            <h3 class="text-lg font-bold text-white">4. Payment Terms</h3>
+                            <ul class="list-disc list-inside space-y-2">
+                                <li><strong>Full Payment:</strong> 5% discount when paid in full upfront</li>
+                                <li><strong>Installment Plan:</strong> 3 equal monthly payments (no additional fees)</li>
+                                <li>All payments are processed securely through Stripe</li>
+                                <li>Refund policy applies as outlined in Section 6</li>
+                            </ul>
+                            
+                            <h3 class="text-lg font-bold text-white">5. Access and Materials</h3>
+                            <p>Upon successful payment, mentees receive:</p>
+                            <ul class="list-disc list-inside space-y-2">
+                                <li>Immediate access to all course materials and video content</li>
+                                <li>Lifetime access to course materials (even after program completion)</li>
+                                <li>Access to private mentee community and resources</li>
+                                <li>Certificate of completion upon successful program completion</li>
+                                <li>Job placement assistance and career guidance</li>
+                            </ul>
+                            
+                            <h3 class="text-lg font-bold text-white">6. Refund Policy</h3>
+                            <ul class="list-disc list-inside space-y-2">
+                                <li><strong>7-Day Money-Back Guarantee:</strong> Full refund if requested within 7 days of purchase</li>
+                                <li><strong>No refunds after 7 days:</strong> All sales are final after the 7-day grace period</li>
+                                <li>Installment plan refunds: If cancelled within 7 days, remaining payments will be cancelled and completed payments refunded</li>
+                                <li>Refund processing takes 5-10 business days</li>
+                                <li><strong>Important:</strong> Please ensure this program meets your needs before the 7-day period expires</li>
+                            </ul>
+                            
+                            <h3 class="text-lg font-bold text-white">7. Intellectual Property</h3>
+                            <p>All course materials, content, and resources are proprietary to TechStep and protected by copyright. Mentees may not:</p>
+                            <ul class="list-disc list-inside space-y-2">
+                                <li>Share, distribute, or resell course materials</li>
+                                <li>Record or screenshot course content without permission</li>
+                                <li>Use materials for commercial purposes outside of personal learning</li>
+                            </ul>
+                            
+                            <h3 class="text-lg font-bold text-white">8. Privacy and Confidentiality</h3>
+                            <ul class="list-disc list-inside space-y-2">
+                                <li>Personal information is protected according to our Privacy Policy</li>
+                                <li>Mentorship sessions may be recorded for quality assurance (with consent)</li>
+                                <li>Mentees consent to use of anonymized success stories for marketing purposes</li>
+                            </ul>
+                            
+                            <h3 class="text-lg font-bold text-white">9. Program Completion</h3>
+                            <p>To receive a certificate of completion, mentees must:</p>
+                            <ul class="list-disc list-inside space-y-2">
+                                <li>Complete all required coursework and projects</li>
+                                <li>Attend minimum 80% of scheduled mentorship sessions</li>
+                                <li>Pass final assessment with a score of 80% or higher</li>
+                                <li>Submit final capstone project for review</li>
+                            </ul>
+                            
+                            <h3 class="text-lg font-bold text-white">10. Limitation of Liability</h3>
+                            <p>TechStep provides educational services and career guidance but cannot guarantee specific job outcomes or salary increases. Our liability is limited to the amount paid for the program.</p>
+                            
+                            <h3 class="text-lg font-bold text-white">11. Contact Information</h3>
+                            <p>For questions about this agreement or the program:</p>
+                            <ul class="list-disc list-inside space-y-2">
+                                <li>Email: support@techstep.com</li>
+                                <li>Phone: 1-800-TECHSTEP</li>
+                                <li>Business Hours: Monday-Friday, 9 AM - 6 PM EST</li>
+                            </ul>
+                            
+                            <div class="bg-blue-900 rounded-lg p-4 mt-8">
+                                <p class="text-blue-200 text-sm">
+                                    <i class="fas fa-info-circle mr-2"></i>
+                                    By proceeding with payment, you acknowledge that you have read, understood, and agree to be bound by these terms and conditions.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-center mt-8">
+                            <button id="acceptAgreement" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg transition duration-300">
+                                <i class="fas fa-check mr-2"></i>I Understand and Accept
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', agreementHTML);
+            
+            const agreementModal = document.getElementById('agreementModal');
+            const closeBtn = document.getElementById('closeAgreementModal');
+            const acceptBtn = document.getElementById('acceptAgreement');
+            
+            closeBtn.addEventListener('click', () => {
+                agreementModal.remove();
+            });
+            
+            acceptBtn.addEventListener('click', () => {
+                const agreementCheck = document.getElementById('agreementCheck');
+                if (agreementCheck) {
+                    agreementCheck.checked = true;
+                }
+                agreementModal.remove();
+            });
+        }
+
+        function showPaymentSuccess(courseTitle, email, paymentOption = 'full') {
             const successHTML = `
                 <div id="successModal" class="modal-overlay show">
                     <div class="modal-content max-w-md text-center">
@@ -3426,7 +3842,7 @@ function formatTime(seconds) {
                 <div id="authModal" class="modal-overlay">
                     <div class="modal-content max-w-md">
                         <div class="flex justify-between items-center mb-6">
-                            <h2 class="text-2xl font-bold text-white">Student Login</h2>
+                            <h2 class="text-2xl font-bold text-white">Mentee Login</h2>
                             <button id="closeAuthModal" class="text-gray-400 hover:text-white">
                                 <i class="fas fa-times text-xl"></i>
                             </button>
@@ -3435,7 +3851,7 @@ function formatTime(seconds) {
                         <div class="bg-blue-900 rounded-lg p-4 mb-6">
                             <p class="text-blue-200 text-sm">
                                 <i class="fas fa-info-circle mr-2"></i>
-                                This login is for existing customers who have already purchased courses.
+                                This login is for existing mentees who have already purchased courses.
                             </p>
                         </div>
                         
@@ -3533,6 +3949,216 @@ function formatTime(seconds) {
             }
         }
 
+        // Chatbot functionality
+        let chatbotVisible = false;
+        let chatbotTimeout;
+        
+        function createChatbot() {
+            if (chatbotVisible) return;
+            
+            const chatbotHTML = `
+                <div id="chatbot-container" class="fixed bottom-6 right-6 z-50">
+                    <!-- Chat bubble that appears first -->
+                    <div id="chat-bubble" class="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-lg mb-3 max-w-xs animate-pulse">
+                        <div class="text-sm">
+                            Hi! I'm Sarah, a cybersecurity mentor. Need help choosing the right course for your career goals? 👋
+                        </div>
+                        <div class="text-xs text-blue-200 mt-1">Click to chat with me!</div>
+                    </div>
+                    
+                    <!-- Chat button -->
+                    <button id="chat-button" class="bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-lg transition-all duration-300 transform hover:scale-110">
+                        <i class="fas fa-comments text-xl"></i>
+                    </button>
+                    
+                    <!-- Chat window (initially hidden) -->
+                    <div id="chat-window" class="hidden absolute bottom-16 right-0 w-80 bg-white rounded-lg shadow-2xl border border-gray-300">
+                        <div class="bg-blue-600 text-white p-4 rounded-t-lg flex justify-between items-center">
+                            <div class="flex items-center">
+                                <img src="https://www.shutterstock.com/image-photo/happy-attractive-indian-woman-looking-260nw-2449701411.jpg" 
+                                     alt="Sarah" class="w-8 h-8 rounded-full mr-2 object-cover">
+                                <div>
+                                    <div class="font-semibold">Sarah Martinez</div>
+                                    <div class="text-xs text-blue-200">Cybersecurity Mentor</div>
+                                </div>
+                            </div>
+                            <button id="close-chat" class="text-white hover:text-gray-200">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="p-4 space-y-3 max-h-64 overflow-y-auto" id="chat-messages">
+                            <div class="flex items-start space-x-2">
+                                <img src="https://www.shutterstock.com/image-photo/happy-attractive-indian-woman-looking-260nw-2449701411.jpg" 
+                                     alt="Sarah" class="w-6 h-6 rounded-full object-cover">
+                                <div class="bg-gray-100 rounded-lg p-2 text-sm text-gray-800">
+                                    Hi there! I'm Sarah, and I've helped over 200 professionals transition into cybersecurity. What's your current background and what are your career goals?
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="p-3 border-t border-gray-200">
+                            <div class="flex space-x-2">
+                                <input type="text" id="chat-input" placeholder="Type your question..." 
+                                       class="flex-1 p-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-blue-500">
+                                <button id="send-message" class="bg-blue-600 text-white px-3 py-2 rounded-lg hover:bg-blue-700">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </div>
+                            <div class="text-xs text-gray-500 mt-2">
+                                <i class="fas fa-envelope mr-1"></i>
+                                Need detailed help? We'll connect you with our team at support@techstepfoundation.org
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', chatbotHTML);
+            
+            const chatButton = document.getElementById('chat-button');
+            const chatBubble = document.getElementById('chat-bubble');
+            const chatWindow = document.getElementById('chat-window');
+            const closeChat = document.getElementById('close-chat');
+            const chatInput = document.getElementById('chat-input');
+            const sendButton = document.getElementById('send-message');
+            const chatMessages = document.getElementById('chat-messages');
+            
+            chatbotVisible = true;
+            
+            // Hide bubble after 10 seconds
+            setTimeout(() => {
+                if (chatBubble) chatBubble.style.display = 'none';
+            }, 10000);
+            
+            // Chat button click
+            [chatButton, chatBubble].forEach(element => {
+                if (element) {
+                    element.addEventListener('click', () => {
+                        chatWindow.classList.toggle('hidden');
+                        if (chatBubble) chatBubble.style.display = 'none';
+                        if (!chatWindow.classList.contains('hidden')) {
+                            chatInput.focus();
+                        }
+                    });
+                }
+            });
+            
+            // Close chat
+            closeChat.addEventListener('click', () => {
+                chatWindow.classList.add('hidden');
+            });
+            
+            // Send message
+            function sendMessage() {
+                const message = chatInput.value.trim();
+                if (!message) return;
+                
+                // Add user message
+                const userMessageHTML = `
+                    <div class="flex items-start space-x-2 justify-end">
+                        <div class="bg-blue-600 text-white rounded-lg p-2 text-sm max-w-xs">
+                            ${message}
+                        </div>
+                        <div class="w-6 h-6 bg-gray-400 rounded-full flex items-center justify-center">
+                            <i class="fas fa-user text-white text-xs"></i>
+                        </div>
+                    </div>
+                `;
+                chatMessages.insertAdjacentHTML('beforeend', userMessageHTML);
+                
+                chatInput.value = '';
+                
+                // Auto-response based on keywords
+                setTimeout(() => {
+                    let response = '';
+                    const msg = message.toLowerCase();
+                    
+                    if (msg.includes('price') || msg.includes('cost') || msg.includes('payment')) {
+                        response = "Great question! Our programs are $2,499 for self-service and $4,999 for mentor-guided. We offer 5% discount for full payment or monthly installments. Plus, we have sibling and group discounts available!";
+                    } else if (msg.includes('beginner') || msg.includes('experience') || msg.includes('background')) {
+                        response = "No worries about experience level! Our programs are designed for all backgrounds. Whether you're in IT, finance, or completely new to tech, we'll help you transition into cybersecurity. What's your current role?";
+                    } else if (msg.includes('job') || msg.includes('career') || msg.includes('salary')) {
+                        response = "Excellent! Our graduates typically see 40-80% salary increases. The cybersecurity field has over 3.5 million open positions globally. With 6 months of intensive training and mentorship, you'll be job-ready!";
+                    } else if (msg.includes('mentor') || msg.includes('support')) {
+                        response = "Our mentors are industry professionals with 10+ years experience. You get weekly 1-on-1 sessions, project reviews, and career guidance. It's like having a senior cybersecurity professional as your personal coach!";
+                    } else if (msg.includes('time') || msg.includes('schedule') || msg.includes('hours')) {
+                        response = "The program is designed to fit your schedule! It's 180+ hours of content over 6 months - about 7-10 hours per week. Most students do evenings and weekends. Our mentors work around your availability.";
+                    } else {
+                        response = "That's a great question! I'd love to give you a detailed answer. Let me connect you with our team who can provide specific guidance. Would you like me to have someone contact you at your email?";
+                    }
+                    
+                    const botMessageHTML = `
+                        <div class="flex items-start space-x-2">
+                            <img src="https://www.shutterstock.com/image-photo/happy-attractive-indian-woman-looking-260nw-2449701411.jpg" 
+                                 alt="Sarah" class="w-6 h-6 rounded-full object-cover">
+                            <div class="bg-gray-100 rounded-lg p-2 text-sm text-gray-800 max-w-xs">
+                                ${response}
+                            </div>
+                        </div>
+                    `;
+                    chatMessages.insertAdjacentHTML('beforeend', botMessageHTML);
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                    
+                    // Collect contact info
+                    setTimeout(() => {
+                        const contactHTML = `
+                            <div class="flex items-start space-x-2">
+                                <img src="https://www.shutterstock.com/image-photo/happy-attractive-indian-woman-looking-260nw-2449701411.jpg" 
+                                     alt="Sarah" class="w-6 h-6 rounded-full object-cover">
+                                <div class="bg-gray-100 rounded-lg p-2 text-sm text-gray-800 max-w-xs">
+                                    <div class="mb-2">Can I get your email so our team can follow up with personalized guidance?</div>
+                                    <input type="email" id="visitor-email" placeholder="your@email.com" 
+                                           class="w-full p-1 border border-gray-300 rounded text-xs">
+                                    <button onclick="collectVisitorInfo()" class="bg-blue-600 text-white px-2 py-1 rounded text-xs mt-1">
+                                        Send to Team
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                        chatMessages.insertAdjacentHTML('beforeend', contactHTML);
+                        chatMessages.scrollTop = chatMessages.scrollHeight;
+                    }, 2000);
+                }, 1000);
+                
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+            
+            sendButton.addEventListener('click', sendMessage);
+            chatInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') sendMessage();
+            });
+        }
+        
+        // Collect visitor information
+        window.collectVisitorInfo = function() {
+            const email = document.getElementById('visitor-email').value;
+            if (!email || !email.includes('@')) {
+                alert('Please enter a valid email address');
+                return;
+            }
+            
+            // Send to support email (in real implementation, this would be an API call)
+            console.log('Sending visitor info to support@techstepfoundation.org:', {
+                email: email,
+                timestamp: new Date().toISOString(),
+                page: window.location.href,
+                userAgent: navigator.userAgent
+            });
+            
+            const confirmationHTML = `
+                <div class="flex items-start space-x-2">
+                    <img src="https://www.shutterstock.com/image-photo/happy-attractive-indian-woman-looking-260nw-2449701411.jpg" 
+                         alt="Sarah" class="w-6 h-6 rounded-full object-cover">
+                    <div class="bg-green-100 rounded-lg p-2 text-sm text-green-800 max-w-xs">
+                        Perfect! I've sent your info to our team. You'll hear from us within 24 hours with personalized course recommendations. Thanks for your interest! 🎉
+                    </div>
+                </div>
+            `;
+            document.getElementById('chat-messages').insertAdjacentHTML('beforeend', confirmationHTML);
+            document.getElementById('chat-messages').scrollTop = document.getElementById('chat-messages').scrollHeight;
+        }
+
         // Override DOMContentLoaded to include API initialization
         document.addEventListener('DOMContentLoaded', async function() {
             // Setup event listeners
@@ -3543,6 +4169,9 @@ function formatTime(seconds) {
             
             // Load courses from API
             await loadCourses();
+            
+            // Show chatbot after 30 seconds
+            chatbotTimeout = setTimeout(createChatbot, 30000);
         });
         
     </script>

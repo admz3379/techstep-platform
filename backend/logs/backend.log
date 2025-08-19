@@ -119,3 +119,12 @@ INFO:     10.12.29.52:58742 - "GET /api/v1/courses HTTP/1.1" 307 Temporary Redir
 INFO:     10.12.29.52:58742 - "GET /api/v1/courses HTTP/1.1" 307 Temporary Redirect
 INFO:     10.12.29.52:58742 - "GET /health HTTP/1.1" 200 OK
 INFO:     10.12.29.52:44646 - "GET /api/v1/courses HTTP/1.1" 307 Temporary Redirect
+INFO:     10.12.29.52:53932 - "OPTIONS /api/v1/courses/ HTTP/1.1" 200 OK
+INFO:     10.12.29.52:53932 - "GET /api/v1/courses/ HTTP/1.1" 200 OK
+INFO:     10.12.29.52:44006 - "OPTIONS /api/v1/courses/ HTTP/1.1" 200 OK
+INFO:     10.12.29.52:44006 - "GET /api/v1/courses/ HTTP/1.1" 200 OK
+INFO:     10.12.29.52:44006 - "GET /api/v1/courses/ HTTP/1.1" 200 OK
+INFO:     10.12.29.52:44006 - "GET /api/v1/courses/ HTTP/1.1" 200 OK
+INFO:     10.12.29.52:44006 - "GET /api/v1/courses/ HTTP/1.1" 200 OK
+INFO:     10.12.87.110:37690 - "OPTIONS /api/v1/courses/ HTTP/1.1" 200 OK
+INFO:     10.12.87.110:37690 - "GET /api/v1/courses/ HTTP/1.1" 200 OK

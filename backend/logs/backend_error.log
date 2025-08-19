@@ -370,3 +370,76 @@ INFO:app.main:Starting up TechStep API...
 INFO:app.main:Database tables created successfully
 INFO:app.main:TechStep API started successfully!
 INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'create_sample_data.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:app.main:Shutting down TechStep API...
+INFO:     Application shutdown complete.
+INFO:     Finished server process [25027]
+INFO:     Started server process [43723]
+INFO:     Waiting for application startup.
+INFO:app.main:Starting up TechStep API...
+INFO:app.main:Database tables created successfully
+INFO:app.main:TechStep API started successfully!
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'create_sample_data.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:app.main:Shutting down TechStep API...
+INFO:     Application shutdown complete.
+INFO:     Finished server process [43723]
+INFO:     Started server process [43734]
+INFO:     Waiting for application startup.
+INFO:app.main:Starting up TechStep API...
+INFO:app.main:Database tables created successfully
+INFO:app.main:TechStep API started successfully!
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'create_sample_data.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:app.main:Shutting down TechStep API...
+INFO:     Application shutdown complete.
+INFO:     Finished server process [43734]
+INFO:     Started server process [43743]
+INFO:     Waiting for application startup.
+INFO:app.main:Starting up TechStep API...
+INFO:app.main:Database tables created successfully
+INFO:app.main:TechStep API started successfully!
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'create_sample_data.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:app.main:Shutting down TechStep API...
+INFO:     Application shutdown complete.
+INFO:     Finished server process [43743]
+WARNING:  WatchFiles detected changes in 'create_sample_data.py'. Reloading...
+INFO:     Started server process [43757]
+INFO:     Waiting for application startup.
+INFO:app.main:Starting up TechStep API...
+INFO:app.main:Database tables created successfully
+INFO:app.main:TechStep API started successfully!
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'create_sample_data.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:app.main:Shutting down TechStep API...
+INFO:     Application shutdown complete.
+INFO:     Finished server process [43757]
+INFO:     Started server process [43767]
+INFO:     Waiting for application startup.
+INFO:app.main:Starting up TechStep API...
+INFO:app.main:Database tables created successfully
+INFO:app.main:TechStep API started successfully!
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'create_sample_data.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:app.main:Shutting down TechStep API...
+INFO:     Application shutdown complete.
+INFO:     Finished server process [43767]
+INFO:     Started server process [43776]
+INFO:     Waiting for application startup.
+INFO:app.main:Starting up TechStep API...
+INFO:app.main:Database tables created successfully
+INFO:app.main:TechStep API started successfully!
+INFO:     Application startup complete.

@@ -10,16 +10,16 @@
     <script>
         // Test pricing calculations with the new prices
         const courses = [
-            { name: "SOC Analyst Foundations", price: 1200 },
-            { name: "Cyber Threat Analyst & Incident Response", price: 1400 },
-            { name: "SIEM Engineering - Splunk Specialization", price: 1100 },
-            { name: "Cloud Security Analyst", price: 1300 },
-            { name: "Malware Analyst & Network Defense", price: 1500 },
-            { name: "Risk & Compliance Analyst - GRC Fundamentals", price: 1400 }
+            { name: "SOC Analyst Foundations", price: 2999 },
+            { name: "Cyber Threat Analyst & Incident Response", price: 2999 },
+            { name: "SIEM Engineering - Splunk Specialization", price: 2999 },
+            { name: "Cloud Security Analyst", price: 2999 },
+            { name: "Malware Analyst & Network Defense", price: 2999 },
+            { name: "Risk & Compliance Analyst - GRC Fundamentals", price: 2999 }
         ];
         
         function calculatePricing(basePrice, type) {
-            const finalPrice = type === 'mentor' ? Math.round(basePrice * 1.5) : basePrice;
+            const finalPrice = type === 'mentor' ? 4999 : 2999;
             
             // Calculate payment options with 5% discount
             const fullPaymentDiscount = Math.round(finalPrice * 0.05);

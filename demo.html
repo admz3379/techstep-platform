@@ -9,6 +9,44 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
+        /* Enhanced Animations for Interactive Demo */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        @keyframes widthExpand {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 5px rgba(59, 130, 246, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.8), 0 0 30px rgba(59, 130, 246, 0.6); }
+        }
+        
+        .animate-fade-in { animation: fadeIn 0.6s ease-out forwards; }
+        .animate-slide-in { animation: slideIn 0.6s ease-out forwards; }
+        .animate-width-expand { animation: widthExpand 1s ease-out forwards; }
+        .animate-float { animation: float 3s ease-in-out infinite; }
+        .animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
+        
+        /* Interactive Hover Effects */
+        .skill-card:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+        
         .demo-lms-container {
             display: grid;
             grid-template-columns: 300px 1fr 280px;
@@ -735,25 +773,76 @@
             }
             
             showRegistrationForm() {
+                console.log('Actually showing registration form now...');
                 document.body.innerHTML = `
                     <div class="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 flex items-center justify-center p-4">
-                        <div class="max-w-lg w-full">
-                            <!-- Registration Card -->
+                        <div class="max-w-4xl w-full">
+                            <!-- Enhanced Registration Card with Visual Journey -->
                             <div class="bg-gray-800 rounded-2xl shadow-2xl border border-gray-700 overflow-hidden">
-                                <!-- Header -->
-                                <div class="bg-gradient-to-r from-blue-600 to-purple-600 p-6 text-center">
-                                    <div class="w-20 h-20 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-4">
-                                        <i class="fas fa-graduation-cap text-3xl text-white"></i>
+                                <!-- Animated Header with Learning Path -->
+                                <div class="bg-gradient-to-r from-blue-600 to-purple-600 p-6 text-center relative overflow-hidden">
+                                    <!-- Animated Background Elements -->
+                                    <div class="absolute inset-0 opacity-20">
+                                        <div class="absolute top-2 left-4 w-8 h-8 bg-white rounded-full animate-pulse"></div>
+                                        <div class="absolute top-8 right-8 w-4 h-4 bg-yellow-300 rounded-full animate-bounce" style="animation-delay: 0.5s"></div>
+                                        <div class="absolute bottom-4 left-8 w-6 h-6 bg-green-300 rounded-full animate-pulse" style="animation-delay: 1s"></div>
+                                        <div class="absolute bottom-8 right-4 w-3 h-3 bg-pink-300 rounded-full animate-bounce" style="animation-delay: 1.5s"></div>
                                     </div>
-                                    <h1 class="text-2xl font-bold text-white mb-2">SOC Analyst Fundamentals</h1>
-                                    <p class="text-blue-100">Free Self-Paced Demo Access</p>
+                                    
+                                    <!-- Main Icon with Animation -->
+                                    <div class="w-24 h-24 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-4 relative z-10 transform hover:scale-110 transition-transform duration-300">
+                                        <i class="fas fa-shield-alt text-4xl text-white animate-pulse"></i>
+                                    </div>
+                                    <h1 class="text-2xl font-bold text-white mb-2 animate-fade-in">SOC Analyst Fundamentals</h1>
+                                    <p class="text-blue-100 animate-fade-in" style="animation-delay: 0.3s">Free Self-Paced Demo Access</p>
+                                    
+                                    <!-- Interactive Learning Path Visualization -->
+                                    <div class="flex justify-center items-center mt-6 space-x-2">
+                                        <div class="flex items-center space-x-2 bg-white bg-opacity-10 rounded-full px-3 py-1 animate-slide-in" style="animation-delay: 0.6s">
+                                            <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                                            <span class="text-xs text-white">Register</span>
+                                        </div>
+                                        <div class="w-6 h-0.5 bg-gradient-to-r from-green-400 to-blue-400 animate-width-expand" style="animation-delay: 0.9s"></div>
+                                        <div class="flex items-center space-x-2 bg-white bg-opacity-10 rounded-full px-3 py-1 animate-slide-in" style="animation-delay: 1.2s">
+                                            <div class="w-2 h-2 bg-blue-400 rounded-full animate-pulse" style="animation-delay: 0.5s"></div>
+                                            <span class="text-xs text-white">Learn</span>
+                                        </div>
+                                        <div class="w-6 h-0.5 bg-gradient-to-r from-blue-400 to-purple-400 animate-width-expand" style="animation-delay: 1.5s"></div>
+                                        <div class="flex items-center space-x-2 bg-white bg-opacity-10 rounded-full px-3 py-1 animate-slide-in" style="animation-delay: 1.8s">
+                                            <div class="w-2 h-2 bg-purple-400 rounded-full animate-pulse" style="animation-delay: 1s"></div>
+                                            <span class="text-xs text-white">Master</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Interactive Skills Overview -->
+                                <div class="p-6 border-t border-gray-700 bg-gradient-to-r from-gray-800 to-gray-750">
+                                    <h3 class="text-lg font-semibold text-white mb-4 text-center">Interactive Skills You'll Master</h3>
+                                    <div class="grid grid-cols-2 gap-4 mb-6">
+                                        <div class="bg-blue-900 bg-opacity-50 rounded-lg p-3 text-center hover:bg-opacity-70 transition-all cursor-pointer transform hover:scale-105">
+                                            <i class="fas fa-search text-blue-400 text-2xl mb-2"></i>
+                                            <p class="text-xs text-blue-200">Threat Hunting</p>
+                                        </div>
+                                        <div class="bg-red-900 bg-opacity-50 rounded-lg p-3 text-center hover:bg-opacity-70 transition-all cursor-pointer transform hover:scale-105">
+                                            <i class="fas fa-shield-alt text-red-400 text-2xl mb-2"></i>
+                                            <p class="text-xs text-red-200">Incident Response</p>
+                                        </div>
+                                        <div class="bg-green-900 bg-opacity-50 rounded-lg p-3 text-center hover:bg-opacity-70 transition-all cursor-pointer transform hover:scale-105">
+                                            <i class="fas fa-chart-line text-green-400 text-2xl mb-2"></i>
+                                            <p class="text-xs text-green-200">Log Analysis</p>
+                                        </div>
+                                        <div class="bg-purple-900 bg-opacity-50 rounded-lg p-3 text-center hover:bg-opacity-70 transition-all cursor-pointer transform hover:scale-105">
+                                            <i class="fas fa-network-wired text-purple-400 text-2xl mb-2"></i>
+                                            <p class="text-xs text-purple-200">Network Security</p>
+                                        </div>
+                                    </div>
                                 </div>
                                 
                                 <!-- Registration Form -->
                                 <div class="p-6">
                                     <div class="mb-6">
-                                        <h2 class="text-xl font-bold text-white mb-2">Get Instant Access</h2>
-                                        <p class="text-gray-300 text-sm">Experience our complete learning platform with hands-on SOC analyst training. No commitment required.</p>
+                                        <h2 class="text-xl font-bold text-white mb-2 animate-fade-in">Get Instant Access</h2>
+                                        <p class="text-gray-300 text-sm animate-fade-in" style="animation-delay: 0.3s">Experience our complete learning platform with hands-on SOC analyst training. No commitment required.</p>
                                     </div>
                                     
                                     <form id="demoRegistrationForm" class="space-y-4">
@@ -1301,6 +1390,257 @@
             demoSystem.saveState();
         }
         
+        // Enhanced Interactive Video Component with Mind Maps
+        DemoLearningSystem.prototype.renderVideoComponent = function(component) {
+            return `
+                <div class="component-card animate-fade-in">
+                    <!-- Interactive Video with Mind Map Overlay -->
+                    <div class="relative bg-gray-900 rounded-lg overflow-hidden">
+                        <!-- Video Placeholder with Interactive Elements -->
+                        <div class="aspect-video bg-gradient-to-br from-blue-900 to-purple-900 flex items-center justify-center relative">
+                            <!-- Animated Play Button -->
+                            <button onclick="playVideo('${component.id}')" class="group">
+                                <div class="w-20 h-20 bg-white bg-opacity-20 rounded-full flex items-center justify-center animate-pulse-glow hover:bg-opacity-30 transition-all">
+                                    <i class="fas fa-play text-white text-2xl ml-1 group-hover:scale-110 transition-transform"></i>
+                                </div>
+                            </button>
+                            
+                            <!-- Interactive Mind Map Overlay -->
+                            <div class="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-300">
+                                <div class="absolute top-4 left-4 flex items-center space-x-2">
+                                    <div class="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+                                    <span class="text-xs text-white">Key Concepts</span>
+                                </div>
+                                
+                                <!-- Mind Map Nodes -->
+                                <div class="absolute top-1/4 right-8 w-12 h-12 bg-red-500 bg-opacity-80 rounded-full flex items-center justify-center cursor-pointer hover:scale-110 transition-transform" title="Threat Indicators">
+                                    <i class="fas fa-exclamation-triangle text-white"></i>
+                                </div>
+                                
+                                <div class="absolute bottom-1/4 left-8 w-12 h-12 bg-blue-500 bg-opacity-80 rounded-full flex items-center justify-center cursor-pointer hover:scale-110 transition-transform" title="Analysis Tools">
+                                    <i class="fas fa-search text-white"></i>
+                                </div>
+                                
+                                <div class="absolute bottom-8 right-1/3 w-12 h-12 bg-green-500 bg-opacity-80 rounded-full flex items-center justify-center cursor-pointer hover:scale-110 transition-transform" title="Response Actions">
+                                    <i class="fas fa-shield-alt text-white"></i>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Interactive Video Controls -->
+                        <div class="p-4 bg-gray-800">
+                            <h3 class="text-lg font-semibold text-white mb-2">${component.title}</h3>
+                            <p class="text-gray-300 text-sm mb-4">${component.description}</p>
+                            
+                            <!-- Interactive Learning Points -->
+                            <div class="grid grid-cols-3 gap-2 mb-4">
+                                <div class="bg-blue-900 bg-opacity-50 rounded p-2 text-center hover:bg-opacity-70 transition-all cursor-pointer">
+                                    <i class="fas fa-eye text-blue-400 text-lg mb-1"></i>
+                                    <p class="text-xs text-blue-200">Observe</p>
+                                </div>
+                                <div class="bg-green-900 bg-opacity-50 rounded p-2 text-center hover:bg-opacity-70 transition-all cursor-pointer">
+                                    <i class="fas fa-brain text-green-400 text-lg mb-1"></i>
+                                    <p class="text-xs text-green-200">Analyze</p>
+                                </div>
+                                <div class="bg-purple-900 bg-opacity-50 rounded p-2 text-center hover:bg-opacity-70 transition-all cursor-pointer">
+                                    <i class="fas fa-lightbulb text-purple-400 text-lg mb-1"></i>
+                                    <p class="text-xs text-purple-200">Apply</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Progress Bar -->
+                            <div class="w-full bg-gray-700 rounded-full h-2 mb-2">
+                                <div class="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full animate-width-expand" style="width: 0%;" id="video-progress-${component.id}"></div>
+                            </div>
+                            <p class="text-xs text-gray-400">Click play to start interactive learning</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        };
+        
+        // Enhanced Interactive Reading Component with Visual Learning
+        DemoLearningSystem.prototype.renderReadingComponent = function(component) {
+            return `
+                <div class="component-card animate-fade-in">
+                    <!-- Interactive Reading with Mind Map -->
+                    <div class="bg-gray-900 rounded-lg overflow-hidden">
+                        <!-- Visual Learning Header -->
+                        <div class="bg-gradient-to-r from-indigo-600 to-blue-600 p-6">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h3 class="text-xl font-bold text-white mb-2">${component.title}</h3>
+                                    <p class="text-blue-200">${component.description}</p>
+                                </div>
+                                <div class="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center animate-float">
+                                    <i class="fas fa-book-open text-white text-2xl"></i>
+                                </div>
+                            </div>
+                            
+                            <!-- Interactive Knowledge Map -->
+                            <div class="mt-6 relative">
+                                <div class="flex justify-center items-center space-x-8">
+                                    <div class="text-center animate-slide-in" style="animation-delay: 0.2s">
+                                        <div class="w-12 h-12 bg-yellow-500 bg-opacity-80 rounded-full flex items-center justify-center mx-auto mb-2 hover:scale-110 transition-transform cursor-pointer">
+                                            <i class="fas fa-question text-white"></i>
+                                        </div>
+                                        <p class="text-xs text-yellow-200">What?</p>
+                                    </div>
+                                    
+                                    <div class="text-center animate-slide-in" style="animation-delay: 0.4s">
+                                        <div class="w-12 h-12 bg-orange-500 bg-opacity-80 rounded-full flex items-center justify-center mx-auto mb-2 hover:scale-110 transition-transform cursor-pointer">
+                                            <i class="fas fa-cog text-white"></i>
+                                        </div>
+                                        <p class="text-xs text-orange-200">How?</p>
+                                    </div>
+                                    
+                                    <div class="text-center animate-slide-in" style="animation-delay: 0.6s">
+                                        <div class="w-12 h-12 bg-green-500 bg-opacity-80 rounded-full flex items-center justify-center mx-auto mb-2 hover:scale-110 transition-transform cursor-pointer">
+                                            <i class="fas fa-bullseye text-white"></i>
+                                        </div>
+                                        <p class="text-xs text-green-200">Why?</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Interactive Content -->
+                        <div class="p-6 space-y-6">
+                            <!-- Key Concepts Visual -->
+                            <div class="bg-gray-800 rounded-lg p-4">
+                                <h4 class="text-lg font-semibold text-white mb-4 flex items-center">
+                                    <i class="fas fa-lightbulb text-yellow-400 mr-2"></i>
+                                    Key Concepts
+                                </h4>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div class="bg-blue-900 bg-opacity-50 rounded-lg p-3 hover:bg-opacity-70 transition-all cursor-pointer transform hover:scale-105">
+                                        <h5 class="text-blue-300 font-semibold mb-2">Security Operations</h5>
+                                        <p class="text-sm text-gray-300">24/7 monitoring and incident response workflows</p>
+                                    </div>
+                                    <div class="bg-green-900 bg-opacity-50 rounded-lg p-3 hover:bg-opacity-70 transition-all cursor-pointer transform hover:scale-105">
+                                        <h5 class="text-green-300 font-semibold mb-2">Threat Detection</h5>
+                                        <p class="text-sm text-gray-300">Identifying malicious activities and indicators</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Interactive Flowchart -->
+                            <div class="bg-gray-800 rounded-lg p-4">
+                                <h4 class="text-lg font-semibold text-white mb-4 flex items-center">
+                                    <i class="fas fa-sitemap text-purple-400 mr-2"></i>
+                                    Process Flow
+                                </h4>
+                                <div class="flex items-center justify-between">
+                                    <div class="text-center animate-float">
+                                        <div class="w-16 h-16 bg-blue-600 rounded-lg flex items-center justify-center mb-2 hover:bg-blue-500 transition-colors cursor-pointer">
+                                            <i class="fas fa-radar text-white text-xl"></i>
+                                        </div>
+                                        <p class="text-xs text-blue-300">Detect</p>
+                                    </div>
+                                    
+                                    <div class="flex-1 h-1 bg-gradient-to-r from-blue-500 to-yellow-500 mx-4 animate-width-expand"></div>
+                                    
+                                    <div class="text-center animate-float" style="animation-delay: 0.5s">
+                                        <div class="w-16 h-16 bg-yellow-600 rounded-lg flex items-center justify-center mb-2 hover:bg-yellow-500 transition-colors cursor-pointer">
+                                            <i class="fas fa-search text-white text-xl"></i>
+                                        </div>
+                                        <p class="text-xs text-yellow-300">Analyze</p>
+                                    </div>
+                                    
+                                    <div class="flex-1 h-1 bg-gradient-to-r from-yellow-500 to-green-500 mx-4 animate-width-expand" style="animation-delay: 0.5s"></div>
+                                    
+                                    <div class="text-center animate-float" style="animation-delay: 1s">
+                                        <div class="w-16 h-16 bg-green-600 rounded-lg flex items-center justify-center mb-2 hover:bg-green-500 transition-colors cursor-pointer">
+                                            <i class="fas fa-shield-alt text-white text-xl"></i>
+                                        </div>
+                                        <p class="text-xs text-green-300">Respond</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Reading Progress -->
+                            <div class="text-center">
+                                <button onclick="markReadingComplete('${component.id}')" class="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white font-bold py-3 px-6 rounded-lg transition-all transform hover:scale-105 animate-pulse-glow">
+                                    <i class="fas fa-check-circle mr-2"></i>
+                                    I understand these concepts
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        };
+        
+        // Enhanced Quiz Component with Visual Feedback
+        DemoLearningSystem.prototype.renderQuizComponent = function(component) {
+            return `
+                <div class="component-card animate-fade-in">
+                    <div class="bg-gray-900 rounded-lg overflow-hidden">
+                        <!-- Quiz Header with Visual Elements -->
+                        <div class="bg-gradient-to-r from-purple-600 to-pink-600 p-6">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h3 class="text-xl font-bold text-white mb-2">${component.title}</h3>
+                                    <p class="text-purple-200">Test your understanding</p>
+                                </div>
+                                <div class="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center animate-float">
+                                    <i class="fas fa-question-circle text-white text-2xl"></i>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Interactive Quiz Content -->
+                        <div class="p-6">
+                            <div class="mb-6">
+                                <h4 class="text-lg font-semibold text-white mb-4">What is the first step in incident response?</h4>
+                                <div class="space-y-3">
+                                    <label class="flex items-center p-4 bg-gray-800 rounded-lg hover:bg-gray-700 transition-all cursor-pointer transform hover:scale-102">
+                                        <input type="radio" name="quiz-${component.id}" value="A" class="mr-3">
+                                        <span class="text-gray-300">Immediately contain the threat</span>
+                                    </label>
+                                    <label class="flex items-center p-4 bg-gray-800 rounded-lg hover:bg-gray-700 transition-all cursor-pointer transform hover:scale-102">
+                                        <input type="radio" name="quiz-${component.id}" value="B" class="mr-3">
+                                        <span class="text-gray-300">Identify and verify the incident</span>
+                                    </label>
+                                    <label class="flex items-center p-4 bg-gray-800 rounded-lg hover:bg-gray-700 transition-all cursor-pointer transform hover:scale-102">
+                                        <input type="radio" name="quiz-${component.id}" value="C" class="mr-3">
+                                        <span class="text-gray-300">Document everything first</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="text-center">
+                                <button onclick="submitQuiz('${component.id}')" class="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold py-3 px-6 rounded-lg transition-all transform hover:scale-105">
+                                    <i class="fas fa-paper-plane mr-2"></i>
+                                    Submit Answer
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        };
+        
+        // Enhanced Reflection Component
+        DemoLearningSystem.prototype.renderReflectionComponent = function(component) {
+            return `
+                <div class="component-card animate-fade-in">
+                    <div class="bg-gray-900 rounded-lg overflow-hidden">
+                        <div class="bg-gradient-to-r from-teal-600 to-cyan-600 p-6">
+                            <h3 class="text-xl font-bold text-white mb-2">${component.title}</h3>
+                            <p class="text-teal-200">Reflect on your learning</p>
+                        </div>
+                        <div class="p-6">
+                            <textarea class="w-full h-32 bg-gray-800 text-white rounded-lg p-4 border border-gray-700 focus:border-teal-500 focus:outline-none" placeholder="Share your thoughts and insights..."></textarea>
+                            <button onclick="saveReflection('${component.id}')" class="mt-4 bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white font-bold py-2 px-4 rounded-lg transition-all">
+                                Save Reflection
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        };
+        
         function nextComponent() {
             console.log('Next component clicked');
             if (!demoSystem) {
@@ -1616,6 +1956,87 @@
             doc.save('TechStep_Demo_Progress_Report.pdf');
         }
         
+        // Interactive Demo Helper Functions
+        function playVideo(componentId) {
+            console.log('Playing video:', componentId);
+            // Simulate video progress
+            const progressBar = document.getElementById(`video-progress-${componentId}`);
+            if (progressBar) {
+                let progress = 0;
+                const interval = setInterval(() => {
+                    progress += 2;
+                    progressBar.style.width = progress + '%';
+                    if (progress >= 100) {
+                        clearInterval(interval);
+                        showVideoCompletion(componentId);
+                    }
+                }, 100);
+            }
+        }
+        
+        function showVideoCompletion(componentId) {
+            const notification = document.createElement('div');
+            notification.className = 'fixed top-4 right-4 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-slide-in';
+            notification.innerHTML = `
+                <div class="flex items-center">
+                    <i class="fas fa-check-circle mr-2"></i>
+                    <span>Video completed! Great job! 🎉</span>
+                </div>
+            `;
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 3000);
+        }
+        
+        function markReadingComplete(componentId) {
+            console.log('Reading completed:', componentId);
+            const notification = document.createElement('div');
+            notification.className = 'fixed top-4 right-4 bg-blue-600 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-slide-in';
+            notification.innerHTML = `
+                <div class="flex items-center">
+                    <i class="fas fa-brain mr-2"></i>
+                    <span>Knowledge gained! Moving forward... 🧠</span>
+                </div>
+            `;
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 2000);
+            setTimeout(() => nextComponent(), 2500);
+        }
+        
+        function submitQuiz(componentId) {
+            console.log('Quiz submitted:', componentId);
+            const selectedAnswer = document.querySelector(`input[name="quiz-${componentId}"]:checked`);
+            if (!selectedAnswer) {
+                alert('Please select an answer first!');
+                return;
+            }
+            
+            // Simulate correct answer feedback
+            const notification = document.createElement('div');
+            notification.className = 'fixed top-4 right-4 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-slide-in';
+            notification.innerHTML = `
+                <div class="flex items-center">
+                    <i class="fas fa-trophy mr-2"></i>
+                    <span>Excellent! Correct answer! 🏆</span>
+                </div>
+            `;
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 3000);
+        }
+        
+        function saveReflection(componentId) {
+            console.log('Reflection saved:', componentId);
+            const notification = document.createElement('div');
+            notification.className = 'fixed top-4 right-4 bg-purple-600 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-slide-in';
+            notification.innerHTML = `
+                <div class="flex items-center">
+                    <i class="fas fa-lightbulb mr-2"></i>
+                    <span>Reflection saved! Insights captured! 💡</span>
+                </div>
+            `;
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 3000);
+        }
+
         // Initialize the demo system when page loads
         document.addEventListener('DOMContentLoaded', function() {
             demoSystem = new DemoLearningSystem();

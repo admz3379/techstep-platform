@@ -4786,31 +4786,61 @@ function formatTime(seconds) {
             
             const chatbotHTML = `
                 <div id="chatbot-container" class="fixed bottom-6 right-6 z-50">
-                    <!-- Chat bubble that appears first -->
-                    <div id="chat-bubble" class="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-lg mb-3 max-w-xs animate-pulse">
-                        <div class="text-sm">
-                            Hi! I'm Sarah, a cybersecurity mentor. Need help choosing the right course for your career goals? 👋
+                    <!-- Enhanced Chat bubble with animations -->
+                    <div id="chat-bubble" class="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-3 rounded-2xl shadow-2xl mb-3 max-w-xs animate-pulse hover:from-blue-500 hover:to-purple-500 transition-all transform hover:scale-105 cursor-pointer">
+                        <div class="flex items-start space-x-3">
+                            <div class="w-8 h-8 bg-white bg-opacity-20 rounded-full flex items-center justify-center flex-shrink-0 animate-bounce">
+                                <i class="fas fa-user-graduate text-xs"></i>
+                            </div>
+                            <div>
+                                <div class="text-sm font-medium mb-1">
+                                    Hi! I'm Sarah 👋
+                                </div>
+                                <div class="text-xs text-blue-100">
+                                    Cybersecurity mentor with 8+ years experience. Ready to help you find the perfect course for your career goals!
+                                </div>
+                                <div class="text-xs text-blue-200 mt-2 font-semibold">
+                                    💬 Click to start interactive chat!
+                                </div>
+                            </div>
                         </div>
-                        <div class="text-xs text-blue-200 mt-1">Click to chat with me!</div>
                     </div>
                     
-                    <!-- Chat button -->
-                    <button id="chat-button" class="bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-lg transition-all duration-300 transform hover:scale-110">
-                        <i class="fas fa-comments text-xl"></i>
+                    <!-- Enhanced Chat button with pulse animation -->
+                    <button id="chat-button" class="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white p-4 rounded-full shadow-2xl transition-all duration-300 transform hover:scale-110 animate-pulse relative">
+                        <div class="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full animate-ping opacity-20"></div>
+                        <i class="fas fa-comments text-xl relative z-10"></i>
+                        <div class="absolute -top-2 -right-2 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
+                            <div class="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                        </div>
                     </button>
                     
                     <!-- Chat window (initially hidden) -->
                     <div id="chat-window" class="hidden absolute bottom-16 right-0 w-80 bg-white rounded-lg shadow-2xl border border-gray-300">
-                        <div class="bg-blue-600 text-white p-4 rounded-t-lg flex justify-between items-center">
-                            <div class="flex items-center">
-                                <img src="https://www.shutterstock.com/image-photo/happy-attractive-indian-woman-looking-260nw-2449701411.jpg" 
-                                     alt="Sarah" class="w-8 h-8 rounded-full mr-2 object-cover">
+                        <div class="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-4 rounded-t-lg flex justify-between items-center relative overflow-hidden">
+                            <!-- Animated background elements -->
+                            <div class="absolute inset-0 opacity-10">
+                                <div class="absolute top-2 left-4 w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                                <div class="absolute bottom-3 right-8 w-1 h-1 bg-yellow-300 rounded-full animate-bounce"></div>
+                            </div>
+                            
+                            <div class="flex items-center relative z-10">
+                                <div class="relative mr-3">
+                                    <img src="https://www.shutterstock.com/image-photo/happy-attractive-indian-woman-looking-260nw-2449701411.jpg" 
+                                         alt="Sarah" class="w-10 h-10 rounded-full object-cover border-2 border-white border-opacity-30">
+                                    <div class="absolute -bottom-1 -right-1 w-3 h-3 bg-green-400 rounded-full border border-white">
+                                        <div class="w-1 h-1 bg-white rounded-full m-auto mt-0.5 animate-pulse"></div>
+                                    </div>
+                                </div>
                                 <div>
-                                    <div class="font-semibold">Sarah Martinez</div>
-                                    <div class="text-xs text-blue-200">Cybersecurity Mentor</div>
+                                    <div class="font-bold">Sarah Martinez</div>
+                                    <div class="text-xs text-blue-200 flex items-center">
+                                        <i class="fas fa-shield-alt mr-1 text-yellow-300"></i>
+                                        Cybersecurity Mentor • Online
+                                    </div>
                                 </div>
                             </div>
-                            <button id="close-chat" class="text-white hover:text-gray-200">
+                            <button id="close-chat" class="text-white hover:bg-white hover:bg-opacity-20 p-2 rounded-full transition-all relative z-10">
                                 <i class="fas fa-times"></i>
                             </button>
                         </div>
@@ -4819,8 +4849,10 @@ function formatTime(seconds) {
                             <div class="flex items-start space-x-2">
                                 <img src="https://www.shutterstock.com/image-photo/happy-attractive-indian-woman-looking-260nw-2449701411.jpg" 
                                      alt="Sarah" class="w-6 h-6 rounded-full object-cover">
-                                <div class="bg-gray-100 rounded-lg p-2 text-sm text-gray-800">
-                                    Hi there! I'm Sarah, and I've helped over 200 professionals transition into cybersecurity. What's your current background and what are your career goals?
+                                <div class="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-3 text-sm text-gray-800 border border-blue-200">
+                                    <div class="font-semibold text-blue-800 mb-1">Hi there! 👋</div>
+                                    <div class="mb-2">I'm Sarah, and I've helped over <span class="font-bold text-purple-600">200+ professionals</span> transition into cybersecurity! 🚀</div>
+                                    <div class="text-blue-700">What's your current background and career goals? 🎯</div>
                                 </div>
                             </div>
                         </div>
@@ -5015,8 +5047,8 @@ function formatTime(seconds) {
             // Load courses from API
             await loadCourses();
             
-            // Show chatbot after 30 seconds
-            chatbotTimeout = setTimeout(createChatbot, 30000);
+            // Show enhanced interactive chatbot after 10 seconds
+            chatbotTimeout = setTimeout(createChatbot, 10000);
         });
         
     </script>

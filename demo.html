@@ -640,11 +640,16 @@
         // Demo Registration and Learning Management System
         class DemoLearningSystem {
             constructor() {
+                console.log('DemoLearningSystem initializing...');
                 this.isRegistered = this.checkRegistration();
+                console.log('Registration status:', this.isRegistered);
                 
                 if (!this.isRegistered) {
+                    console.log('Showing registration form...');
                     this.showRegistrationForm();
                     return;
+                } else {
+                    console.log('User already registered, initializing demo...');
                 }
                 
                 this.state = {
@@ -719,7 +724,10 @@
             checkRegistration() {
                 const registered = localStorage.getItem('demoRegistered');
                 const registrationData = localStorage.getItem('demoRegistrationData');
-                return registered === 'true' && registrationData;
+                console.log('checkRegistration - registered:', registered, 'registrationData:', registrationData);
+                const result = registered === 'true' && registrationData;
+                console.log('checkRegistration result:', result);
+                return result;
             }
             
             showRegistrationForm() {
@@ -1290,10 +1298,21 @@
         }
         
         function nextComponent() {
+            console.log('Next component clicked');
+            if (!demoSystem) {
+                console.error('Demo system not initialized');
+                return;
+            }
+            
             const currentModule = demoSystem.modules[demoSystem.state.currentModule];
+            console.log('Current module:', currentModule);
+            console.log('Current component:', demoSystem.state.currentComponent);
+            console.log('Total components:', currentModule.components.length);
+            
             if (demoSystem.state.currentComponent < currentModule.components.length - 1) {
                 demoSystem.state.currentComponent++;
                 demoSystem.loadCurrentContent();
+                demoSystem.saveState();
             } else {
                 // Module complete
                 completeModule();

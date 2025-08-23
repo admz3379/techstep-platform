@@ -399,7 +399,39 @@
                     <span class="logo-text">TechStep</span>
                 </div>
                 <div class="hidden md:flex items-center space-x-8">
-                    <a href="#courses" class="text-gray-300 hover:text-blue-400 transition duration-300">Courses</a>
+                    <div class="relative group">
+                        <button class="text-gray-300 hover:text-blue-400 transition duration-300 flex items-center">
+                            Courses
+                            <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                        </button>
+                        <div class="absolute top-full left-0 mt-2 w-64 bg-gray-800 rounded-lg shadow-xl border border-gray-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+                            <div class="p-2">
+                                <a href="#courses" class="block px-4 py-3 text-gray-300 hover:text-blue-400 hover:bg-gray-700 rounded-lg transition duration-300">
+                                    <i class="fas fa-shield-alt mr-3 text-blue-400"></i>SOC Analyst Foundations
+                                </a>
+                                <a href="#courses" class="block px-4 py-3 text-gray-300 hover:text-blue-400 hover:bg-gray-700 rounded-lg transition duration-300">
+                                    <i class="fas fa-search mr-3 text-green-400"></i>Threat Detection & Response
+                                </a>
+                                <a href="#courses" class="block px-4 py-3 text-gray-300 hover:text-blue-400 hover:bg-gray-700 rounded-lg transition duration-300">
+                                    <i class="fas fa-database mr-3 text-purple-400"></i>SIEM Engineering - Splunk
+                                </a>
+                                <a href="#courses" class="block px-4 py-3 text-gray-300 hover:text-blue-400 hover:bg-gray-700 rounded-lg transition duration-300">
+                                    <i class="fas fa-cloud mr-3 text-indigo-400"></i>Cloud Security Analyst
+                                </a>
+                                <a href="#courses" class="block px-4 py-3 text-gray-300 hover:text-blue-400 hover:bg-gray-700 rounded-lg transition duration-300">
+                                    <i class="fas fa-bug mr-3 text-red-400"></i>Malware Analysis & Defense
+                                </a>
+                                <a href="#courses" class="block px-4 py-3 text-gray-300 hover:text-blue-400 hover:bg-gray-700 rounded-lg transition duration-300">
+                                    <i class="fas fa-clipboard-check mr-3 text-yellow-400"></i>GRC & Compliance
+                                </a>
+                                <div class="border-t border-gray-700 mt-2 pt-2">
+                                    <a href="demo.html" class="block px-4 py-3 text-blue-400 hover:text-white hover:bg-blue-600 rounded-lg transition duration-300 font-semibold">
+                                        <i class="fas fa-play mr-3"></i>Try Free Demo
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <a href="#mentors" class="text-gray-300 hover:text-blue-400 transition duration-300">Mentors</a>
                     <a href="#podcast" class="text-gray-300 hover:text-blue-400 transition duration-300">Podcast</a>
                     <a href="#testimonials" class="text-gray-300 hover:text-blue-400 transition duration-300">Reviews</a>
@@ -420,7 +452,33 @@
         <!-- Mobile Menu (Hidden by default) -->
         <div id="mobileMenu" class="md:hidden bg-gray-700 border-t border-gray-600 hidden">
             <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                <a href="#courses" class="block px-3 py-2 text-gray-300 hover:text-blue-400 hover:bg-gray-600 rounded-md transition duration-300">Courses</a>
+                <!-- Mobile Courses Dropdown -->
+                <div class="relative">
+                    <button onclick="toggleMobileCourses()" class="flex items-center justify-between w-full px-3 py-2 text-gray-300 hover:text-blue-400 hover:bg-gray-600 rounded-md transition duration-300">
+                        <span>Courses</span>
+                        <i class="fas fa-chevron-down text-xs" id="mobileCourseChevron"></i>
+                    </button>
+                    <div id="mobileCoursesDropdown" class="hidden mt-1 ml-4 space-y-1">
+                        <a href="#courses" class="block px-3 py-2 text-sm text-gray-400 hover:text-blue-400 hover:bg-gray-600 rounded-md transition duration-300">
+                            <i class="fas fa-shield-alt mr-2 text-blue-400"></i>SOC Analyst Foundations
+                        </a>
+                        <a href="#courses" class="block px-3 py-2 text-sm text-gray-400 hover:text-blue-400 hover:bg-gray-600 rounded-md transition duration-300">
+                            <i class="fas fa-search mr-2 text-green-400"></i>Threat Detection & Response
+                        </a>
+                        <a href="#courses" class="block px-3 py-2 text-sm text-gray-400 hover:text-blue-400 hover:bg-gray-600 rounded-md transition duration-300">
+                            <i class="fas fa-database mr-2 text-purple-400"></i>SIEM Engineering - Splunk
+                        </a>
+                        <a href="#courses" class="block px-3 py-2 text-sm text-gray-400 hover:text-blue-400 hover:bg-gray-600 rounded-md transition duration-300">
+                            <i class="fas fa-cloud mr-2 text-indigo-400"></i>Cloud Security Analyst
+                        </a>
+                        <a href="#courses" class="block px-3 py-2 text-sm text-gray-400 hover:text-blue-400 hover:bg-gray-600 rounded-md transition duration-300">
+                            <i class="fas fa-bug mr-2 text-red-400"></i>Malware Analysis & Defense
+                        </a>
+                        <a href="#courses" class="block px-3 py-2 text-sm text-gray-400 hover:text-blue-400 hover:bg-gray-600 rounded-md transition duration-300">
+                            <i class="fas fa-clipboard-check mr-2 text-yellow-400"></i>GRC & Compliance
+                        </a>
+                    </div>
+                </div>
                 <a href="#mentors" class="block px-3 py-2 text-gray-300 hover:text-blue-400 hover:bg-gray-600 rounded-md transition duration-300">Mentors</a>
                 <a href="#podcast" class="block px-3 py-2 text-gray-300 hover:text-blue-400 hover:bg-gray-600 rounded-md transition duration-300">Podcast</a>
                 <a href="#testimonials" class="block px-3 py-2 text-gray-300 hover:text-blue-400 hover:bg-gray-600 rounded-md transition duration-300">Reviews</a>
@@ -1904,6 +1962,19 @@ function formatTime(seconds) {
             }
         }
 
+        // Mobile courses dropdown toggle
+        function toggleMobileCourses() {
+            const dropdown = document.getElementById('mobileCoursesDropdown');
+            const chevron = document.getElementById('mobileCourseChevron');
+            
+            dropdown.classList.toggle('hidden');
+            if (dropdown.classList.contains('hidden')) {
+                chevron.className = 'fas fa-chevron-down text-xs';
+            } else {
+                chevron.className = 'fas fa-chevron-up text-xs';
+            }
+        }
+
         function initializeDemoNavigation() {
             // Demo navigation is now handled by onclick events in HTML
             console.log('Demo navigation initialized');
@@ -2113,12 +2184,16 @@ function formatTime(seconds) {
         });
 
         // Course selection functionality
+        console.log('Found course checkboxes:', courseCheckboxes.length);
         courseCheckboxes.forEach(checkbox => {
             checkbox.addEventListener('change', function() {
+                console.log('Checkbox changed:', this.checked);
                 const courseCard = this.closest('.course-card');
                 const courseName = courseCard.querySelector('h3').textContent;
                 const selfPrice = parseInt(this.dataset.selfPrice);
                 const mentorPrice = parseInt(this.dataset.mentorPrice);
+                
+                console.log('Course data:', { courseName, selfPrice, mentorPrice });
 
                 if (this.checked) {
                     courseCard.classList.add('selected');
@@ -2153,6 +2228,7 @@ function formatTime(seconds) {
         });
 
         function updateCart() {
+            console.log('updateCart called, selectedCourses:', selectedCourses);
             if (selectedCourses.length === 0) {
                 cartItems.innerHTML = '<p class="text-gray-400">Select courses to see pricing</p>';
                 totalPriceElement.textContent = '$0';

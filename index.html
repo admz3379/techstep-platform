@@ -403,9 +403,14 @@
                     <a href="#mentors" class="text-gray-300 hover:text-blue-400 transition duration-300">Mentors</a>
                     <a href="#podcast" class="text-gray-300 hover:text-blue-400 transition duration-300">Podcast</a>
                     <a href="#testimonials" class="text-gray-300 hover:text-blue-400 transition duration-300">Reviews</a>
-                    <button id="freeTrialBtn" class="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-6 py-2 rounded-lg hover:from-purple-700 hover:to-blue-700 transition duration-300">
-                        Free Trial
-                    </button>
+                    <div class="flex space-x-2">
+                        <button id="freeTrialBtn" class="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-4 py-2 rounded-lg hover:from-purple-700 hover:to-blue-700 transition duration-300">
+                            3-Day Trial
+                        </button>
+                        <button onclick="window.location.href='demo.html'" class="bg-gradient-to-r from-green-600 to-teal-600 text-white px-4 py-2 rounded-lg hover:from-green-700 hover:to-teal-700 transition duration-300">
+                            Self-Paced Demo
+                        </button>
+                    </div>
                     <button id="adminLoginBtn" class="bg-gray-600 text-white px-6 py-2 rounded-lg hover:bg-gray-700 transition duration-300">
                         <i class="fas fa-lock mr-2"></i>Mentee Login
                     </button>
@@ -425,7 +430,10 @@
                 <a href="#podcast" class="block px-3 py-2 text-gray-300 hover:text-blue-400 hover:bg-gray-600 rounded-md transition duration-300">Podcast</a>
                 <a href="#testimonials" class="block px-3 py-2 text-gray-300 hover:text-blue-400 hover:bg-gray-600 rounded-md transition duration-300">Reviews</a>
                 <button id="mobileFreeTrialBtn" class="block w-full text-left px-3 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-md hover:from-purple-700 hover:to-blue-700 transition duration-300 mt-2">
-                    Free Trial
+                    3-Day Trial
+                </button>
+                <button onclick="window.location.href='demo.html'" class="block w-full text-left px-3 py-2 bg-gradient-to-r from-green-600 to-teal-600 text-white rounded-md hover:from-green-700 hover:to-teal-700 transition duration-300 mt-2">
+                    Self-Paced Demo
                 </button>
                 <button id="mobileAdminLoginBtn" class="block w-full text-left px-3 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition duration-300 mt-2">
                     <i class="fas fa-lock mr-2"></i>Mentee Login
@@ -1963,48 +1971,99 @@ function formatTime(seconds) {
         function showTrialPromotionModal() {
             const modalHTML = \`
                 <div id="trialPromotionModal" class="modal-overlay show">
-                    <div class="modal-content max-w-lg">
+                    <div class="modal-content max-w-2xl">
                         <div class="flex justify-between items-center mb-6">
-                            <h2 class="text-2xl font-bold text-white">Try Before You Buy</h2>
+                            <h2 class="text-2xl font-bold text-white">Experience Before You Enroll</h2>
                             <button id="closeTrialPromotion" class="text-gray-400 hover:text-white">
                                 <i class="fas fa-times text-xl"></i>
                             </button>
                         </div>
                         
-                        <div class="text-center mb-6">
-                            <div class="w-16 h-16 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <i class="fas fa-rocket text-2xl text-white"></i>
-                            </div>
-                            <h3 class="text-xl font-bold text-white mb-2">Free 3-Day SOC Trial Available!</h3>
-                            <p class="text-gray-300">Experience real cybersecurity work before committing to the full program.</p>
+                        <div class="text-center mb-8">
+                            <h3 class="text-xl font-bold text-white mb-2">Choose Your Experience</h3>
+                            <p class="text-gray-300">Get hands-on experience with cybersecurity work before enrolling in the full program.</p>
                         </div>
-
-                        <div class="bg-gradient-to-r from-purple-900/50 to-blue-900/50 rounded-lg p-4 mb-6">
-                            <div class="grid grid-cols-2 gap-4 text-sm text-white">
-                                <div class="flex items-center">
-                                    <i class="fas fa-check-circle text-green-400 mr-2"></i>
-                                    <span>Real SOC tasks</span>
+                        
+                        <div class="grid md:grid-cols-2 gap-6 mb-8">
+                            <!-- Self-Paced Demo -->
+                            <div class="bg-gradient-to-br from-green-800 to-teal-800 rounded-lg p-6 border border-green-500">
+                                <div class="text-center mb-4">
+                                    <div class="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-3">
+                                        <i class="fas fa-play text-2xl text-white"></i>
+                                    </div>
+                                    <h4 class="text-xl font-bold text-white">Self-Paced Demo</h4>
+                                    <p class="text-green-100 text-sm">Experience our LMS platform</p>
                                 </div>
-                                <div class="flex items-center">
-                                    <i class="fas fa-check-circle text-green-400 mr-2"></i>
-                                    <span>Voice briefings</span>
+                                
+                                <ul class="space-y-2 mb-6 text-sm text-green-100">
+                                    <li class="flex items-center">
+                                        <i class="fas fa-check text-green-400 mr-2"></i>
+                                        Authentic learning platform
+                                    </li>
+                                    <li class="flex items-center">
+                                        <i class="fas fa-check text-green-400 mr-2"></i>
+                                        3 complete modules
+                                    </li>
+                                    <li class="flex items-center">
+                                        <i class="fas fa-check text-green-400 mr-2"></i>
+                                        Hands-on labs & quizzes
+                                    </li>
+                                    <li class="flex items-center">
+                                        <i class="fas fa-check text-green-400 mr-2"></i>
+                                        Progress tracking
+                                    </li>
+                                    <li class="flex items-center">
+                                        <i class="fas fa-check text-green-400 mr-2"></i>
+                                        Start immediately
+                                    </li>
+                                </ul>
+                                
+                                <button onclick="window.location.href='demo.html'" class="w-full bg-green-600 hover:bg-green-700 text-white py-3 px-4 rounded-lg font-semibold transition duration-300">
+                                    Start Demo Now
+                                </button>
+                            </div>
+                            
+                            <!-- 3-Day Trial -->
+                            <div class="bg-gradient-to-br from-purple-800 to-blue-800 rounded-lg p-6 border border-purple-500">
+                                <div class="text-center mb-4">
+                                    <div class="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-3">
+                                        <i class="fas fa-rocket text-2xl text-white"></i>
+                                    </div>
+                                    <h4 class="text-xl font-bold text-white">3-Day SOC Trial</h4>
+                                    <p class="text-purple-100 text-sm">Real workplace simulation</p>
                                 </div>
-                                <div class="flex items-center">
-                                    <i class="fas fa-check-circle text-green-400 mr-2"></i>
-                                    <span>Get certificate</span>
-                                </div>
-                                <div class="flex items-center">
-                                    <i class="fas fa-check-circle text-green-400 mr-2"></i>
-                                    <span>No commitment</span>
-                                </div>
+                                
+                                <ul class="space-y-2 mb-6 text-sm text-purple-100">
+                                    <li class="flex items-center">
+                                        <i class="fas fa-check text-purple-400 mr-2"></i>
+                                        EverTrust Bank simulation
+                                    </li>
+                                    <li class="flex items-center">
+                                        <i class="fas fa-check text-purple-400 mr-2"></i>
+                                        Real SOC analyst tasks
+                                    </li>
+                                    <li class="flex items-center">
+                                        <i class="fas fa-check text-purple-400 mr-2"></i>
+                                        Voice briefings
+                                    </li>
+                                    <li class="flex items-center">
+                                        <i class="fas fa-check text-purple-400 mr-2"></i>
+                                        Professional certificate
+                                    </li>
+                                    <li class="flex items-center">
+                                        <i class="fas fa-check text-purple-400 mr-2"></i>
+                                        LinkedIn badge
+                                    </li>
+                                </ul>
+                                
+                                <button onclick="window.location.href='trial.html'" class="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 px-4 rounded-lg font-semibold transition duration-300">
+                                    Start 3-Day Trial
+                                </button>
                             </div>
                         </div>
-
-                        <div class="space-y-3">
-                            <button onclick="window.location.href='trial.html'" class="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300">
-                                <i class="fas fa-rocket mr-2"></i>Start Free 3-Day Trial
-                            </button>
-                            <button onclick="scrollToCourses(); document.getElementById('trialPromotionModal').remove();" class="w-full bg-gray-600 hover:bg-gray-700 text-white py-2 px-4 rounded-lg transition duration-300">
+                        
+                        <div class="text-center">
+                            <button onclick="scrollToCourses(); document.getElementById('trialPromotionModal').remove();" class="bg-gray-600 hover:bg-gray-700 text-white py-2 px-8 rounded-lg transition duration-300">
                                 Skip to Full Program
                             </button>
                         </div>

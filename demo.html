@@ -1,0 +1,1328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOC Analyst Fundamentals - Free Demo | TechStep</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .demo-lms-container {
+            display: grid;
+            grid-template-columns: 300px 1fr 280px;
+            height: 100vh;
+            background: #0f172a;
+        }
+        
+        @media (max-width: 1024px) {
+            .demo-lms-container {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto 1fr auto;
+            }
+            
+            .course-sidebar, .learning-assistant {
+                position: fixed;
+                top: 0;
+                left: -100%;
+                height: 100vh;
+                z-index: 50;
+                transition: left 0.3s ease;
+            }
+            
+            .course-sidebar.open, .learning-assistant.open {
+                left: 0;
+            }
+        }
+        
+        .course-sidebar {
+            background: linear-gradient(145deg, #1e293b, #334155);
+            border-right: 1px solid #475569;
+            overflow-y: auto;
+        }
+        
+        .learning-content {
+            background: #0f172a;
+            overflow-y: auto;
+        }
+        
+        .learning-assistant {
+            background: linear-gradient(145deg, #1e293b, #334155);
+            border-left: 1px solid #475569;
+            overflow-y: auto;
+        }
+        
+        .progress-ring {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            margin: 0 auto;
+        }
+        
+        .progress-ring svg {
+            transform: rotate(-90deg);
+        }
+        
+        .progress-ring circle {
+            fill: none;
+            stroke-width: 8;
+        }
+        
+        .progress-ring .bg {
+            stroke: #374151;
+        }
+        
+        .progress-ring .progress {
+            stroke: #3b82f6;
+            stroke-linecap: round;
+            transition: stroke-dasharray 0.5s ease;
+        }
+        
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 18px;
+            font-weight: bold;
+            color: #3b82f6;
+        }
+        
+        .module {
+            padding: 16px;
+            margin: 8px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .module.completed {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+        
+        .module.current {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            border-color: #60a5fa;
+        }
+        
+        .module.locked {
+            background: #374151;
+            color: #9ca3af;
+            cursor: not-allowed;
+        }
+        
+        .module:hover:not(.locked) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+        }
+        
+        .tool-tab {
+            padding: 12px 16px;
+            background: #374151;
+            border: none;
+            color: #d1d5db;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 8px 8px 0 0;
+            margin-right: 4px;
+        }
+        
+        .tool-tab.active {
+            background: #3b82f6;
+            color: white;
+        }
+        
+        .tool-interface {
+            background: #1f2937;
+            border-radius: 0 8px 8px 8px;
+            padding: 20px;
+            min-height: 400px;
+        }
+        
+        .clickable-header {
+            cursor: pointer;
+            padding: 2px 4px;
+            border-radius: 4px;
+            transition: background 0.3s ease;
+        }
+        
+        .clickable-header:hover {
+            background: #374151;
+        }
+        
+        .analysis-item {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            margin: 4px 0;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        
+        .analysis-item:hover {
+            background: #374151;
+        }
+        
+        .analysis-item input[type="checkbox"] {
+            margin-right: 8px;
+            width: 16px;
+            height: 16px;
+        }
+        
+        .skill-meter {
+            background: #374151;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 8px 0;
+        }
+        
+        .skill-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #1d4ed8);
+            transition: width 1s ease;
+        }
+        
+        .badge-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 16px 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3);
+            z-index: 1000;
+            transform: translateX(400px);
+            transition: transform 0.5s ease;
+        }
+        
+        .badge-notification.show {
+            transform: translateX(0);
+        }
+        
+        .video-player {
+            position: relative;
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        
+        .video-controls {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .component-card {
+            background: linear-gradient(145deg, #1f2937, #374151);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #475569;
+        }
+        
+        .component-card.completed {
+            border-color: #10b981;
+            background: linear-gradient(145deg, #1f2937, #10b981, rgba(16, 185, 129, 0.1));
+        }
+        
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #1f2937;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            border-left: 4px solid #3b82f6;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+        
+        .toast.show {
+            transform: translateX(0);
+        }
+        
+        .toast.success {
+            border-left-color: #10b981;
+        }
+        
+        .toast.error {
+            border-left-color: #ef4444;
+        }
+        
+        .interactive-diagram {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .clickable-sections {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+        
+        .section {
+            position: absolute;
+            background: rgba(59, 130, 246, 0.8);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .section:hover {
+            background: rgba(59, 130, 246, 1);
+            transform: scale(1.1);
+        }
+        
+        .mobile-nav-toggle {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 60;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        
+        @media (max-width: 1024px) {
+            .mobile-nav-toggle {
+                display: block;
+            }
+        }
+        
+        .upgrade-highlight {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 8px;
+        }
+        
+        .lab-environment {
+            background: #111827;
+            border-radius: 8px;
+            border: 1px solid #374151;
+            overflow: hidden;
+        }
+        
+        .lab-header {
+            background: #1f2937;
+            padding: 16px;
+            border-bottom: 1px solid #374151;
+            display: flex;
+            justify-content: between;
+            align-items: center;
+        }
+        
+        .lab-content {
+            padding: 20px;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <!-- Mobile Navigation Toggle -->
+    <button class="mobile-nav-toggle" onclick="toggleSidebar('course-sidebar')">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Main Demo Container -->
+    <div class="demo-lms-container">
+        <!-- Left Sidebar: Course Navigation -->
+        <div class="course-sidebar" id="course-sidebar">
+            <div class="p-6 border-b border-gray-600">
+                <!-- Course Header -->
+                <div class="course-header text-center mb-6">
+                    <h2 class="text-xl font-bold text-white mb-4">SOC Analyst Fundamentals</h2>
+                    <div class="progress-ring">
+                        <svg width="80" height="80">
+                            <circle class="bg" cx="40" cy="40" r="30"></circle>
+                            <circle class="progress" cx="40" cy="40" r="30" 
+                                    stroke-dasharray="188.4" stroke-dashoffset="125.6"></circle>
+                        </svg>
+                        <span class="progress-text" id="overall-progress">33%</span>
+                    </div>
+                    <p class="text-gray-300 text-sm mt-2">Chapter 1 of 15</p>
+                </div>
+                
+                <!-- Module Navigation -->
+                <nav class="module-nav">
+                    <div class="module completed" data-module="1" onclick="loadModule(1)">
+                        <div class="flex items-center mb-2">
+                            <i class="fas fa-check-circle text-green-400 mr-3"></i>
+                            <span class="font-semibold">Email Security Analysis</span>
+                        </div>
+                        <div class="text-sm opacity-75">15 min • Completed</div>
+                        <div class="flex items-center mt-2">
+                            <div class="skill-meter flex-1">
+                                <div class="skill-fill" style="width: 100%"></div>
+                            </div>
+                            <span class="text-xs ml-2">100%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="module current" data-module="2" onclick="loadModule(2)">
+                        <div class="flex items-center mb-2">
+                            <i class="fas fa-play-circle text-blue-400 mr-3"></i>
+                            <span class="font-semibold">Log Investigation</span>
+                        </div>
+                        <div class="text-sm opacity-75">20 min • In Progress</div>
+                        <div class="flex items-center mt-2">
+                            <div class="skill-meter flex-1">
+                                <div class="skill-fill" style="width: 60%"></div>
+                            </div>
+                            <span class="text-xs ml-2">60%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="module locked" data-module="3">
+                        <div class="flex items-center mb-2">
+                            <i class="fas fa-lock text-gray-500 mr-3"></i>
+                            <span class="font-semibold">Threat Intelligence</span>
+                        </div>
+                        <div class="text-sm opacity-75">15 min • Locked</div>
+                        <div class="flex items-center mt-2">
+                            <div class="skill-meter flex-1">
+                                <div class="skill-fill" style="width: 0%"></div>
+                            </div>
+                            <span class="text-xs ml-2">0%</span>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+            
+            <!-- Study Tools -->
+            <div class="study-tools p-6">
+                <h4 class="font-semibold mb-4 text-gray-300">Study Tools</h4>
+                <div class="space-y-3">
+                    <button class="tool-btn w-full flex items-center p-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition" onclick="openNotes()">
+                        <i class="fas fa-bookmark text-blue-400 mr-3"></i>
+                        <span>My Notes</span>
+                        <span class="ml-auto text-xs bg-blue-600 px-2 py-1 rounded">3</span>
+                    </button>
+                    <button class="tool-btn w-full flex items-center p-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition" onclick="openMentorChat()">
+                        <i class="fas fa-question-circle text-green-400 mr-3"></i>
+                        <span>Ask Mentor</span>
+                        <span class="upgrade-highlight">UPGRADE</span>
+                    </button>
+                    <button class="tool-btn w-full flex items-center p-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition" onclick="openStudyGroup()">
+                        <i class="fas fa-users text-purple-400 mr-3"></i>
+                        <span>Study Group</span>
+                        <span class="upgrade-highlight">UPGRADE</span>
+                    </button>
+                </div>
+                
+                <!-- Progress Summary -->
+                <div class="mt-6 p-4 bg-gray-800 rounded-lg">
+                    <h5 class="font-semibold mb-2">This Session</h5>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Time Spent</span>
+                            <span id="session-time">23 min</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Components Done</span>
+                            <span id="components-done">4/7</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Skill Points</span>
+                            <span id="skill-points">165</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content Area -->
+        <div class="learning-content" id="learning-content">
+            <!-- Content will be dynamically loaded here -->
+            <div class="p-8">
+                <div class="max-w-4xl mx-auto">
+                    <!-- Module Header -->
+                    <div class="mb-6">
+                        <div class="flex items-center text-sm text-gray-400 mb-2">
+                            <span>Module 2</span>
+                            <i class="fas fa-chevron-right mx-2"></i>
+                            <span>Component 3 of 5</span>
+                        </div>
+                        <h1 class="text-3xl font-bold text-white mb-2" id="content-title">Hands-on Lab: Authentication Log Analysis</h1>
+                        <p class="text-gray-300" id="content-description">Investigate suspicious login patterns in real enterprise logs</p>
+                    </div>
+                    
+                    <!-- Content Component -->
+                    <div id="component-content">
+                        <!-- This will be populated by the module system -->
+                    </div>
+                    
+                    <!-- Navigation -->
+                    <div class="flex justify-between items-center mt-8 pt-6 border-t border-gray-700">
+                        <button class="flex items-center px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition" onclick="previousComponent()">
+                            <i class="fas fa-chevron-left mr-2"></i>
+                            Previous
+                        </button>
+                        
+                        <div class="flex items-center space-x-4">
+                            <button class="px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition" onclick="bookmarkContent()">
+                                <i class="fas fa-bookmark mr-2"></i>
+                                Bookmark
+                            </button>
+                            <button class="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg transition" onclick="nextComponent()" id="next-btn">
+                                Next
+                                <i class="fas fa-chevron-right ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Right Sidebar: Learning Assistant -->
+        <div class="learning-assistant" id="learning-assistant">
+            <div class="p-6">
+                <!-- Learning Assistant Chat -->
+                <div class="mentor-chat mb-6">
+                    <h4 class="font-semibold mb-4 text-white flex items-center">
+                        <i class="fas fa-robot text-blue-400 mr-2"></i>
+                        Learning Assistant
+                    </h4>
+                    <div class="chat-messages space-y-3 mb-4" id="chat-messages">
+                        <div class="message assistant bg-gray-800 p-3 rounded-lg">
+                            <div class="flex items-center mb-1">
+                                <div class="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center mr-2">
+                                    <i class="fas fa-robot text-xs"></i>
+                                </div>
+                                <span class="text-sm font-medium">AI Assistant</span>
+                            </div>
+                            <p class="text-sm text-gray-300">Great progress on Module 1! You identified all the key IOCs correctly. Ready for log analysis?</p>
+                        </div>
+                        
+                        <div class="message user bg-blue-600 p-3 rounded-lg ml-8">
+                            <p class="text-sm">Yes, let's do this!</p>
+                        </div>
+                        
+                        <div class="message assistant bg-gray-800 p-3 rounded-lg">
+                            <div class="flex items-center mb-1">
+                                <div class="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center mr-2">
+                                    <i class="fas fa-robot text-xs"></i>
+                                </div>
+                                <span class="text-sm font-medium">AI Assistant</span>
+                            </div>
+                            <p class="text-sm text-gray-300">In this lab, focus on patterns. Look for: 1) Failed login bursts, 2) Geographic anomalies, 3) Time-based patterns. Need help with Splunk queries?</p>
+                        </div>
+                    </div>
+                    
+                    <div class="chat-input">
+                        <div class="flex">
+                            <input type="text" placeholder="Ask a question..." 
+                                   class="flex-1 p-2 bg-gray-700 border border-gray-600 rounded-l-lg text-white text-sm"
+                                   id="chat-input">
+                            <button class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-r-lg transition" onclick="sendMessage()">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-2">💡 Try: "How do I read Splunk logs?" or "What's an IOC?"</p>
+                    </div>
+                </div>
+                
+                <!-- Quick Resources -->
+                <div class="quick-resources mb-6">
+                    <h4 class="font-semibold mb-4 text-white">Quick Resources</h4>
+                    <div class="space-y-2">
+                        <a href="#" class="block p-3 bg-gray-800 hover:bg-gray-700 rounded-lg transition text-sm">
+                            <i class="fas fa-file-pdf text-red-400 mr-2"></i>
+                            NIST Framework Guide
+                        </a>
+                        <a href="#" class="block p-3 bg-gray-800 hover:bg-gray-700 rounded-lg transition text-sm">
+                            <i class="fas fa-list text-green-400 mr-2"></i>
+                            Common IOCs Cheatsheet
+                        </a>
+                        <a href="#" class="block p-3 bg-gray-800 hover:bg-gray-700 rounded-lg transition text-sm">
+                            <i class="fas fa-code text-blue-400 mr-2"></i>
+                            Splunk Query Examples
+                        </a>
+                        <div class="p-3 bg-gray-800 rounded-lg opacity-50">
+                            <i class="fas fa-video text-purple-400 mr-2"></i>
+                            Video Tutorials
+                            <span class="upgrade-highlight ml-2">UPGRADE</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Performance Analytics -->
+                <div class="performance-analytics">
+                    <h4 class="font-semibold mb-4 text-white">Your Progress</h4>
+                    <div class="space-y-3">
+                        <div class="metric-item">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="text-sm text-gray-400">Quiz Average</span>
+                                <span class="text-sm font-semibold text-green-400">87%</span>
+                            </div>
+                            <div class="skill-meter">
+                                <div class="skill-fill" style="width: 87%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="metric-item">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="text-sm text-gray-400">Lab Success Rate</span>
+                                <span class="text-sm font-semibold text-blue-400">2/2</span>
+                            </div>
+                            <div class="skill-meter">
+                                <div class="skill-fill" style="width: 100%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="metric-item">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="text-sm text-gray-400">Study Streak</span>
+                                <span class="text-sm font-semibold text-yellow-400">3 days</span>
+                            </div>
+                            <div class="skill-meter">
+                                <div class="skill-fill" style="width: 60%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Achievement Badge -->
+                    <div class="mt-4 p-3 bg-gradient-to-r from-yellow-600 to-orange-600 rounded-lg">
+                        <div class="flex items-center">
+                            <i class="fas fa-medal text-white text-lg mr-3"></i>
+                            <div>
+                                <div class="text-sm font-semibold text-white">New Badge!</div>
+                                <div class="text-xs text-yellow-100">Hands-On Analyst</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Assistant Toggle -->
+    <button class="mobile-nav-toggle" style="right: 20px; left: auto;" onclick="toggleSidebar('learning-assistant')">
+        <i class="fas fa-comments"></i>
+    </button>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container"></div>
+
+    <!-- Badge Notifications -->
+    <div id="badge-container"></div>
+
+    <!-- JavaScript for Demo System -->
+    <script>
+        // Demo Learning Management System
+        class DemoLearningSystem {
+            constructor() {
+                this.state = {
+                    currentModule: 2,
+                    currentComponent: 2, // Starting at lab component
+                    progress: {
+                        module1: { completed: true, score: 92, timeSpent: 900 },
+                        module2: { completed: false, score: null, timeSpent: 720 }
+                    },
+                    userPreferences: {
+                        playbackSpeed: 1.0,
+                        captions: true
+                    },
+                    analytics: {
+                        sessionStartTime: Date.now(),
+                        totalTimeSpent: 1620, // 27 minutes
+                        skillPoints: 165,
+                        badges: ['First Module Complete', 'Email Expert'],
+                        bookmarks: [],
+                        notes: []
+                    },
+                    user: {
+                        name: 'Demo User',
+                        email: 'demo@example.com',
+                        skillLevel: 'beginner'
+                    }
+                };
+                
+                this.modules = {
+                    1: {
+                        title: "Email Security Analysis",
+                        description: "Learn to identify and analyze email-based threats",
+                        estimatedTime: 15,
+                        components: [
+                            { type: 'video', title: 'Email Threats Overview', duration: 180 },
+                            { type: 'reading', title: 'Email Headers Explained', duration: 120 },
+                            { type: 'lab', title: 'Analyze Suspicious Email', duration: 480 },
+                            { type: 'quiz', title: 'Knowledge Check', duration: 120 }
+                        ]
+                    },
+                    2: {
+                        title: "Log Investigation",
+                        description: "Master authentication log analysis and pattern recognition",
+                        estimatedTime: 20,
+                        components: [
+                            { type: 'video', title: 'SIEM Fundamentals', duration: 240 },
+                            { type: 'reading', title: 'Log Analysis Techniques', duration: 180 },
+                            { type: 'lab', title: 'Authentication Log Analysis', duration: 600 },
+                            { type: 'quiz', title: 'Pattern Recognition Quiz', duration: 180 },
+                            { type: 'reflection', title: 'Module Summary', duration: 60 }
+                        ]
+                    },
+                    3: {
+                        title: "Threat Intelligence",
+                        description: "Learn to leverage threat intelligence for proactive defense",
+                        estimatedTime: 15,
+                        components: [
+                            { type: 'video', title: 'Threat Intelligence Basics', duration: 200 },
+                            { type: 'reading', title: 'IOC Analysis', duration: 150 },
+                            { type: 'lab', title: 'Threat Hunting Exercise', duration: 450 },
+                            { type: 'quiz', title: 'Final Assessment', duration: 200 }
+                        ]
+                    }
+                };
+                
+                this.loadState();
+                this.initializeEventListeners();
+                this.loadCurrentContent();
+                this.startSessionTimer();
+            }
+            
+            loadState() {
+                const saved = localStorage.getItem('demoLearningState');
+                if (saved) {
+                    const savedState = JSON.parse(saved);
+                    this.state = { ...this.state, ...savedState };
+                }
+            }
+            
+            saveState() {
+                localStorage.setItem('demoLearningState', JSON.stringify(this.state));
+            }
+            
+            initializeEventListeners() {
+                // Chat input
+                document.getElementById('chat-input').addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        this.sendMessage();
+                    }
+                });
+                
+                // Auto-save on state changes
+                window.addEventListener('beforeunload', () => {
+                    this.saveState();
+                });
+            }
+            
+            loadCurrentContent() {
+                const module = this.modules[this.state.currentModule];
+                const component = module.components[this.state.currentComponent] || module.components[0];
+                
+                this.renderComponent(component);
+                this.updateProgress();
+            }
+            
+            renderComponent(component) {
+                const contentContainer = document.getElementById('component-content');
+                let content = '';
+                
+                switch(component.type) {
+                    case 'video':
+                        content = this.renderVideoComponent(component);
+                        break;
+                    case 'reading':
+                        content = this.renderReadingComponent(component);
+                        break;
+                    case 'lab':
+                        content = this.renderLabComponent(component);
+                        break;
+                    case 'quiz':
+                        content = this.renderQuizComponent(component);
+                        break;
+                    case 'reflection':
+                        content = this.renderReflectionComponent(component);
+                        break;
+                }
+                
+                contentContainer.innerHTML = content;
+                
+                // Update header
+                document.getElementById('content-title').textContent = component.title;
+                document.getElementById('content-description').textContent = 
+                    `Estimated time: ${Math.ceil(component.duration / 60)} minutes`;
+            }
+            
+            renderLabComponent(component) {
+                return `
+                    <div class="component-card">
+                        <div class="lab-environment">
+                            <div class="lab-header">
+                                <h3 class="text-lg font-semibold text-white flex items-center">
+                                    <i class="fas fa-flask text-blue-400 mr-2"></i>
+                                    Virtual SOC Environment
+                                </h3>
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-xs bg-green-600 px-2 py-1 rounded">ACTIVE</span>
+                                    <button class="text-gray-400 hover:text-white" onclick="showHint()">
+                                        <i class="fas fa-question-circle"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Lab Tools Tabs -->
+                            <div class="lab-tools p-4 bg-gray-800 border-b border-gray-700">
+                                <div class="flex space-x-2">
+                                    <button class="tool-tab active" data-tool="splunk" onclick="switchTool('splunk')">
+                                        <i class="fas fa-search mr-2"></i>Splunk SIEM
+                                    </button>
+                                    <button class="tool-tab" data-tool="threat-intel" onclick="switchTool('threat-intel')">
+                                        <i class="fas fa-shield-alt mr-2"></i>Threat Intel
+                                    </button>
+                                    <button class="tool-tab" data-tool="notebook" onclick="switchTool('notebook')">
+                                        <i class="fas fa-edit mr-2"></i>Analysis Notes
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Active Tool Interface -->
+                            <div class="tool-interface" id="tool-interface">
+                                ${this.renderSplunkInterface()}
+                            </div>
+                        </div>
+                        
+                        <!-- Lab Instructions -->
+                        <div class="mt-6 p-4 bg-gray-800 rounded-lg border border-gray-600">
+                            <h4 class="font-semibold text-white mb-3 flex items-center">
+                                <i class="fas fa-tasks text-green-400 mr-2"></i>
+                                Your Mission
+                            </h4>
+                            <div class="space-y-2 text-sm text-gray-300">
+                                <p><strong>Scenario:</strong> EverTrust Bank's security team detected unusual login patterns overnight. Your job is to investigate.</p>
+                                <div class="bg-yellow-900 bg-opacity-30 border-l-4 border-yellow-500 p-3 mt-3">
+                                    <p class="text-yellow-200"><strong>Alert:</strong> Multiple failed login attempts detected between 02:00-04:00 EST</p>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-4">
+                                <h5 class="font-medium text-white mb-2">Investigation Steps:</h5>
+                                <div class="space-y-2">
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="mr-2" id="step1">
+                                        <span class="text-sm">Query authentication logs for the time period</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="mr-2" id="step2">
+                                        <span class="text-sm">Identify source IPs with high failure rates</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="mr-2" id="step3">
+                                        <span class="text-sm">Check for successful logins after failures</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="mr-2" id="step4">
+                                        <span class="text-sm">Analyze geographic locations of source IPs</span>
+                                    </label>
+                                </div>
+                                
+                                <button class="mt-4 px-6 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition" onclick="submitLabResults()">
+                                    Submit Investigation Results
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            renderSplunkInterface() {
+                return `
+                    <div class="p-6">
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-300 mb-2">Splunk Query</label>
+                            <div class="relative">
+                                <textarea class="w-full p-3 bg-gray-900 border border-gray-600 rounded-lg text-green-400 font-mono text-sm" 
+                                          rows="3" id="splunk-query" placeholder="Enter your Splunk search query here...">index=security sourcetype=authentication | stats count by src_ip, user, action | where action="failed" OR action="success"</textarea>
+                                <button class="absolute top-2 right-2 px-3 py-1 bg-blue-600 hover:bg-blue-700 rounded text-xs" onclick="runSplunkQuery()">
+                                    Run Query
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="query-results" id="query-results">
+                            <div class="mb-3 text-sm text-gray-400">
+                                <i class="fas fa-info-circle mr-1"></i>
+                                Click "Run Query" to see results from EverTrust Bank's authentication logs
+                            </div>
+                            
+                            <!-- Placeholder results table -->
+                            <div class="hidden" id="results-table">
+                                <div class="bg-gray-900 rounded-lg overflow-hidden">
+                                    <table class="w-full text-sm">
+                                        <thead class="bg-gray-800">
+                                            <tr>
+                                                <th class="p-3 text-left">Time</th>
+                                                <th class="p-3 text-left">User</th>
+                                                <th class="p-3 text-left">Source IP</th>
+                                                <th class="p-3 text-left">Action</th>
+                                                <th class="p-3 text-left">Location</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="divide-y divide-gray-700">
+                                            <tr class="hover:bg-gray-800">
+                                                <td class="p-3">02:15:33</td>
+                                                <td class="p-3">j.martinez</td>
+                                                <td class="p-3 text-red-400">203.45.67.89</td>
+                                                <td class="p-3 text-red-400">failed</td>
+                                                <td class="p-3">Romania</td>
+                                            </tr>
+                                            <tr class="hover:bg-gray-800">
+                                                <td class="p-3">02:15:45</td>
+                                                <td class="p-3">j.martinez</td>
+                                                <td class="p-3 text-red-400">203.45.67.89</td>
+                                                <td class="p-3 text-red-400">failed</td>
+                                                <td class="p-3">Romania</td>
+                                            </tr>
+                                            <tr class="hover:bg-gray-800">
+                                                <td class="p-3">02:16:12</td>
+                                                <td class="p-3">j.martinez</td>
+                                                <td class="p-3 text-green-400">203.45.67.89</td>
+                                                <td class="p-3 text-green-400">success</td>
+                                                <td class="p-3">Romania</td>
+                                            </tr>
+                                            <tr class="hover:bg-gray-800">
+                                                <td class="p-3">08:30:15</td>
+                                                <td class="p-3">j.martinez</td>
+                                                <td class="p-3">192.168.1.45</td>
+                                                <td class="p-3">success</td>
+                                                <td class="p-3">New York, USA</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                                <div class="mt-4 p-3 bg-yellow-900 bg-opacity-30 border-l-4 border-yellow-500 rounded">
+                                    <p class="text-yellow-200 text-sm">
+                                        <strong>Key Finding:</strong> User j.martinez had successful login from Romania after multiple failures, 
+                                        but later logged in normally from New York office. Possible credential compromise!
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            showToast(message, type = 'info') {
+                const container = document.getElementById('toast-container');
+                const toast = document.createElement('div');
+                toast.className = `toast ${type}`;
+                toast.innerHTML = `
+                    <div class="flex items-center">
+                        <i class="fas fa-${type === 'success' ? 'check' : type === 'error' ? 'exclamation' : 'info'}-circle mr-2"></i>
+                        <span>${message}</span>
+                    </div>
+                `;
+                
+                container.appendChild(toast);
+                setTimeout(() => toast.classList.add('show'), 100);
+                
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    setTimeout(() => container.removeChild(toast), 300);
+                }, 4000);
+            }
+            
+            showBadgeNotification(badge) {
+                const container = document.getElementById('badge-container');
+                const notification = document.createElement('div');
+                notification.className = 'badge-notification';
+                notification.innerHTML = `
+                    <div class="flex items-center">
+                        <i class="fas fa-medal text-2xl mr-3"></i>
+                        <div>
+                            <div class="font-bold">New Achievement!</div>
+                            <div class="text-sm opacity-90">${badge}</div>
+                        </div>
+                    </div>
+                `;
+                
+                container.appendChild(notification);
+                setTimeout(() => notification.classList.add('show'), 100);
+                
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                    setTimeout(() => container.removeChild(notification), 500);
+                }, 5000);
+            }
+            
+            updateProgress() {
+                // Update overall progress
+                const totalModules = Object.keys(this.modules).length;
+                const completedModules = Object.values(this.state.progress).filter(p => p.completed).length;
+                const currentProgress = Math.round((completedModules / totalModules) * 100);
+                
+                document.getElementById('overall-progress').textContent = `${currentProgress}%`;
+                
+                // Update session stats
+                document.getElementById('session-time').textContent = this.formatTime(Date.now() - this.state.analytics.sessionStartTime);
+                document.getElementById('skill-points').textContent = this.state.analytics.skillPoints;
+            }
+            
+            formatTime(ms) {
+                const minutes = Math.floor(ms / 60000);
+                return `${minutes} min`;
+            }
+            
+            startSessionTimer() {
+                setInterval(() => {
+                    this.updateProgress();
+                }, 60000); // Update every minute
+            }
+        }
+        
+        // Global functions for UI interactions
+        let demoSystem;
+        
+        function loadModule(moduleId) {
+            if (moduleId > 2) {
+                showUpgradeModal();
+                return;
+            }
+            
+            demoSystem.state.currentModule = moduleId;
+            demoSystem.state.currentComponent = 0;
+            demoSystem.loadCurrentContent();
+            demoSystem.saveState();
+        }
+        
+        function nextComponent() {
+            const currentModule = demoSystem.modules[demoSystem.state.currentModule];
+            if (demoSystem.state.currentComponent < currentModule.components.length - 1) {
+                demoSystem.state.currentComponent++;
+                demoSystem.loadCurrentContent();
+            } else {
+                // Module complete
+                completeModule();
+            }
+        }
+        
+        function previousComponent() {
+            if (demoSystem.state.currentComponent > 0) {
+                demoSystem.state.currentComponent--;
+                demoSystem.loadCurrentContent();
+            }
+        }
+        
+        function completeModule() {
+            const moduleId = demoSystem.state.currentModule;
+            demoSystem.state.progress[`module${moduleId}`] = {
+                completed: true,
+                score: 85 + Math.floor(Math.random() * 15), // 85-100%
+                timeSpent: Date.now() - demoSystem.state.analytics.sessionStartTime
+            };
+            
+            demoSystem.state.analytics.skillPoints += 50;
+            demoSystem.showToast('Module completed! Great work!', 'success');
+            demoSystem.showBadgeNotification('Module Master');
+            
+            if (moduleId >= 2) {
+                setTimeout(() => showUpgradeModal(), 2000);
+            }
+        }
+        
+        function runSplunkQuery() {
+            const resultsTable = document.getElementById('results-table');
+            const queryResults = document.getElementById('query-results');
+            
+            // Show loading
+            queryResults.innerHTML = `
+                <div class="flex items-center justify-center p-8">
+                    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-400"></div>
+                    <span class="ml-3">Running query on EverTrust Bank logs...</span>
+                </div>
+            `;
+            
+            setTimeout(() => {
+                queryResults.innerHTML = '';
+                queryResults.appendChild(resultsTable);
+                resultsTable.classList.remove('hidden');
+                
+                demoSystem.showToast('Query executed successfully!', 'success');
+                
+                // Check off first step
+                document.getElementById('step1').checked = true;
+            }, 2000);
+        }
+        
+        function submitLabResults() {
+            let completedSteps = 0;
+            for (let i = 1; i <= 4; i++) {
+                if (document.getElementById(`step${i}`).checked) {
+                    completedSteps++;
+                }
+            }
+            
+            if (completedSteps >= 3) {
+                demoSystem.showToast('Excellent investigation! You identified the credential compromise.', 'success');
+                demoSystem.showBadgeNotification('Threat Hunter');
+                setTimeout(() => nextComponent(), 2000);
+            } else {
+                demoSystem.showToast('Complete at least 3 investigation steps before submitting.', 'error');
+            }
+        }
+        
+        function switchTool(toolName) {
+            // Update active tab
+            document.querySelectorAll('.tool-tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelector(`[data-tool="${toolName}"]`).classList.add('active');
+            
+            // Switch interface content
+            const interface = document.getElementById('tool-interface');
+            switch(toolName) {
+                case 'splunk':
+                    interface.innerHTML = demoSystem.renderSplunkInterface();
+                    break;
+                case 'threat-intel':
+                    interface.innerHTML = `
+                        <div class="p-6">
+                            <div class="text-center p-8 border-2 border-dashed border-gray-600 rounded-lg">
+                                <i class="fas fa-lock text-4xl text-gray-500 mb-4"></i>
+                                <h3 class="text-lg font-semibold text-gray-300 mb-2">Advanced Threat Intelligence</h3>
+                                <p class="text-gray-400 mb-4">Access enterprise threat feeds and IOC databases</p>
+                                <button class="px-6 py-2 bg-gradient-to-r from-yellow-600 to-orange-600 text-white rounded-lg font-semibold" onclick="showUpgradeModal()">
+                                    Upgrade to Access
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 'notebook':
+                    interface.innerHTML = `
+                        <div class="p-6">
+                            <textarea class="w-full h-64 p-4 bg-gray-900 border border-gray-600 rounded-lg text-white" 
+                                      placeholder="Take notes on your investigation findings...">Investigation Notes:
+
+- Multiple failed logins for j.martinez from Romanian IP (203.45.67.89)
+- Successful login from same IP after failures - credential compromise likely
+- User's normal location: New York office (192.168.1.45)
+- Recommendation: Reset password, enable MFA, monitor account</textarea>
+                            <button class="mt-4 px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition" onclick="saveNotes()">
+                                Save Notes
+                            </button>
+                        </div>
+                    `;
+                    break;
+            }
+        }
+        
+        function saveNotes() {
+            demoSystem.showToast('Notes saved to your learning profile!', 'success');
+        }
+        
+        function bookmarkContent() {
+            demoSystem.showToast('Content bookmarked for later review!', 'success');
+        }
+        
+        function sendMessage() {
+            const input = document.getElementById('chat-input');
+            const message = input.value.trim();
+            if (!message) return;
+            
+            // Add user message
+            const chatMessages = document.getElementById('chat-messages');
+            const userMessage = document.createElement('div');
+            userMessage.className = 'message user bg-blue-600 p-3 rounded-lg ml-8';
+            userMessage.innerHTML = `<p class="text-sm">${message}</p>`;
+            chatMessages.appendChild(userMessage);
+            
+            input.value = '';
+            
+            // Simulate AI response
+            setTimeout(() => {
+                const aiResponse = document.createElement('div');
+                aiResponse.className = 'message assistant bg-gray-800 p-3 rounded-lg';
+                aiResponse.innerHTML = `
+                    <div class="flex items-center mb-1">
+                        <div class="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center mr-2">
+                            <i class="fas fa-robot text-xs"></i>
+                        </div>
+                        <span class="text-sm font-medium">AI Assistant</span>
+                    </div>
+                    <p class="text-sm text-gray-300">${getAIResponse(message)}</p>
+                `;
+                chatMessages.appendChild(aiResponse);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }, 1000);
+        }
+        
+        function getAIResponse(message) {
+            const responses = {
+                'splunk': 'Splunk uses SPL (Search Processing Language). Try: index=security | stats count by src_ip | sort -count',
+                'ioc': 'IOCs (Indicators of Compromise) are artifacts that suggest malicious activity. Common types: IP addresses, file hashes, domain names.',
+                'help': 'I can help with SIEM queries, threat analysis, and SOC procedures. What specific topic would you like to explore?',
+                'default': 'Great question! In the full program, you\'ll have access to live mentors 24/7. For now, try the lab exercises to practice these concepts hands-on.'
+            };
+            
+            const key = Object.keys(responses).find(k => message.toLowerCase().includes(k));
+            return responses[key] || responses['default'];
+        }
+        
+        function toggleSidebar(sidebarId) {
+            const sidebar = document.getElementById(sidebarId);
+            sidebar.classList.toggle('open');
+        }
+        
+        function showHint() {
+            demoSystem.showToast('💡 Look for patterns in failed vs successful logins from the same IP!', 'info');
+        }
+        
+        function openNotes() {
+            demoSystem.showToast('Opening your notes and bookmarks...', 'info');
+        }
+        
+        function openMentorChat() {
+            showUpgradeModal();
+        }
+        
+        function openStudyGroup() {
+            showUpgradeModal();
+        }
+        
+        function showUpgradeModal() {
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50';
+            modal.innerHTML = `
+                <div class="bg-gray-800 rounded-lg p-8 max-w-2xl mx-4 border border-gray-600">
+                    <div class="text-center mb-6">
+                        <i class="fas fa-rocket text-5xl text-blue-400 mb-4"></i>
+                        <h2 class="text-3xl font-bold text-white mb-2">Ready for the Full Experience?</h2>
+                        <p class="text-gray-300">You've mastered the fundamentals! See what awaits in the complete program.</p>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-2 gap-6 mb-8">
+                        <div class="p-4 bg-gray-700 rounded-lg">
+                            <h3 class="font-bold text-white mb-3">Demo Experience:</h3>
+                            <ul class="space-y-2 text-sm text-gray-300">
+                                <li>✅ 3 foundational modules</li>
+                                <li>✅ Basic email & log analysis</li>
+                                <li>✅ Simulated environments</li>
+                                <li>✅ AI learning assistant</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="p-4 bg-gradient-to-br from-blue-900 to-purple-900 rounded-lg border border-blue-500">
+                            <h3 class="font-bold text-white mb-3">Full Program:</h3>
+                            <ul class="space-y-2 text-sm text-blue-100">
+                                <li>🔥 50+ comprehensive modules</li>
+                                <li>🔥 Real enterprise SIEM access</li>
+                                <li>🔥 Live malware analysis lab</li>
+                                <li>🔥 24/7 expert mentorship</li>
+                                <li>🔥 Industry certification prep</li>
+                                <li>🔥 Job placement assistance</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gradient-to-r from-green-800 to-blue-800 rounded-lg p-4 mb-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h4 class="font-bold text-white">Your Demo Progress</h4>
+                                <p class="text-green-100 text-sm">2.5 hours invested • 87% quiz average • 3 badges earned</p>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-2xl font-bold text-white">Ready!</div>
+                                <div class="text-sm text-green-200">Above average performance</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <button onclick="window.location.href='index.html#courses'" 
+                                class="px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-bold hover:from-blue-700 hover:to-purple-700 transition">
+                            Continue My Journey - $2,999
+                        </button>
+                        <button onclick="downloadProgressReport()" 
+                                class="px-8 py-3 bg-gray-600 hover:bg-gray-700 text-white rounded-lg font-semibold transition">
+                            Download Progress Report
+                        </button>
+                        <button onclick="this.parentElement.parentElement.parentElement.remove()" 
+                                class="px-8 py-3 bg-transparent border border-gray-500 text-gray-300 rounded-lg hover:bg-gray-700 transition">
+                            Continue Demo
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+        }
+        
+        function downloadProgressReport() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            // Header
+            doc.setFillColor(15, 23, 42);
+            doc.rect(0, 0, 210, 40, 'F');
+            
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(20);
+            doc.text('TECHSTEP DEMO PROGRESS REPORT', 105, 25, { align: 'center' });
+            
+            // User info
+            doc.setTextColor(0, 0, 0);
+            doc.setFontSize(14);
+            doc.text('Demo Participant Progress Summary', 20, 60);
+            
+            // Stats
+            doc.setFontSize(12);
+            doc.text('Time Invested: 2.5 hours', 20, 80);
+            doc.text('Modules Completed: 2 of 3', 20, 90);
+            doc.text('Quiz Average: 87%', 20, 100);
+            doc.text('Lab Success Rate: 100%', 20, 110);
+            doc.text('Badges Earned: 3', 20, 120);
+            
+            // Skills
+            doc.text('Skills Demonstrated:', 20, 140);
+            doc.text('• Email threat analysis and IOC extraction', 25, 150);
+            doc.text('• SIEM query development and log analysis', 25, 160);
+            doc.text('• Authentication pattern recognition', 25, 170);
+            doc.text('• Incident investigation methodology', 25, 180);
+            
+            // Recommendation
+            doc.setFontSize(14);
+            doc.text('Readiness Assessment: READY FOR FULL PROGRAM', 20, 200);
+            
+            doc.setFontSize(12);
+            doc.text('Recommendation: Your analytical thinking and attention to detail', 20, 220);
+            doc.text('indicate strong potential for cybersecurity career success.', 20, 230);
+            
+            doc.save('TechStep_Demo_Progress_Report.pdf');
+        }
+        
+        // Initialize the demo system when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            demoSystem = new DemoLearningSystem();
+        });
+    </script>
+</body>
+</html>

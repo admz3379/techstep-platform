@@ -637,9 +637,16 @@
 
     <!-- JavaScript for Demo System -->
     <script>
-        // Demo Learning Management System
+        // Demo Registration and Learning Management System
         class DemoLearningSystem {
             constructor() {
+                this.isRegistered = this.checkRegistration();
+                
+                if (!this.isRegistered) {
+                    this.showRegistrationForm();
+                    return;
+                }
+                
                 this.state = {
                     currentModule: 2,
                     currentComponent: 2, // Starting at lab component
@@ -707,6 +714,273 @@
                 this.initializeEventListeners();
                 this.loadCurrentContent();
                 this.startSessionTimer();
+            }
+            
+            checkRegistration() {
+                const registered = localStorage.getItem('demoRegistered');
+                const registrationData = localStorage.getItem('demoRegistrationData');
+                return registered === 'true' && registrationData;
+            }
+            
+            showRegistrationForm() {
+                document.body.innerHTML = `
+                    <div class="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 flex items-center justify-center p-4">
+                        <div class="max-w-lg w-full">
+                            <!-- Registration Card -->
+                            <div class="bg-gray-800 rounded-2xl shadow-2xl border border-gray-700 overflow-hidden">
+                                <!-- Header -->
+                                <div class="bg-gradient-to-r from-blue-600 to-purple-600 p-6 text-center">
+                                    <div class="w-20 h-20 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                                        <i class="fas fa-graduation-cap text-3xl text-white"></i>
+                                    </div>
+                                    <h1 class="text-2xl font-bold text-white mb-2">SOC Analyst Fundamentals</h1>
+                                    <p class="text-blue-100">Free Self-Paced Demo Access</p>
+                                </div>
+                                
+                                <!-- Registration Form -->
+                                <div class="p-6">
+                                    <div class="mb-6">
+                                        <h2 class="text-xl font-bold text-white mb-2">Get Instant Access</h2>
+                                        <p class="text-gray-300 text-sm">Experience our complete learning platform with hands-on SOC analyst training. No commitment required.</p>
+                                    </div>
+                                    
+                                    <form id="demoRegistrationForm" class="space-y-4">
+                                        <div class="grid grid-cols-2 gap-4">
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-300 mb-2">First Name *</label>
+                                                <input type="text" id="firstName" required 
+                                                       class="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none">
+                                            </div>
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-300 mb-2">Last Name *</label>
+                                                <input type="text" id="lastName" required 
+                                                       class="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none">
+                                            </div>
+                                        </div>
+                                        
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-300 mb-2">Email Address *</label>
+                                            <input type="email" id="email" required 
+                                                   class="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none">
+                                        </div>
+                                        
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-300 mb-2">Phone Number</label>
+                                            <input type="tel" id="phone" 
+                                                   class="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none">
+                                        </div>
+                                        
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-300 mb-2">Current Experience Level</label>
+                                            <select id="experienceLevel" 
+                                                    class="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:border-blue-500 focus:outline-none">
+                                                <option value="complete-beginner">Complete beginner</option>
+                                                <option value="some-it">Some IT experience</option>
+                                                <option value="career-change">Changing careers</option>
+                                                <option value="some-security">Some security knowledge</option>
+                                            </select>
+                                        </div>
+                                        
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-300 mb-2">How did you hear about us?</label>
+                                            <select id="referralSource" 
+                                                    class="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:border-blue-500 focus:outline-none">
+                                                <option value="">Select source...</option>
+                                                <option value="google-search">Google search</option>
+                                                <option value="social-media">Social media</option>
+                                                <option value="friend-referral">Friend/colleague referral</option>
+                                                <option value="youtube">YouTube</option>
+                                                <option value="linkedin">LinkedIn</option>
+                                                <option value="job-board">Job board</option>
+                                                <option value="other">Other</option>
+                                            </select>
+                                        </div>
+                                        
+                                        <!-- What interests you most -->
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-300 mb-2">What interests you most about cybersecurity?</label>
+                                            <textarea id="interests" rows="3" placeholder="Tell us what draws you to cybersecurity..."
+                                                      class="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none"></textarea>
+                                        </div>
+                                        
+                                        <!-- Consent -->
+                                        <div class="flex items-start">
+                                            <input type="checkbox" id="emailConsent" required
+                                                   class="mt-1 mr-3 w-4 h-4 text-blue-600 border-gray-600 rounded focus:ring-blue-500">
+                                            <label for="emailConsent" class="text-sm text-gray-300">
+                                                I agree to receive educational emails about cybersecurity training and career opportunities. You can unsubscribe anytime. *
+                                            </label>
+                                        </div>
+                                        
+                                        <!-- Submit Button -->
+                                        <button type="submit" id="submitRegistration" 
+                                                class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-4 px-6 rounded-lg transition duration-300 flex items-center justify-center">
+                                            <span id="submitText">Start My Free Demo</span>
+                                            <i class="fas fa-arrow-right ml-2"></i>
+                                        </button>
+                                    </form>
+                                    
+                                    <!-- What you'll get -->
+                                    <div class="mt-6 p-4 bg-gray-700 rounded-lg">
+                                        <h3 class="font-semibold text-white mb-2">🎯 What You'll Experience:</h3>
+                                        <ul class="space-y-1 text-sm text-gray-300">
+                                            <li>• Authentic SOC analyst training modules</li>
+                                            <li>• Real Splunk SIEM environment</li>
+                                            <li>• Hands-on email & log analysis</li>
+                                            <li>• Progress tracking & achievements</li>
+                                            <li>• Professional completion certificate</li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <!-- Security notice -->
+                                    <div class="mt-4 text-center">
+                                        <p class="text-xs text-gray-500">
+                                            <i class="fas fa-lock mr-1"></i>
+                                            Your information is secure and will only be used for educational purposes.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                // Add form submission handler
+                this.setupRegistrationForm();
+            }
+            
+            setupRegistrationForm() {
+                document.getElementById('demoRegistrationForm').addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    
+                    const submitBtn = document.getElementById('submitRegistration');
+                    const submitText = document.getElementById('submitText');
+                    
+                    // Show loading state
+                    submitBtn.disabled = true;
+                    submitText.textContent = 'Registering...';
+                    submitBtn.innerHTML = '<div class="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>Registering...';
+                    
+                    // Collect form data
+                    const registrationData = {
+                        firstName: document.getElementById('firstName').value,
+                        lastName: document.getElementById('lastName').value,
+                        email: document.getElementById('email').value,
+                        phone: document.getElementById('phone').value || 'Not provided',
+                        experienceLevel: document.getElementById('experienceLevel').value,
+                        referralSource: document.getElementById('referralSource').value || 'Not specified',
+                        interests: document.getElementById('interests').value || 'Not specified',
+                        registrationDate: new Date().toISOString(),
+                        source: 'Self-Paced Demo Registration'
+                    };
+                    
+                    try {
+                        // Send registration data to support email
+                        await this.sendRegistrationEmail(registrationData);
+                        
+                        // Store registration locally
+                        localStorage.setItem('demoRegistrationData', JSON.stringify(registrationData));
+                        localStorage.setItem('demoRegistered', 'true');
+                        
+                        // Show success and redirect to demo
+                        this.showRegistrationSuccess(registrationData.firstName);
+                        
+                    } catch (error) {
+                        console.error('Registration failed:', error);
+                        
+                        // Reset button state
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = '<span>Start My Free Demo</span><i class="fas fa-arrow-right ml-2"></i>';
+                        
+                        // Show error message
+                        this.showRegistrationError();
+                    }
+                });
+            }
+            
+            async sendRegistrationEmail(data) {
+                // In a real implementation, this would send to your backend API
+                // For now, we'll simulate the email sending and log the data
+                
+                const emailContent = \`
+                New Self-Paced Demo Registration
+                
+                Student Information:
+                - Name: \${data.firstName} \${data.lastName}
+                - Email: \${data.email}
+                - Phone: \${data.phone}
+                - Experience Level: \${data.experienceLevel}
+                - How they heard about us: \${data.referralSource}
+                - Interests: \${data.interests}
+                - Registration Date: \${data.registrationDate}
+                - Source: \${data.source}
+                
+                This student has registered for the Self-Paced Demo and should be added to the educational email sequence.
+                \`;
+                
+                console.log('Email to support@techstepfoundation.org:', emailContent);
+                
+                // Simulate API call delay
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                // In production, you would replace this with actual email service
+                // Example: await fetch('/api/send-registration', { method: 'POST', body: JSON.stringify(data) })
+            }
+            
+            showRegistrationSuccess(firstName) {
+                document.body.innerHTML = \`
+                    <div class="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 flex items-center justify-center p-4">
+                        <div class="max-w-md w-full text-center">
+                            <div class="bg-gray-800 rounded-2xl shadow-2xl border border-gray-700 p-8">
+                                <div class="w-20 h-20 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                                    <i class="fas fa-check text-3xl text-white"></i>
+                                </div>
+                                
+                                <h2 class="text-2xl font-bold text-white mb-4">Welcome, \${firstName}! 🎉</h2>
+                                <p class="text-gray-300 mb-6">Your registration was successful! You now have access to the complete Self-Paced Demo experience.</p>
+                                
+                                <div class="bg-gradient-to-r from-green-800 to-blue-800 rounded-lg p-4 mb-6">
+                                    <h3 class="font-semibold text-white mb-2">What's Next:</h3>
+                                    <ul class="text-sm text-green-100 space-y-1">
+                                        <li>✓ Complete 3 hands-on modules</li>
+                                        <li>✓ Practice real SOC analyst skills</li>
+                                        <li>✓ Earn your completion certificate</li>
+                                        <li>✓ Track your progress & achievements</li>
+                                    </ul>
+                                </div>
+                                
+                                <button onclick="location.reload()" 
+                                        class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300">
+                                    Enter Learning Platform
+                                </button>
+                                
+                                <p class="text-xs text-gray-500 mt-4">
+                                    Check your email for additional resources and next steps!
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                \`;
+                
+                // Auto-redirect after 3 seconds
+                setTimeout(() => {
+                    location.reload();
+                }, 3000);
+            }
+            
+            showRegistrationError() {
+                // Show error toast
+                const toast = document.createElement('div');
+                toast.className = 'fixed bottom-4 right-4 bg-red-600 text-white p-4 rounded-lg shadow-lg z-50';
+                toast.innerHTML = \`
+                    <div class="flex items-center">
+                        <i class="fas fa-exclamation-triangle mr-2"></i>
+                        <span>Registration failed. Please try again or contact support.</span>
+                    </div>
+                \`;
+                
+                document.body.appendChild(toast);
+                setTimeout(() => toast.remove(), 5000);
             }
             
             loadState() {

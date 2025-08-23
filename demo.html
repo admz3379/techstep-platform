@@ -727,6 +727,10 @@
                 console.log('checkRegistration - registered:', registered, 'registrationData:', registrationData);
                 const result = registered === 'true' && registrationData;
                 console.log('checkRegistration result:', result);
+                
+                // For debugging - let's see what's in localStorage
+                console.log('All demo localStorage keys:', Object.keys(localStorage).filter(key => key.includes('demo')));
+                
                 return result;
             }
             

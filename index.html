@@ -2149,13 +2149,25 @@ function formatTime(seconds) {
             });
         });
 
-        // Learning type functionality
-        const learningTypeInputs = document.querySelectorAll('input[name="learning-type"]');
-        const mentorBookingSection = document.getElementById('mentor-booking-section');
-        const courseCards = document.querySelectorAll('.course-card');
-        const courseCheckboxes = document.querySelectorAll('.course-checkbox');
-        const cartItems = document.getElementById('cart-items');
-        const totalPriceElement = document.getElementById('total-price');
+        // Course functionality - will be initialized in DOMContentLoaded
+        let learningTypeInputs, mentorBookingSection, courseCards, courseCheckboxes, cartItems, totalPriceElement;
+        
+        function initializeCourseSelection() {
+            learningTypeInputs = document.querySelectorAll('input[name="learning-type"]');
+            mentorBookingSection = document.getElementById('mentor-booking-section');
+            courseCards = document.querySelectorAll('.course-card');
+            courseCheckboxes = document.querySelectorAll('.course-checkbox');
+            cartItems = document.getElementById('cart-items');
+            totalPriceElement = document.getElementById('total-price');
+            
+            console.log('Initializing course selection...');
+            console.log('Elements found:', {
+                learningTypeInputs: learningTypeInputs.length,
+                courseCards: courseCards.length,
+                courseCheckboxes: courseCheckboxes.length,
+                cartItems: !!cartItems,
+                totalPriceElement: !!totalPriceElement
+            });
 
         learningTypeInputs.forEach(input => {
             input.addEventListener('change', function() {
@@ -2183,11 +2195,13 @@ function formatTime(seconds) {
             });
         });
 
-        // Course selection functionality
-        console.log('Found course checkboxes:', courseCheckboxes.length);
-        courseCheckboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', function() {
-                console.log('Checkbox changed:', this.checked);
+            // Course selection functionality
+            console.log('Found course checkboxes:', courseCheckboxes.length);
+            console.log('Course checkboxes:', courseCheckboxes);
+            courseCheckboxes.forEach((checkbox, index) => {
+                console.log(`Setting up listener for checkbox ${index}:`, checkbox);
+                checkbox.addEventListener('change', function() {
+                    console.log('Checkbox changed:', this.checked, 'Checkbox:', this);
                 const courseCard = this.closest('.course-card');
                 const courseName = courseCard.querySelector('h3').textContent;
                 const selfPrice = parseInt(this.dataset.selfPrice);
@@ -2212,7 +2226,7 @@ function formatTime(seconds) {
             });
         });
 
-        // Payment plan change handlers
+            // Payment plan change handlers
         document.querySelectorAll('input[name="payment-plan"]').forEach(radio => {
             radio.addEventListener('change', function() {
                 const selectedPlan = this.value;
@@ -2227,6 +2241,7 @@ function formatTime(seconds) {
                 updatePaymentDisplays();
             });
         });
+        }
 
         function updateCart() {
             console.log('updateCart called, selectedCourses:', selectedCourses);
@@ -2257,12 +2272,24 @@ function formatTime(seconds) {
             totalPriceElement.textContent = `$${total.toLocaleString()}`;
 
             // Update payment plan displays
+            console.log('Updating payment displays...');
             updatePaymentDisplays();
 
             // Show payment options
-            document.getElementById('payment-plan-selector').classList.remove('hidden');
-            document.getElementById('payment-buttons-container').classList.remove('hidden');
-            document.getElementById('security-notice').classList.remove('hidden');
+            console.log('Showing payment options...');
+            const paymentPlanSelector = document.getElementById('payment-plan-selector');
+            const paymentButtonsContainer = document.getElementById('payment-buttons-container');
+            const securityNotice = document.getElementById('security-notice');
+            
+            console.log('Payment elements:', {
+                paymentPlanSelector: !!paymentPlanSelector,
+                paymentButtonsContainer: !!paymentButtonsContainer,
+                securityNotice: !!securityNotice
+            });
+            
+            if (paymentPlanSelector) paymentPlanSelector.classList.remove('hidden');
+            if (paymentButtonsContainer) paymentButtonsContainer.classList.remove('hidden');
+            if (securityNotice) securityNotice.classList.remove('hidden');
 
             // Initialize payment handlers
             initializePaymentHandlers();
@@ -4586,11 +4613,14 @@ function formatTime(seconds) {
 
         // Enhanced login/register functionality (for existing customers)
         function showAuthModal() {
+            console.log('showAuthModal called');
+            console.log('API authenticated:', api.isAuthenticated());
             if (api.isAuthenticated()) {
                 // Show dashboard
                 showDashboard();
             } else {
                 // Show login modal for existing customers only
+                console.log('Showing student login modal');
                 showStudentLoginModal();
             }
         }
@@ -4736,8 +4766,14 @@ function formatTime(seconds) {
         // Update the admin login button event listener
         function setupAdminLoginButton() {
             const adminLoginBtn = document.getElementById('adminLoginBtn');
+            console.log('Setting up admin login button:', adminLoginBtn);
             if (adminLoginBtn) {
-                adminLoginBtn.addEventListener('click', showAuthModal);
+                adminLoginBtn.addEventListener('click', function() {
+                    console.log('Mentee login button clicked');
+                    showAuthModal();
+                });
+            } else {
+                console.error('Admin login button not found!');
             }
         }
 
@@ -4964,6 +5000,9 @@ function formatTime(seconds) {
 
         // Main DOMContentLoaded listener - consolidate all initialization
         document.addEventListener('DOMContentLoaded', async function() {
+            // Initialize course selection functionality
+            initializeCourseSelection();
+            
             // Initialize cart display
             updateCart();
             

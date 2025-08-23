@@ -403,6 +403,9 @@
                     <a href="#mentors" class="text-gray-300 hover:text-blue-400 transition duration-300">Mentors</a>
                     <a href="#podcast" class="text-gray-300 hover:text-blue-400 transition duration-300">Podcast</a>
                     <a href="#testimonials" class="text-gray-300 hover:text-blue-400 transition duration-300">Reviews</a>
+                    <button id="freeTrialBtn" class="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-6 py-2 rounded-lg hover:from-purple-700 hover:to-blue-700 transition duration-300">
+                        <i class="fas fa-rocket mr-2"></i>Free Trial
+                    </button>
                     <button id="adminLoginBtn" class="bg-gray-600 text-white px-6 py-2 rounded-lg hover:bg-gray-700 transition duration-300">
                         <i class="fas fa-lock mr-2"></i>Mentee Login
                     </button>
@@ -422,6 +425,9 @@
                     <a href="#mentors" class="block px-3 py-2 text-gray-300 hover:text-blue-400 hover:bg-gray-600 rounded-md transition duration-300">Mentors</a>
                     <a href="#podcast" class="block px-3 py-2 text-gray-300 hover:text-blue-400 hover:bg-gray-600 rounded-md transition duration-300">Podcast</a>
                     <a href="#testimonials" class="block px-3 py-2 text-gray-300 hover:text-blue-400 hover:bg-gray-600 rounded-md transition duration-300">Reviews</a>
+                    <button id="mobileFreeTrialBtn" class="block w-full text-left px-3 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-md hover:from-purple-700 hover:to-blue-700 transition duration-300 mt-2">
+                        <i class="fas fa-rocket mr-2"></i>Free Trial
+                    </button>
                     <button id="mobileAdminLoginBtn" class="block w-full text-left px-3 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition duration-300 mt-2">
                         <i class="fas fa-lock mr-2"></i>Mentee Login
                     </button>
@@ -596,6 +602,7 @@
             </div>
         </div>
     </div>
+    <!-- Trial App Container -->
 
     <!-- Hero Section -->
     <section class="hero-bg py-20">
@@ -607,7 +614,7 @@
                 Master cybersecurity through expert-led training, hands-on labs, and personalized mentoring. From SOC Analyst to GRC Expert — we'll guide you every step of the way. All backgrounds welcome. No experience required. 
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-                <button class="bg-blue-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-700 transition duration-300 transform hover:scale-105">
+                <button id="mainProgramBtn" class="bg-blue-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-700 transition duration-300 transform hover:scale-105">
                     <i class="fas fa-graduation mr-2"></i>From Beginner to Cybersecurity Professional in 6 Months
                 </button>
                 <button class="border border-gray-400 text-gray-300 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-800 transition duration-300">
@@ -1886,6 +1893,126 @@ function formatTime(seconds) {
                 });
             }
         }
+
+        // Trial Navigation Functionality
+        const freeTrialBtn = document.getElementById('freeTrialBtn');
+        const mobileFreeTrialBtn = document.getElementById('mobileFreeTrialBtn');
+        const mainProgramBtn = document.getElementById('mainProgramBtn');
+
+        // Free Trial button handlers
+        if (freeTrialBtn) {
+            freeTrialBtn.addEventListener('click', function() {
+                window.location.href = 'trial.html';
+            });
+        }
+
+        if (mobileFreeTrialBtn) {
+            mobileFreeTrialBtn.addEventListener('click', function() {
+                // Close mobile menu
+                const mobileMenu = document.getElementById('mobileMenu');
+                mobileMenu.classList.add('hidden');
+                mobileMenuBtn.querySelector('i').className = 'fas fa-bars text-xl';
+                // Navigate to trial
+                window.location.href = 'trial.html';
+            });
+        }
+
+        // Main program button handler - show trial first
+        if (mainProgramBtn) {
+            mainProgramBtn.addEventListener('click', function() {
+                // Show trial promotion modal
+                showTrialPromotionModal();
+            });
+        }
+
+        // Trial Promotion Modal
+        function showTrialPromotionModal() {
+            const modalHTML = \`
+                <div id="trialPromotionModal" class="modal-overlay show">
+                    <div class="modal-content max-w-lg">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-2xl font-bold text-white">Try Before You Buy</h2>
+                            <button id="closeTrialPromotion" class="text-gray-400 hover:text-white">
+                                <i class="fas fa-times text-xl"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="text-center mb-6">
+                            <div class="w-16 h-16 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-rocket text-2xl text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-white mb-2">Free 3-Day SOC Trial Available!</h3>
+                            <p class="text-gray-300">Experience real cybersecurity work before committing to the full program.</p>
+                        </div>
+
+                        <div class="bg-gradient-to-r from-purple-900/50 to-blue-900/50 rounded-lg p-4 mb-6">
+                            <div class="grid grid-cols-2 gap-4 text-sm text-white">
+                                <div class="flex items-center">
+                                    <i class="fas fa-check-circle text-green-400 mr-2"></i>
+                                    <span>Real SOC tasks</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-check-circle text-green-400 mr-2"></i>
+                                    <span>Voice briefings</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-check-circle text-green-400 mr-2"></i>
+                                    <span>Get certificate</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-check-circle text-green-400 mr-2"></i>
+                                    <span>No commitment</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3">
+                            <button onclick="window.location.href='trial.html'" class="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300">
+                                <i class="fas fa-rocket mr-2"></i>Start Free 3-Day Trial
+                            </button>
+                            <button onclick="scrollToCourses(); document.getElementById('trialPromotionModal').remove();" class="w-full bg-gray-600 hover:bg-gray-700 text-white py-2 px-4 rounded-lg transition duration-300">
+                                Skip to Full Program
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            \`;
+
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
+
+            // Close modal handler
+            document.getElementById('closeTrialPromotion').addEventListener('click', function() {
+                document.getElementById('trialPromotionModal').remove();
+            });
+        }
+
+        // Exit Intent Trial Modal (can be triggered programmatically)
+        function openTrialModal() {
+            const modalHTML = \`
+                <div id="exitTrialModal" class="modal-overlay show">
+                    <div class="modal-content max-w-md">
+                        <div class="text-center">
+                            <h2 class="text-2xl font-bold text-white mb-4">Not ready to enroll?</h2>
+                            <p class="text-gray-300 mb-6">Take the free 3-day SOC trial and see if this career fits you.</p>
+                            
+                            <div class="space-y-3">
+                                <button onclick="window.location.href='trial.html'" class="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300">
+                                    Start Free Trial
+                                </button>
+                                <button onclick="document.getElementById('exitTrialModal').remove()" class="w-full bg-gray-600 hover:bg-gray-700 text-white py-2 px-4 rounded-lg transition duration-300">
+                                    Keep Browsing
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            \`;
+
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
+        }
+
+        // Expose openTrialModal globally for programmatic access
+        window.openTrialModal = openTrialModal;
 
         // Dashboard Modal Functionality
         const loginBtn = document.getElementById('loginBtn');

@@ -73,16 +73,16 @@ def check_payments():
         
         print("\n" + "="*60)
         
-        # Check enrollments table
+        # Check course_enrollments table
         try:
-            cursor.execute("SELECT COUNT(*) FROM enrollments;")
+            cursor.execute("SELECT COUNT(*) FROM course_enrollments;")
             enrollment_count = cursor.fetchone()[0]
-            print(f"📚 Total enrollments in database: {enrollment_count}")
+            print(f"📚 Total course enrollments in database: {enrollment_count}")
             
             if enrollment_count > 0:
                 cursor.execute("""
                     SELECT e.id, e.user_id, e.course_id, e.created_at, c.title 
-                    FROM enrollments e 
+                    FROM course_enrollments e 
                     LEFT JOIN courses c ON e.course_id = c.id 
                     ORDER BY e.created_at DESC LIMIT 5;
                 """)
@@ -92,7 +92,7 @@ def check_payments():
                     print(f"  ID: {enrollment[0]}, User: {enrollment[1]}, Course: {enrollment[4] or enrollment[2]}, Created: {enrollment[3]}")
                     
         except sqlite3.OperationalError as e:
-            print(f"❌ Error accessing enrollments table: {e}")
+            print(f"❌ Error accessing course_enrollments table: {e}")
             
     except sqlite3.Error as e:
         print(f"❌ Database error: {e}")

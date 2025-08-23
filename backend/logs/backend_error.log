@@ -443,3 +443,97 @@ INFO:app.main:Starting up TechStep API...
 INFO:app.main:Database tables created successfully
 INFO:app.main:TechStep API started successfully!
 INFO:     Application startup complete.
+INFO:     Will watch for changes in these directories: ['/home/user/webapp/backend']
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [54026] using WatchFiles
+INFO:     Started server process [54028]
+INFO:     Waiting for application startup.
+INFO:app.main:Starting up TechStep API...
+INFO:app.main:Database tables created successfully
+INFO:app.main:TechStep API started successfully!
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'app/api/endpoints/payments.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:app.main:Shutting down TechStep API...
+INFO:     Application shutdown complete.
+INFO:     Finished server process [54028]
+INFO:     Started server process [57607]
+INFO:     Waiting for application startup.
+INFO:app.main:Starting up TechStep API...
+INFO:app.main:Database tables created successfully
+INFO:app.main:TechStep API started successfully!
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'app/api/endpoints/payments.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:app.main:Shutting down TechStep API...
+INFO:     Application shutdown complete.
+INFO:     Finished server process [57607]
+INFO:     Started server process [57616]
+INFO:     Waiting for application startup.
+INFO:app.main:Starting up TechStep API...
+INFO:app.main:Database tables created successfully
+INFO:app.main:TechStep API started successfully!
+INFO:     Application startup complete.
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:app.main:Shutting down TechStep API...
+INFO:     Application shutdown complete.
+INFO:     Finished server process [57616]
+INFO:     Stopping reloader process [54026]
+INFO:     Will watch for changes in these directories: ['/home/user/webapp/backend']
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [57659] using WatchFiles
+INFO:     Started server process [57661]
+INFO:     Waiting for application startup.
+INFO:app.main:Starting up TechStep API...
+INFO:app.main:Database tables created successfully
+INFO:app.main:TechStep API started successfully!
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'app/api/endpoints/payments.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:app.main:Shutting down TechStep API...
+INFO:     Application shutdown complete.
+INFO:     Finished server process [57661]
+INFO:     Started server process [59340]
+INFO:     Waiting for application startup.
+INFO:app.main:Starting up TechStep API...
+INFO:app.main:Database tables created successfully
+INFO:app.main:TechStep API started successfully!
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'app/api/endpoints/payments.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:app.main:Shutting down TechStep API...
+INFO:     Application shutdown complete.
+INFO:     Finished server process [59340]
+INFO:     Started server process [59351]
+INFO:     Waiting for application startup.
+INFO:app.main:Starting up TechStep API...
+INFO:app.main:Database tables created successfully
+INFO:app.main:TechStep API started successfully!
+INFO:     Application startup complete.
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:app.main:Shutting down TechStep API...
+INFO:     Application shutdown complete.
+INFO:     Finished server process [59351]
+INFO:     Stopping reloader process [57659]
+INFO:     Will watch for changes in these directories: ['/home/user/webapp/backend']
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [59432] using WatchFiles
+INFO:     Started server process [59434]
+INFO:     Waiting for application startup.
+INFO:app.main:Starting up TechStep API...
+INFO:app.main:Database tables created successfully
+INFO:app.main:TechStep API started successfully!
+INFO:     Application startup complete.
+INFO:stripe:message='Request to Stripe api' method=post url=https://api.stripe.com/v1/payment_intents
+INFO:stripe:message='Stripe API response' path=https://api.stripe.com/v1/payment_intents response_code=200
+INFO:stripe:message='Request to Stripe api' method=post url=https://api.stripe.com/v1/payment_intents
+INFO:stripe:message='Request to Stripe api' method=post url=https://api.stripe.com/v1/payment_intents
+INFO:stripe:message='Stripe API response' path=https://api.stripe.com/v1/payment_intents response_code=200
+INFO:stripe:message='Request to Stripe api' method=post url=https://api.stripe.com/v1/payment_intents
+INFO:stripe:message='Stripe API response' path=https://api.stripe.com/v1/payment_intents response_code=200

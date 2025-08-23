@@ -408,13 +408,25 @@
                     </button>
                 </div>
                 <div class="md:hidden">
-                    <button class="text-gray-300 hover:text-white">
+                    <button id="mobileMenuBtn" class="text-gray-300 hover:text-white">
                         <i class="fas fa-bars text-xl"></i>
                     </button>
                 </div>
             </div>
         </div>
     </nav>
+            <!-- Mobile Menu (Hidden by default) -->
+            <div id="mobileMenu" class="md:hidden bg-gray-700 border-t border-gray-600 hidden">
+                <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                    <a href="#courses" class="block px-3 py-2 text-gray-300 hover:text-blue-400 hover:bg-gray-600 rounded-md transition duration-300">Courses</a>
+                    <a href="#mentors" class="block px-3 py-2 text-gray-300 hover:text-blue-400 hover:bg-gray-600 rounded-md transition duration-300">Mentors</a>
+                    <a href="#podcast" class="block px-3 py-2 text-gray-300 hover:text-blue-400 hover:bg-gray-600 rounded-md transition duration-300">Podcast</a>
+                    <a href="#testimonials" class="block px-3 py-2 text-gray-300 hover:text-blue-400 hover:bg-gray-600 rounded-md transition duration-300">Reviews</a>
+                    <button id="mobileAdminLoginBtn" class="block w-full text-left px-3 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition duration-300 mt-2">
+                        <i class="fas fa-lock mr-2"></i>Mentee Login
+                    </button>
+                </div>
+            </div>
 
     <!-- Dashboard Modal -->
     <div id="dashboardModal" class="modal-overlay" style="display: none !important;">
@@ -1840,6 +1852,41 @@ function formatTime(seconds) {
         let currentLearningType = 'self-paced';
         let paymentPlanAgreed = false;
 
+        // Mobile Menu Functionality
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileAdminLoginBtn = document.getElementById('mobileAdminLoginBtn');
+
+        if (mobileMenuBtn && mobileMenu) {
+            mobileMenuBtn.addEventListener('click', function() {
+                mobileMenu.classList.toggle('hidden');
+                const icon = mobileMenuBtn.querySelector('i');
+                if (mobileMenu.classList.contains('hidden')) {
+                    icon.className = 'fas fa-bars text-xl';
+                } else {
+                    icon.className = 'fas fa-times text-xl';
+                }
+            });
+
+            // Close mobile menu when clicking on links
+            mobileMenu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', function() {
+                    mobileMenu.classList.add('hidden');
+                    mobileMenuBtn.querySelector('i').className = 'fas fa-bars text-xl';
+                });
+            });
+
+            // Connect mobile login button to desktop functionality
+            if (mobileAdminLoginBtn) {
+                mobileAdminLoginBtn.addEventListener('click', function() {
+                    mobileMenu.classList.add('hidden');
+                    mobileMenuBtn.querySelector('i').className = 'fas fa-bars text-xl';
+                    // Trigger the same functionality as desktop login button
+                    document.getElementById('adminLoginBtn')?.click();
+                });
+            }
+        }
+
         // Dashboard Modal Functionality
         const loginBtn = document.getElementById('loginBtn');
         const dashboardModal = document.getElementById('dashboardModal');
@@ -3196,39 +3243,78 @@ function formatTime(seconds) {
                                     </div>
                                 </div>
 
+                                <!-- Free Trial Banner -->
+                                <div class="bg-gradient-to-r from-purple-600 to-blue-600 p-4 rounded-lg mb-6">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <h3 class="text-white font-bold text-lg">🎉 FREE 7-Day Trial Available!</h3>
+                                            <p class="text-white/80 text-sm">Try any course risk-free for one week</p>
+                                        </div>
+                                        <button id="startFreeTrial" class="bg-white text-purple-600 font-bold px-4 py-2 rounded-lg hover:bg-gray-100 transition-all">
+                                            Start Free Trial
+                                        </button>
+                                    </div>
+                                </div>
+
                                 <div class="space-y-4 mb-6">
                                     <h4 class="text-lg font-bold text-white">Choose Payment Option:</h4>
                                     
+                                    <!-- Full Payment Option -->
                                     <label class="payment-option-card block p-4 bg-gray-800 rounded-lg border-2 border-transparent hover:border-green-500 cursor-pointer transition-all">
                                         <input type="radio" name="paymentOption" value="full" class="mr-3" checked>
-                                        <div class="inline-block">
-                                            <div class="flex items-center">
-                                                <span class="text-white font-semibold">Full Payment (Save 5%)</span>
-                                                <span class="ml-2 bg-green-600 text-white px-2 py-1 rounded text-xs">BEST VALUE</span>
+                                        <div class="inline-block w-full">
+                                            <div class="flex items-center justify-between">
+                                                <div class="flex items-center">
+                                                    <span class="text-white font-semibold">Full Payment (Save 5%)</span>
+                                                    <span class="ml-2 bg-green-600 text-white px-2 py-1 rounded text-xs">BEST VALUE</span>
+                                                </div>
+                                                <div class="text-right">
+                                                    <div class="text-gray-400 text-sm line-through">$${finalPrice.toLocaleString()}</div>
+                                                    <div class="text-green-400 font-bold text-lg">$${fullPaymentPrice.toLocaleString()}</div>
+                                                </div>
                                             </div>
-                                            <div class="text-gray-400 text-sm">
-                                                <span class="line-through">$${finalPrice.toLocaleString()}</span> 
-                                                <span class="text-green-400 font-bold text-lg ml-2">$${fullPaymentPrice.toLocaleString()}</span>
-                                                <span class="text-green-400 ml-2">(Save $${fullPaymentDiscount})</span>
+                                            <div class="text-green-400 text-sm mt-1">(Save $${fullPaymentDiscount} • No additional fees)</div>
+                                        </div>
+                                    </label>
+                                    
+                                    <!-- 30% Down + Monthly Payments -->
+                                    <label class="payment-option-card block p-4 bg-gray-800 rounded-lg border-2 border-transparent hover:border-blue-500 cursor-pointer transition-all">
+                                        <input type="radio" name="paymentOption" value="monthly" class="mr-3">
+                                        <div class="inline-block w-full">
+                                            <div class="flex items-center justify-between">
+                                                <div>
+                                                    <div class="text-white font-semibold">30% Down + Monthly Payments</div>
+                                                    <span class="bg-blue-600 text-white px-2 py-1 rounded text-xs">POPULAR</span>
+                                                </div>
+                                                <div class="text-right">
+                                                    <div class="text-blue-400 font-bold text-lg">$${Math.ceil(finalPrice * 0.3).toLocaleString()}</div>
+                                                    <div class="text-gray-400 text-sm">down payment</div>
+                                                </div>
+                                            </div>
+                                            <div class="mt-2 text-sm">
+                                                <div class="text-gray-400">Then: <span class="text-blue-400 font-bold">$${Math.ceil((finalPrice * 0.7) / 6).toLocaleString()}/month</span> × 6 months</div>
+                                                <div class="text-xs text-gray-500 mt-1">Total: $${Math.ceil(finalPrice * 0.3) + Math.ceil((finalPrice * 0.7) / 6) * 6}</div>
                                             </div>
                                         </div>
                                     </label>
                                     
-                                    <label class="payment-option-card block p-4 bg-gray-800 rounded-lg border-2 border-transparent hover:border-blue-500 cursor-pointer transition-all">
-                                        <input type="radio" name="paymentOption" value="installments" class="mr-3">
-                                        <div class="inline-block">
-                                            <div class="text-white font-semibold">6 Monthly Payments</div>
-                                            <div class="text-gray-400 text-sm">
-                                                <div class="mb-1">
-                                                    <span class="text-blue-400 font-bold">Down Payment: $${downPayment.toLocaleString()}</span>
-                                                </div>
+                                    <!-- 30% Down + Bi-weekly Payments -->
+                                    <label class="payment-option-card block p-4 bg-gray-800 rounded-lg border-2 border-transparent hover:border-purple-500 cursor-pointer transition-all">
+                                        <input type="radio" name="paymentOption" value="biweekly" class="mr-3">
+                                        <div class="inline-block w-full">
+                                            <div class="flex items-center justify-between">
                                                 <div>
-                                                    <span class="text-blue-400 font-bold">$${monthlyPayment.toLocaleString()}</span>
-                                                    <span class="ml-1">/month x 5 months</span>
+                                                    <div class="text-white font-semibold">30% Down + Bi-weekly Payments</div>
+                                                    <span class="bg-purple-600 text-white px-2 py-1 rounded text-xs">FLEXIBLE</span>
                                                 </div>
-                                                <div class="text-xs text-gray-500 mt-1">
-                                                    Total: $${totalInstallmentPrice.toLocaleString()}
+                                                <div class="text-right">
+                                                    <div class="text-purple-400 font-bold text-lg">$${Math.ceil(finalPrice * 0.3).toLocaleString()}</div>
+                                                    <div class="text-gray-400 text-sm">down payment</div>
                                                 </div>
+                                            </div>
+                                            <div class="mt-2 text-sm">
+                                                <div class="text-gray-400">Then: <span class="text-purple-400 font-bold">$${Math.ceil((finalPrice * 0.7) / 12).toLocaleString()}/bi-weekly</span> × 12 payments</div>
+                                                <div class="text-xs text-gray-500 mt-1">Total: $${Math.ceil(finalPrice * 0.3) + Math.ceil((finalPrice * 0.7) / 12) * 12} • Faster payoff</div>
                                             </div>
                                         </div>
                                     </label>
@@ -3388,21 +3474,19 @@ function formatTime(seconds) {
 
             // Update payment calculations
             function updatePaymentCalculations() {
+                let basePrice = originalFullPrice;
                 let finalFullPrice = originalFullPrice;
-                let finalDownPayment = originalDownPayment;
                 
-                // Apply additional discounts
+                // Apply additional discounts to base price
                 if (appliedDiscounts.sibling) {
-                    finalFullPrice *= 0.9; // 10% off
-                    finalDownPayment *= 0.9;
+                    basePrice *= 0.9; // 10% off
                 }
                 if (appliedDiscounts.group) {
-                    finalFullPrice *= 0.85; // 15% off
-                    finalDownPayment *= 0.85;
+                    basePrice *= 0.85; // 15% off
                 }
                 
-                finalFullPrice = Math.round(finalFullPrice);
-                finalDownPayment = Math.round(finalDownPayment);
+                // Calculate 5% discount for full payment
+                finalFullPrice = Math.round(basePrice * 0.95);
                 
                 const discountRow = document.getElementById('discountRow');
                 const siblingDiscountRow = document.getElementById('siblingDiscountRow');
@@ -3434,17 +3518,44 @@ function formatTime(seconds) {
                 if (selectedPaymentOption === 'full') {
                     currentAmount = finalFullPrice;
                     discountRow.style.display = 'flex';
-                    paymentPlanDetails.textContent = 'Full Payment';
+                    paymentPlanDetails.textContent = 'Full Payment (5% Discount Applied)';
                     totalAmount.textContent = `$${finalFullPrice.toLocaleString()}`;
                     submitBtn.innerHTML = `<i class="fas fa-lock mr-2"></i>Complete Payment - $${finalFullPrice.toLocaleString()}`;
-                } else {
-                    currentAmount = finalDownPayment;
+                } else if (selectedPaymentOption === 'monthly') {
+                    const downPayment = Math.ceil(basePrice * 0.3);
+                    const monthlyPayment = Math.ceil((basePrice * 0.7) / 6);
+                    currentAmount = downPayment;
                     discountRow.style.display = 'none';
-                    const adjustedMonthlyPayment = Math.round((finalFullPrice - finalDownPayment) / 5);
-                    paymentPlanDetails.innerHTML = `Down Payment Today<br><span class="text-xs">Then $${adjustedMonthlyPayment.toLocaleString()}/month x 5</span>`;
-                    totalAmount.textContent = `$${finalDownPayment.toLocaleString()}`;
-                    submitBtn.innerHTML = `<i class="fas fa-lock mr-2"></i>Pay Down Payment - $${finalDownPayment.toLocaleString()}`;
+                    paymentPlanDetails.innerHTML = `30% Down Payment Today<br><span class="text-xs">Then $${monthlyPayment.toLocaleString()}/month × 6 months</span>`;
+                    totalAmount.textContent = `$${downPayment.toLocaleString()}`;
+                    submitBtn.innerHTML = `<i class="fas fa-lock mr-2"></i>Pay Down Payment - $${downPayment.toLocaleString()}`;
+                } else if (selectedPaymentOption === 'biweekly') {
+                    const downPayment = Math.ceil(basePrice * 0.3);
+                    const biweeklyPayment = Math.ceil((basePrice * 0.7) / 12);
+                    currentAmount = downPayment;
+                    discountRow.style.display = 'none';
+                    paymentPlanDetails.innerHTML = `30% Down Payment Today<br><span class="text-xs">Then $${biweeklyPayment.toLocaleString()}/bi-weekly × 12 payments</span>`;
+                    totalAmount.textContent = `$${downPayment.toLocaleString()}`;
+                    submitBtn.innerHTML = `<i class="fas fa-lock mr-2"></i>Pay Down Payment - $${downPayment.toLocaleString()}`;
+                } else {
+                    // Legacy installments option fallback
+                    const downPayment = Math.ceil(basePrice * 0.4);
+                    const monthlyPayment = Math.ceil((basePrice - downPayment) / 5);
+                    currentAmount = downPayment;
+                    discountRow.style.display = 'none';
+                    paymentPlanDetails.innerHTML = `Down Payment Today<br><span class="text-xs">Then $${monthlyPayment.toLocaleString()}/month × 5</span>`;
+                    totalAmount.textContent = `$${downPayment.toLocaleString()}`;
+                    submitBtn.innerHTML = `<i class="fas fa-lock mr-2"></i>Pay Down Payment - $${downPayment.toLocaleString()}`;
                 }
+            }
+
+            // Free Trial Functionality
+            const startFreeTrialBtn = document.getElementById('startFreeTrial');
+            if (startFreeTrialBtn) {
+                startFreeTrialBtn.addEventListener('click', function() {
+                    // Show free trial modal
+                    showFreeTrialModal(courseId, courseTitle);
+                });
             }
 
             // Handle payment option changes
@@ -3906,6 +4017,173 @@ function formatTime(seconds) {
                         <button onclick="document.getElementById('successModal').remove(); document.getElementById('paymentModal').remove();" 
                                 class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300">
                             Got it!
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', successHTML);
+        }
+
+        // Free Trial Modal Function
+        function showFreeTrialModal(courseId, courseTitle) {
+            const trialHTML = `
+                <div id="freeTrialModal" class="modal-overlay show">
+                    <div class="modal-content max-w-lg">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-2xl font-bold text-white">🎉 Start Your 7-Day Free Trial</h2>
+                            <button id="closeFreeTrialModal" class="text-gray-400 hover:text-white">
+                                <i class="fas fa-times text-xl"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="bg-gradient-to-r from-purple-600 to-blue-600 p-4 rounded-lg mb-6">
+                            <h3 class="text-white font-bold text-lg mb-2">${courseTitle}</h3>
+                            <p class="text-white/80 text-sm">Full access to all course materials for 7 days - completely free!</p>
+                        </div>
+
+                        <div class="space-y-4 mb-6">
+                            <div class="flex items-center text-gray-300">
+                                <i class="fas fa-check-circle text-green-400 mr-3"></i>
+                                <span>Complete access to all course content</span>
+                            </div>
+                            <div class="flex items-center text-gray-300">
+                                <i class="fas fa-check-circle text-green-400 mr-3"></i>
+                                <span>Download resources and materials</span>
+                            </div>
+                            <div class="flex items-center text-gray-300">
+                                <i class="fas fa-check-circle text-green-400 mr-3"></i>
+                                <span>Access to community forums</span>
+                            </div>
+                            <div class="flex items-center text-gray-300">
+                                <i class="fas fa-check-circle text-green-400 mr-3"></i>
+                                <span>No credit card required</span>
+                            </div>
+                            <div class="flex items-center text-gray-300">
+                                <i class="fas fa-check-circle text-green-400 mr-3"></i>
+                                <span>Cancel anytime during trial</span>
+                            </div>
+                        </div>
+
+                        <form id="freeTrialForm" class="space-y-4">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-gray-300 text-sm font-medium mb-2">First Name</label>
+                                    <input type="text" id="trialFirstName" required 
+                                           class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+                                </div>
+                                <div>
+                                    <label class="block text-gray-300 text-sm font-medium mb-2">Last Name</label>
+                                    <input type="text" id="trialLastName" required 
+                                           class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-gray-300 text-sm font-medium mb-2">Email Address</label>
+                                <input type="email" id="trialEmail" required 
+                                       class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+                            </div>
+                            <div>
+                                <label class="block text-gray-300 text-sm font-medium mb-2">Phone Number (optional)</label>
+                                <input type="tel" id="trialPhone" 
+                                       class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+                            </div>
+
+                            <div class="flex items-start mt-4">
+                                <input type="checkbox" id="trialTerms" required class="mt-1 mr-3">
+                                <label for="trialTerms" class="text-gray-300 text-sm">
+                                    I agree to the <a href="#" class="text-purple-400 hover:text-purple-300">Terms of Service</a> 
+                                    and understand this is a 7-day free trial with no obligations.
+                                </label>
+                            </div>
+
+                            <button type="submit" id="startTrialBtn" 
+                                    class="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300">
+                                <i class="fas fa-play mr-2"></i>Start My Free Trial
+                            </button>
+                        </form>
+
+                        <p class="text-xs text-gray-500 text-center mt-4">
+                            Trial ends automatically after 7 days. No charges will be made unless you choose to continue.
+                        </p>
+                    </div>
+                </div>
+            `;
+
+            // Remove existing modal if any
+            const existingModal = document.getElementById('freeTrialModal');
+            if (existingModal) existingModal.remove();
+
+            document.body.insertAdjacentHTML('beforeend', trialHTML);
+
+            // Setup modal functionality
+            const modal = document.getElementById('freeTrialModal');
+            const closeBtn = document.getElementById('closeFreeTrialModal');
+            const form = document.getElementById('freeTrialForm');
+
+            closeBtn.addEventListener('click', () => {
+                modal.classList.remove('show');
+                setTimeout(() => modal.remove(), 300);
+            });
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const firstName = document.getElementById('trialFirstName').value;
+                const lastName = document.getElementById('trialLastName').value;
+                const email = document.getElementById('trialEmail').value;
+                const phone = document.getElementById('trialPhone').value;
+                const submitBtn = document.getElementById('startTrialBtn');
+
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Starting Trial...';
+                submitBtn.disabled = true;
+
+                try {
+                    // Here you would typically make an API call to start the free trial
+                    // For now, we'll simulate the process
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+
+                    // Show success message
+                    showFreeTrialSuccess(courseTitle, email, firstName);
+                    modal.remove();
+
+                } catch (error) {
+                    console.error('Free trial signup failed:', error);
+                    alert('Failed to start free trial. Please try again.');
+                    submitBtn.innerHTML = '<i class="fas fa-play mr-2"></i>Start My Free Trial';
+                    submitBtn.disabled = false;
+                }
+            });
+        }
+
+        function showFreeTrialSuccess(courseTitle, email, firstName) {
+            const successHTML = `
+                <div id="trialSuccessModal" class="modal-overlay show">
+                    <div class="modal-content max-w-md text-center">
+                        <div class="mb-6">
+                            <i class="fas fa-rocket text-6xl text-purple-500 mb-4"></i>
+                            <h2 class="text-2xl font-bold text-white mb-2">Trial Started!</h2>
+                            <p class="text-gray-300">Welcome to your 7-day free trial of "${courseTitle}"</p>
+                        </div>
+                        
+                        <div class="bg-purple-900 rounded-lg p-4 mb-6">
+                            <p class="text-white text-sm mb-2">
+                                <i class="fas fa-envelope mr-2"></i>
+                                Login credentials have been sent to:
+                            </p>
+                            <p class="text-purple-300 font-semibold">${email}</p>
+                        </div>
+                        
+                        <div class="bg-blue-900 rounded-lg p-4 mb-6">
+                            <p class="text-blue-300 text-sm">
+                                <i class="fas fa-clock mr-2"></i>
+                                Your trial expires in 7 days. We'll send you a reminder 2 days before it ends.
+                            </p>
+                        </div>
+                        
+                        <button onclick="document.getElementById('trialSuccessModal').remove();" 
+                                class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300">
+                            Start Learning Now!
                         </button>
                     </div>
                 </div>

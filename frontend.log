@@ -39,3 +39,5 @@ Serving directory: /home/user/webapp
 19/Aug/2025 05:55:20 - "GET / HTTP/1.1" 304 -
 19/Aug/2025 05:55:21 - "GET / HTTP/1.1" 304 -
 19/Aug/2025 05:55:23 - "GET / HTTP/1.1" 304 -
+19/Aug/2025 19:18:09 - "GET / HTTP/1.1" 200 -
+19/Aug/2025 19:20:07 - "GET / HTTP/1.1" 200 -

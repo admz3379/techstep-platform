@@ -1,0 +1,31 @@
+Server running at http://0.0.0.0:5000/
+23/Aug/2025 05:45:48 - "GET / HTTP/1.1" 200 -
+23/Aug/2025 05:45:50 - code 404, message File not found
+23/Aug/2025 05:45:50 - "GET /favicon.ico HTTP/1.1" 404 -
+23/Aug/2025 05:46:16 - "GET / HTTP/1.1" 200 -
+23/Aug/2025 05:46:17 - code 404, message File not found
+23/Aug/2025 05:46:17 - "GET /favicon.ico HTTP/1.1" 404 -
+23/Aug/2025 05:46:33 - "GET /demo.html HTTP/1.1" 200 -
+23/Aug/2025 05:46:34 - code 404, message File not found
+23/Aug/2025 05:46:34 - "GET /favicon.ico HTTP/1.1" 404 -
+23/Aug/2025 05:55:10 - "GET / HTTP/1.1" 200 -
+23/Aug/2025 05:55:10 - code 404, message File not found
+23/Aug/2025 05:55:10 - "GET /favicon.ico HTTP/1.1" 404 -
+23/Aug/2025 05:55:45 - "GET / HTTP/1.1" 200 -
+23/Aug/2025 05:55:46 - code 404, message File not found
+23/Aug/2025 05:55:46 - "GET /favicon.ico HTTP/1.1" 404 -
+23/Aug/2025 05:56:35 - "GET / HTTP/1.1" 200 -
+23/Aug/2025 05:56:35 - code 404, message File not found
+23/Aug/2025 05:56:35 - "GET /favicon.ico HTTP/1.1" 404 -
+23/Aug/2025 05:57:13 - "GET / HTTP/1.1" 200 -
+23/Aug/2025 05:57:13 - code 404, message File not found
+23/Aug/2025 05:57:13 - "GET /favicon.ico HTTP/1.1" 404 -
+23/Aug/2025 05:58:05 - "GET / HTTP/1.1" 200 -
+23/Aug/2025 05:58:06 - code 404, message File not found
+23/Aug/2025 05:58:06 - "GET /favicon.ico HTTP/1.1" 404 -
+23/Aug/2025 05:58:26 - "GET /demo.html HTTP/1.1" 200 -
+23/Aug/2025 05:58:26 - code 404, message File not found
+23/Aug/2025 05:58:26 - "GET /favicon.ico HTTP/1.1" 404 -
+23/Aug/2025 05:59:40 - "GET /demo.html HTTP/1.1" 200 -
+23/Aug/2025 05:59:40 - code 404, message File not found
+23/Aug/2025 05:59:40 - "GET /favicon.ico HTTP/1.1" 404 -

@@ -2006,7 +2006,7 @@ function formatTime(seconds) {
 
         // Trial Promotion Modal
         function showTrialPromotionModal() {
-            const modalHTML = \`
+            const modalHTML = `
                 <div id="trialPromotionModal" class="modal-overlay show">
                     <div class="modal-content max-w-lg">
                         <div class="flex justify-between items-center mb-6">
@@ -2071,7 +2071,7 @@ function formatTime(seconds) {
                         </div>
                     </div>
                 </div>
-            \`;
+            `;
 
             document.body.insertAdjacentHTML('beforeend', modalHTML);
 
@@ -2207,6 +2207,7 @@ function formatTime(seconds) {
                     selectedCourses = selectedCourses.filter(course => course.name !== courseName);
                 }
 
+                console.log('Selected courses:', selectedCourses);
                 updateCart();
             });
         });
@@ -2955,11 +2956,7 @@ function formatTime(seconds) {
             }
         });
 
-        // Initialize on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            // Any initialization code here
-            updateCart();
-        });
+        // Initialize on page load - consolidated with main DOMContentLoaded listener
         
         // API Configuration and Service Layer
         const API_BASE_URL = 'https://8000-iijrwv71livvm5m4tkmpb-6532622b.e2b.dev/api/v1';
@@ -4965,8 +4962,11 @@ function formatTime(seconds) {
             }
         }
 
-        // Override DOMContentLoaded to include API initialization
+        // Main DOMContentLoaded listener - consolidate all initialization
         document.addEventListener('DOMContentLoaded', async function() {
+            // Initialize cart display
+            updateCart();
+            
             // Setup event listeners
             setupAdminLoginButton();
             

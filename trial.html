@@ -6,6 +6,7 @@
     <title>Free 3-Day SOC Trial - TechStep</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         .trial-app-container {
             min-height: 100vh;
@@ -774,35 +775,106 @@
             playBtn.onclick = () => playVoiceScript(script);
         }
 
-        // Play Voice Script (Simulated)
+        // Play Voice Script (Actual Speech Synthesis)
         function playVoiceScript(script) {
             const playBtn = document.getElementById('playVoiceBtn');
             const progress = document.getElementById('voiceProgress');
             const progressBar = progress.querySelector('div');
             
+            // Check if browser supports speech synthesis
+            if (!('speechSynthesis' in window)) {
+                showToast('Voice synthesis not supported in this browser', 'error');
+                return;
+            }
+            
+            // Stop any existing speech
+            speechSynthesis.cancel();
+            
+            // Prepare the text
+            const firstName = trialState.user?.firstName || 'Analyst';
+            let textToSpeak = script.replace('[FirstName]', firstName);
+            
+            // Handle pause markers
+            const pauseMarker = '[pause]';
+            const segments = textToSpeak.split(pauseMarker);
+            
             playBtn.innerHTML = '<i class="fas fa-pause mr-2"></i>Playing...';
             playBtn.disabled = true;
             progress.classList.remove('hidden');
             
-            // Simulate voice playback with progress
-            let currentProgress = 0;
-            const interval = setInterval(() => {
-                currentProgress += 2;
-                progressBar.style.width = currentProgress + '%';
-                
-                if (currentProgress >= 100) {
-                    clearInterval(interval);
+            let currentSegment = 0;
+            let totalSegments = segments.length;
+            
+            function speakSegment() {
+                if (currentSegment >= totalSegments) {
+                    // Speech completed
                     playBtn.innerHTML = '<i class="fas fa-play mr-2"></i>Replay Briefing';
                     playBtn.disabled = false;
                     setTimeout(() => {
                         progress.classList.add('hidden');
                         progressBar.style.width = '0%';
                     }, 1000);
+                    return;
                 }
-            }, 100);
+                
+                const utterance = new SpeechSynthesisUtterance(segments[currentSegment].trim());
+                
+                // Configure voice settings
+                utterance.rate = 0.9; // Slightly slower for clarity
+                utterance.pitch = 1;
+                utterance.volume = 0.8;
+                
+                // Try to use a professional-sounding voice
+                const voices = speechSynthesis.getVoices();
+                const preferredVoice = voices.find(voice => 
+                    voice.name.includes('Google') || 
+                    voice.name.includes('Microsoft') ||
+                    voice.lang === 'en-US'
+                );
+                if (preferredVoice) {
+                    utterance.voice = preferredVoice;
+                }
+                
+                utterance.onstart = function() {
+                    // Update progress
+                    const progressPercent = ((currentSegment + 1) / totalSegments) * 100;
+                    progressBar.style.width = progressPercent + '%';
+                };
+                
+                utterance.onend = function() {
+                    currentSegment++;
+                    // Add pause between segments
+                    setTimeout(() => {
+                        speakSegment();
+                    }, 1000); // 1 second pause
+                };
+                
+                utterance.onerror = function(event) {
+                    console.error('Speech synthesis error:', event.error);
+                    showToast('Voice playback error occurred', 'error');
+                    playBtn.innerHTML = '<i class="fas fa-play mr-2"></i>Play Briefing';
+                    playBtn.disabled = false;
+                    progress.classList.add('hidden');
+                };
+                
+                speechSynthesis.speak(utterance);
+            }
             
-            // Log the voice script for TTS integration
-            console.log('Voice Script:', script.replace('[FirstName]', trialState.user?.firstName || 'Analyst'));
+            // Start speaking
+            speakSegment();
+            
+            // Add click handler to stop speech
+            playBtn.onclick = function() {
+                speechSynthesis.cancel();
+                playBtn.innerHTML = '<i class="fas fa-play mr-2"></i>Play Briefing';
+                playBtn.disabled = false;
+                progress.classList.add('hidden');
+                progressBar.style.width = '0%';
+                // Restore original click handler
+                playBtn.onclick = () => playVoiceScript(script);
+            };
+            
+            console.log('Speaking:', textToSpeak);
         }
 
         // Submit Task
@@ -945,9 +1017,93 @@
 
         // Download Certificate
         function downloadCertificate() {
-            // In a real implementation, this would generate a PDF certificate
-            showToast('Certificate download started!');
-            console.log('Generating certificate for:', trialState.user);
+            try {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+                
+                // Certificate background and header
+                doc.setFillColor(15, 23, 42); // Dark blue background
+                doc.rect(0, 0, 210, 297, 'F');
+                
+                // TechStep Logo Area
+                doc.setFillColor(59, 130, 246); // Blue gradient simulation
+                doc.rect(20, 20, 170, 30, 'F');
+                
+                // Title
+                doc.setTextColor(255, 255, 255);
+                doc.setFontSize(24);
+                doc.text('TECHSTEP FOUNDATION', 105, 38, { align: 'center' });
+                
+                // Certificate Title
+                doc.setFontSize(32);
+                doc.setTextColor(59, 130, 246);
+                doc.text('CERTIFICATE OF COMPLETION', 105, 80, { align: 'center' });
+                
+                // Subtitle
+                doc.setFontSize(18);
+                doc.setTextColor(255, 255, 255);
+                doc.text('3-Day SOC Analyst Express Trial', 105, 95, { align: 'center' });
+                
+                // User name
+                const userName = trialState.user ? `${trialState.user.firstName} ${trialState.user.lastName}` : 'Trial Participant';
+                doc.setFontSize(20);
+                doc.setTextColor(16, 185, 129); // Green color
+                doc.text(`${userName}`, 105, 120, { align: 'center' });
+                
+                // Body text
+                doc.setFontSize(14);
+                doc.setTextColor(255, 255, 255);
+                doc.text('has successfully completed the comprehensive 3-day SOC Analyst trial program', 105, 140, { align: 'center' });
+                doc.text('demonstrating competency in threat detection, incident analysis, and response procedures.', 105, 155, { align: 'center' });
+                
+                // Skills section
+                doc.setFontSize(12);
+                doc.setTextColor(156, 163, 175);
+                doc.text('SKILLS DEMONSTRATED:', 30, 180);
+                
+                const skills = [
+                    '• Email security analysis and threat identification',
+                    '• Authentication log analysis and anomaly detection', 
+                    '• Incident correlation and executive reporting',
+                    '• SIEM query development and threat hunting',
+                    '• IOC extraction and threat intelligence application'
+                ];
+                
+                skills.forEach((skill, index) => {
+                    doc.text(skill, 30, 195 + (index * 8));
+                });
+                
+                // Date and signature area
+                doc.setFontSize(10);
+                doc.setTextColor(156, 163, 175);
+                const completionDate = new Date().toLocaleDateString('en-US', { 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                });
+                doc.text(`Completion Date: ${completionDate}`, 30, 245);
+                doc.text('Certificate ID: TS-SOC-' + Date.now().toString(36).toUpperCase(), 30, 255);
+                
+                // EverTrust Bank simulation note
+                doc.text('*Trial conducted in simulated EverTrust Bank environment', 30, 265);
+                
+                // QR Code area (simulated)
+                doc.setFillColor(255, 255, 255);
+                doc.rect(150, 230, 40, 40, 'F');
+                doc.setTextColor(0, 0, 0);
+                doc.setFontSize(8);
+                doc.text('QR CODE', 170, 245, { align: 'center' });
+                doc.text('VERIFICATION', 170, 253, { align: 'center' });
+                doc.text('(Simulated)', 170, 261, { align: 'center' });
+                
+                // Download the PDF
+                doc.save(`TechStep_SOC_Trial_Certificate_${userName.replace(/\s+/g, '_')}.pdf`);
+                showToast('Certificate downloaded successfully!');
+                
+            } catch (error) {
+                console.error('PDF generation failed:', error);
+                showToast('Certificate download failed. Please try again.', 'error');
+            }
         }
 
         // Add to LinkedIn
@@ -993,10 +1149,94 @@
 
         // Initialize PDF Download
         document.getElementById('downloadPdfBtn').addEventListener('click', function() {
-            const day = trialState.currentDay;
-            showToast(`Downloading Day ${day} guide with audio QR code...`);
-            // In real implementation, would generate PDF with QR code linking to audio
+            generateDayGuidePDF();
         });
+        
+        // Generate Day Guide PDF
+        function generateDayGuidePDF() {
+            try {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+                const day = trialState.currentDay;
+                const dayContent = trialData[`day${day}`];
+                
+                // Header
+                doc.setFillColor(15, 23, 42);
+                doc.rect(0, 0, 210, 30, 'F');
+                
+                doc.setTextColor(255, 255, 255);
+                doc.setFontSize(18);
+                doc.text('TECHSTEP SOC ANALYST TRIAL', 105, 20, { align: 'center' });
+                
+                // Day title
+                doc.setTextColor(59, 130, 246);
+                doc.setFontSize(24);
+                doc.text(`DAY ${day}: ${dayContent.title.toUpperCase()}`, 20, 50);
+                
+                // Scenario description
+                doc.setTextColor(0, 0, 0);
+                doc.setFontSize(12);
+                doc.text('SCENARIO:', 20, 70);
+                
+                const scenarioLines = doc.splitTextToSize(dayContent.scenario, 170);
+                doc.text(scenarioLines, 20, 80);
+                
+                let yPosition = 80 + (scenarioLines.length * 6) + 10;
+                
+                // Tasks
+                doc.setFontSize(14);
+                doc.text('YOUR TASKS:', 20, yPosition);
+                yPosition += 10;
+                
+                doc.setFontSize(11);
+                dayContent.tasks.forEach((task, index) => {
+                    doc.text(`${index + 1}. ${task}`, 25, yPosition);
+                    yPosition += 6;
+                });
+                
+                yPosition += 10;
+                
+                // Voice Script
+                doc.setFontSize(14);
+                doc.text('VOICE BRIEFING TRANSCRIPT:', 20, yPosition);
+                yPosition += 10;
+                
+                doc.setFontSize(10);
+                const voiceLines = doc.splitTextToSize(dayContent.voiceScript, 170);
+                doc.text(voiceLines, 20, yPosition);
+                
+                yPosition += (voiceLines.length * 4) + 15;
+                
+                // QR Code simulation for audio
+                if (yPosition < 250) {
+                    doc.setFillColor(255, 255, 255);
+                    doc.rect(20, yPosition, 30, 30, 'F');
+                    doc.setFillColor(0, 0, 0);
+                    doc.setFontSize(8);
+                    doc.text('QR CODE', 35, yPosition + 12, { align: 'center' });
+                    doc.text('Audio Link', 35, yPosition + 18, { align: 'center' });
+                    doc.text('(Simulated)', 35, yPosition + 24, { align: 'center' });
+                    
+                    doc.setFontSize(10);
+                    doc.text('Scan for audio briefing playback', 55, yPosition + 15);
+                }
+                
+                // Footer
+                doc.setFontSize(8);
+                doc.setTextColor(128, 128, 128);
+                doc.text(`Generated: ${new Date().toLocaleString()}`, 20, 285);
+                doc.text('TechStep Foundation - SOC Analyst Trial Program', 20, 290);
+                
+                // Download
+                const fileName = `TechStep_Day${day}_Guide_${dayContent.title.replace(/\s+/g, '_')}.pdf`;
+                doc.save(fileName);
+                showToast(`Day ${day} guide downloaded successfully!`);
+                
+            } catch (error) {
+                console.error('PDF generation failed:', error);
+                showToast('PDF download failed. Please try again.', 'error');
+            }
+        }
 
         // Initialize app when page loads
         document.addEventListener('DOMContentLoaded', function() {

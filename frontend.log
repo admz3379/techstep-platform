@@ -41,3 +41,9 @@ Serving directory: /home/user/webapp
 19/Aug/2025 05:55:23 - "GET / HTTP/1.1" 304 -
 19/Aug/2025 19:18:09 - "GET / HTTP/1.1" 200 -
 19/Aug/2025 19:20:07 - "GET / HTTP/1.1" 200 -
+23/Aug/2025 04:34:31 - "GET / HTTP/1.1" 200 -
+23/Aug/2025 04:34:43 - "GET /trial.html HTTP/1.1" 200 -
+23/Aug/2025 04:41:08 - "GET / HTTP/1.1" 200 -
+23/Aug/2025 04:44:47 - "GET / HTTP/1.1" 200 -
+23/Aug/2025 04:44:48 - code 404, message File not found
+23/Aug/2025 04:44:48 - "GET /favicon.ico HTTP/1.1" 404 -

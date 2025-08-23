@@ -1939,15 +1939,25 @@ function formatTime(seconds) {
         setTimeout(function() {
             initializeMobileNavigation();
             initializeTrialNavigation();
+            initializeMainProgramButton();
         }, 100);
-
-        // Main program button handler - show trial first
-        if (mainProgramBtn) {
-            mainProgramBtn.addEventListener('click', function() {
-                // Show trial promotion modal
-                showTrialPromotionModal();
-            });
+        
+        // Initialize main program button functionality
+        function initializeMainProgramButton() {
+            const mainProgramBtn = document.getElementById('mainProgramBtn');
+            if (mainProgramBtn) {
+                mainProgramBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    console.log('Main program button clicked'); // Debug log
+                    // Show trial promotion modal
+                    showTrialPromotionModal();
+                });
+            } else {
+                console.error('Main program button not found!');
+            }
         }
+
+        // Main program button handler moved to initializeMainProgramButton function
 
         // Trial Promotion Modal
         function showTrialPromotionModal() {

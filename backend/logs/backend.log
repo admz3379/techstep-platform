@@ -166,3 +166,14 @@ INFO:     10.12.3.44:48066 - "OPTIONS /api/v1/courses/ HTTP/1.1" 200 OK
 INFO:     10.12.3.44:48066 - "GET /api/v1/courses/ HTTP/1.1" 200 OK
 INFO:     10.12.144.0:36914 - "OPTIONS /api/v1/courses/ HTTP/1.1" 200 OK
 INFO:     10.12.144.0:36914 - "GET /api/v1/courses/ HTTP/1.1" 200 OK
+INFO:     10.12.144.0:48810 - "OPTIONS /api/v1/courses/ HTTP/1.1" 200 OK
+INFO:     10.12.144.0:48810 - "GET /api/v1/courses/ HTTP/1.1" 200 OK
+INFO:     10.12.144.0:32778 - "OPTIONS /api/v1/courses/ HTTP/1.1" 200 OK
+INFO:     10.12.144.0:32778 - "GET /api/v1/courses/ HTTP/1.1" 200 OK
+INFO:     10.12.144.0:48780 - "OPTIONS /api/v1/courses/ HTTP/1.1" 200 OK
+INFO:     10.12.144.0:48780 - "GET /api/v1/courses/ HTTP/1.1" 200 OK
+INFO:     10.12.144.0:39268 - "GET /api/v1/courses/ HTTP/1.1" 200 OK
+INFO:     10.12.144.0:46580 - "OPTIONS /api/v1/courses/ HTTP/1.1" 200 OK
+INFO:     10.12.144.0:46580 - "GET /api/v1/courses/ HTTP/1.1" 200 OK
+INFO:     10.12.144.0:40460 - "OPTIONS /api/v1/courses/ HTTP/1.1" 200 OK
+INFO:     10.12.144.0:40460 - "GET /api/v1/courses/ HTTP/1.1" 200 OK

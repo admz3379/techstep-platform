@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media Manager - TechStep Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-900 text-white min-h-screen">
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-blue-600 to-purple-600 p-6">
+        <div class="max-w-7xl mx-auto">
+            <h1 class="text-3xl font-bold flex items-center">
+                <i class="fas fa-photo-video mr-3"></i>
+                TechStep Media Manager
+            </h1>
+            <p class="text-blue-200 mt-2">Upload, manage, and integrate media assets</p>
+        </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto p-6">
+        <!-- Upload Section -->
+        <div class="bg-gray-800 rounded-lg p-6 mb-8">
+            <h2 class="text-2xl font-semibold mb-4 flex items-center">
+                <i class="fas fa-upload mr-3 text-green-400"></i>
+                Upload New Media
+            </h2>
+            
+            <!-- Upload Instructions -->
+            <div class="grid md:grid-cols-3 gap-6 mb-6">
+                <!-- GitHub Web Upload -->
+                <div class="bg-gray-700 rounded-lg p-4">
+                    <h3 class="text-lg font-semibold mb-3 text-blue-400">
+                        <i class="fab fa-github mr-2"></i>
+                        GitHub Web Upload
+                    </h3>
+                    <ol class="text-sm space-y-2 text-gray-300">
+                        <li>1. Go to your <a href="https://github.com/admz3379/techstep-platform" target="_blank" class="text-blue-400 hover:text-blue-300">GitHub repo</a></li>
+                        <li>2. Click "Add file" → "Upload files"</li>
+                        <li>3. Drag & drop your media</li>
+                        <li>4. Choose folder: media/images/ or media/videos/</li>
+                        <li>5. Commit changes</li>
+                    </ol>
+                </div>
+                
+                <!-- Direct Upload Simulation -->
+                <div class="bg-gray-700 rounded-lg p-4">
+                    <h3 class="text-lg font-semibold mb-3 text-green-400">
+                        <i class="fas fa-cloud-upload-alt mr-2"></i>
+                        File Preview
+                    </h3>
+                    <div id="drop-zone" class="border-2 border-dashed border-gray-500 rounded-lg p-4 text-center hover:border-green-400 transition-colors cursor-pointer">
+                        <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-2"></i>
+                        <p class="text-gray-400">Drop files here to preview</p>
+                        <input type="file" id="file-input" multiple accept="image/*,video/*,audio/*" class="hidden">
+                    </div>
+                </div>
+                
+                <!-- URL Generator -->
+                <div class="bg-gray-700 rounded-lg p-4">
+                    <h3 class="text-lg font-semibold mb-3 text-purple-400">
+                        <i class="fas fa-link mr-2"></i>
+                        URL Generator
+                    </h3>
+                    <input type="text" id="filename-input" placeholder="your-image.jpg" 
+                           class="w-full p-2 bg-gray-600 rounded mb-2 text-white">
+                    <select id="folder-select" class="w-full p-2 bg-gray-600 rounded mb-2 text-white">
+                        <option value="images/courses">Images - Courses</option>
+                        <option value="images/instructors">Images - Instructors</option>
+                        <option value="images/backgrounds">Images - Backgrounds</option>
+                        <option value="videos/demos">Videos - Demos</option>
+                        <option value="videos/courses">Videos - Courses</option>
+                        <option value="audio/podcasts">Audio - Podcasts</option>
+                    </select>
+                    <button onclick="generateURL()" class="w-full bg-purple-600 hover:bg-purple-700 p-2 rounded text-white">
+                        Generate URL
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Media Gallery -->
+        <div class="bg-gray-800 rounded-lg p-6 mb-8">
+            <h2 class="text-2xl font-semibold mb-4 flex items-center">
+                <i class="fas fa-images mr-3 text-yellow-400"></i>
+                Current Media Assets
+            </h2>
+            
+            <!-- Media Grid -->
+            <div id="media-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <!-- Sample Media Items -->
+                <div class="bg-gray-700 rounded-lg overflow-hidden">
+                    <div class="aspect-video bg-gray-600 flex items-center justify-center">
+                        <i class="fas fa-image text-4xl text-gray-400"></i>
+                    </div>
+                    <div class="p-4">
+                        <h4 class="font-semibold text-sm">Sample Image</h4>
+                        <p class="text-xs text-gray-400 mt-1">media/images/sample.jpg</p>
+                        <button class="mt-2 text-xs bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded">Copy URL</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Integration Examples -->
+        <div class="bg-gray-800 rounded-lg p-6">
+            <h2 class="text-2xl font-semibold mb-4 flex items-center">
+                <i class="fas fa-code mr-3 text-cyan-400"></i>
+                Integration Examples
+            </h2>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- HTML Examples -->
+                <div class="bg-gray-700 rounded-lg p-4">
+                    <h3 class="text-lg font-semibold mb-3 text-orange-400">HTML Usage</h3>
+                    <pre class="bg-gray-900 p-3 rounded text-sm overflow-x-auto"><code class="text-green-400">&lt;!-- Image --&gt;
+&lt;img src="media/images/courses/your-image.jpg" 
+     alt="Course Thumbnail" 
+     class="w-full rounded-lg"&gt;
+
+&lt;!-- Video --&gt;
+&lt;video controls class="w-full rounded-lg"&gt;
+    &lt;source src="media/videos/demos/your-video.mp4" 
+            type="video/mp4"&gt;
+&lt;/video&gt;
+
+&lt;!-- Background Image --&gt;
+&lt;div style="background-image: url('media/images/backgrounds/hero.jpg')"
+     class="bg-cover bg-center h-96"&gt;
+&lt;/div&gt;</code></pre>
+                </div>
+                
+                <!-- CSS Examples -->
+                <div class="bg-gray-700 rounded-lg p-4">
+                    <h3 class="text-lg font-semibold mb-3 text-pink-400">CSS Usage</h3>
+                    <pre class="bg-gray-900 p-3 rounded text-sm overflow-x-auto"><code class="text-blue-400">/* Background Image */
+.hero-section {
+    background-image: url('media/images/backgrounds/hero.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+/* Course Card Thumbnail */
+.course-thumbnail {
+    background-image: url('media/images/courses/soc-analyst.jpg');
+}
+
+/* Instructor Photo */
+.instructor-photo {
+    background-image: url('media/images/instructors/sarah.jpg');
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Generated URLs Display -->
+        <div id="url-display" class="hidden bg-green-900 border border-green-600 rounded-lg p-6 mt-6">
+            <h3 class="text-lg font-semibold mb-4 text-green-400">Generated URLs</h3>
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-sm font-semibold text-green-300 mb-1">GitHub Pages URL (Use this for your platform):</label>
+                    <div class="flex">
+                        <input type="text" id="pages-url" readonly class="flex-1 p-2 bg-gray-800 border border-green-600 rounded-l text-white">
+                        <button onclick="copyToClipboard('pages-url')" class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-r">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-semibold text-green-300 mb-1">Raw GitHub URL (Alternative):</label>
+                    <div class="flex">
+                        <input type="text" id="raw-url" readonly class="flex-1 p-2 bg-gray-800 border border-green-600 rounded-l text-white">
+                        <button onclick="copyToClipboard('raw-url')" class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-r">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-semibold text-green-300 mb-1">HTML Code:</label>
+                    <div class="flex">
+                        <textarea id="html-code" readonly class="flex-1 p-2 bg-gray-800 border border-green-600 rounded-l text-white h-20 resize-none"></textarea>
+                        <button onclick="copyToClipboard('html-code')" class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-r">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // File upload preview
+        const dropZone = document.getElementById('drop-zone');
+        const fileInput = document.getElementById('file-input');
+
+        dropZone.addEventListener('click', () => fileInput.click());
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('border-green-400');
+        });
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('border-green-400');
+        });
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('border-green-400');
+            const files = e.dataTransfer.files;
+            handleFiles(files);
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            handleFiles(e.target.files);
+        });
+
+        function handleFiles(files) {
+            const mediaGrid = document.getElementById('media-grid');
+            
+            Array.from(files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const mediaItem = document.createElement('div');
+                    mediaItem.className = 'bg-gray-700 rounded-lg overflow-hidden';
+                    
+                    let mediaContent = '';
+                    if (file.type.startsWith('image/')) {
+                        mediaContent = `<img src="${e.target.result}" class="w-full aspect-video object-cover">`;
+                    } else if (file.type.startsWith('video/')) {
+                        mediaContent = `<video class="w-full aspect-video object-cover"><source src="${e.target.result}"></video>`;
+                    } else {
+                        mediaContent = `<div class="aspect-video bg-gray-600 flex items-center justify-center"><i class="fas fa-file text-4xl text-gray-400"></i></div>`;
+                    }
+                    
+                    mediaItem.innerHTML = `
+                        ${mediaContent}
+                        <div class="p-4">
+                            <h4 class="font-semibold text-sm">${file.name}</h4>
+                            <p class="text-xs text-gray-400 mt-1">Size: ${(file.size / 1024 / 1024).toFixed(2)} MB</p>
+                            <p class="text-xs text-green-400 mt-1">Preview - Upload to GitHub to get URL</p>
+                        </div>
+                    `;
+                    
+                    mediaGrid.appendChild(mediaItem);
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function generateURL() {
+            const filename = document.getElementById('filename-input').value;
+            const folder = document.getElementById('folder-select').value;
+            
+            if (!filename) {
+                alert('Please enter a filename');
+                return;
+            }
+
+            const pagesUrl = `https://admz3379.github.io/techstep-platform/media/${folder}/${filename}`;
+            const rawUrl = `https://raw.githubusercontent.com/admz3379/techstep-platform/main/media/${folder}/${filename}`;
+            
+            let htmlCode = '';
+            if (folder.includes('images')) {
+                htmlCode = `<img src="media/${folder}/${filename}" alt="${filename}" class="w-full rounded-lg">`;
+            } else if (folder.includes('videos')) {
+                htmlCode = `<video controls class="w-full rounded-lg">
+    <source src="media/${folder}/${filename}" type="video/mp4">
+</video>`;
+            } else if (folder.includes('audio')) {
+                htmlCode = `<audio controls>
+    <source src="media/${folder}/${filename}" type="audio/mpeg">
+</audio>`;
+            }
+
+            document.getElementById('pages-url').value = pagesUrl;
+            document.getElementById('raw-url').value = rawUrl;
+            document.getElementById('html-code').value = htmlCode;
+            document.getElementById('url-display').classList.remove('hidden');
+        }
+
+        function copyToClipboard(elementId) {
+            const element = document.getElementById(elementId);
+            element.select();
+            document.execCommand('copy');
+            
+            // Show feedback
+            const button = element.nextElementSibling;
+            const originalText = button.innerHTML;
+            button.innerHTML = '<i class="fas fa-check"></i>';
+            button.classList.add('bg-green-700');
+            
+            setTimeout(() => {
+                button.innerHTML = originalText;
+                button.classList.remove('bg-green-700');
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

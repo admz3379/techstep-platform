@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media Integration Examples - TechStep</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="container mx-auto p-6">
+        <h1 class="text-4xl font-bold mb-8 text-center">
+            <i class="fas fa-photo-video mr-3 text-blue-400"></i>
+            Media Integration Examples
+        </h1>
+
+        <!-- Image Integration Examples -->
+        <section class="mb-12">
+            <h2 class="text-3xl font-semibold mb-6 text-green-400">
+                <i class="fas fa-image mr-3"></i>
+                Image Integration Examples
+            </h2>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Course Thumbnail -->
+                <div class="bg-gray-800 rounded-lg p-6">
+                    <h3 class="text-xl font-semibold mb-4">Course Thumbnail</h3>
+                    <div class="mb-4">
+                        <!-- Replace with your image URL after upload -->
+                        <img src="https://via.placeholder.com/400x300/1e40af/ffffff?text=Your+Course+Image" 
+                             alt="Course Thumbnail" 
+                             class="w-full rounded-lg shadow-lg hover:scale-105 transition-transform">
+                    </div>
+                    <pre class="bg-gray-900 p-3 rounded text-sm overflow-x-auto"><code class="text-green-400">&lt;!-- After uploading your image to GitHub --&gt;
+&lt;img src="media/images/courses/your-image.jpg" 
+     alt="Course Thumbnail" 
+     class="w-full rounded-lg shadow-lg hover:scale-105 transition-transform"&gt;</code></pre>
+                </div>
+
+                <!-- Hero Background -->
+                <div class="bg-gray-800 rounded-lg p-6">
+                    <h3 class="text-xl font-semibold mb-4">Hero Background</h3>
+                    <div class="mb-4">
+                        <!-- Replace with your background image -->
+                        <div class="h-48 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center"
+                             style="background-image: url('https://via.placeholder.com/800x400/1e40af/ffffff?text=Your+Background'); background-size: cover; background-position: center;">
+                            <div class="text-center bg-black bg-opacity-50 p-6 rounded-lg">
+                                <h4 class="text-2xl font-bold">Welcome to TechStep</h4>
+                                <p class="text-blue-200">Your Cybersecurity Journey Starts Here</p>
+                            </div>
+                        </div>
+                    </div>
+                    <pre class="bg-gray-900 p-3 rounded text-sm overflow-x-auto"><code class="text-green-400">&lt;div class="hero-section" 
+     style="background-image: url('media/images/backgrounds/your-bg.jpg'); 
+            background-size: cover; background-position: center;"&gt;
+    &lt;div class="content"&gt;...&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+                </div>
+
+                <!-- Instructor Photo -->
+                <div class="bg-gray-800 rounded-lg p-6">
+                    <h3 class="text-xl font-semibold mb-4">Instructor Profile</h3>
+                    <div class="mb-4 flex items-center space-x-4">
+                        <img src="https://via.placeholder.com/100x100/1e40af/ffffff?text=Photo" 
+                             alt="Instructor" 
+                             class="w-24 h-24 rounded-full border-4 border-blue-500">
+                        <div>
+                            <h4 class="text-lg font-semibold">Sarah Martinez</h4>
+                            <p class="text-blue-400">Senior Cybersecurity Expert</p>
+                            <p class="text-gray-400 text-sm">8+ years experience</p>
+                        </div>
+                    </div>
+                    <pre class="bg-gray-900 p-3 rounded text-sm overflow-x-auto"><code class="text-green-400">&lt;img src="media/images/instructors/your-photo.jpg" 
+     alt="Instructor" 
+     class="w-24 h-24 rounded-full border-4 border-blue-500"&gt;</code></pre>
+                </div>
+
+                <!-- Logo/Brand -->  
+                <div class="bg-gray-800 rounded-lg p-6">
+                    <h3 class="text-xl font-semibold mb-4">Logo/Brand Image</h3>
+                    <div class="mb-4 text-center">
+                        <img src="https://via.placeholder.com/200x80/1e40af/ffffff?text=Your+Logo" 
+                             alt="Company Logo" 
+                             class="mx-auto h-16">
+                    </div>
+                    <pre class="bg-gray-900 p-3 rounded text-sm overflow-x-auto"><code class="text-green-400">&lt;img src="media/images/logos/your-logo.png" 
+     alt="Company Logo" 
+     class="mx-auto h-16"&gt;</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Video Integration Examples -->
+        <section class="mb-12">
+            <h2 class="text-3xl font-semibold mb-6 text-purple-400">
+                <i class="fas fa-video mr-3"></i>
+                Video Integration Examples
+            </h2>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Course Preview Video -->
+                <div class="bg-gray-800 rounded-lg p-6">
+                    <h3 class="text-xl font-semibold mb-4">Course Preview Video</h3>
+                    <div class="mb-4">
+                        <!-- Placeholder video - replace with your video -->
+                        <div class="aspect-video bg-gray-700 rounded-lg flex items-center justify-center">
+                            <div class="text-center">
+                                <i class="fas fa-play-circle text-6xl text-blue-400 mb-4"></i>
+                                <p class="text-lg">Your Course Preview Video</p>
+                                <p class="text-sm text-gray-400">Upload to see video player here</p>
+                            </div>
+                        </div>
+                    </div>
+                    <pre class="bg-gray-900 p-3 rounded text-sm overflow-x-auto"><code class="text-green-400">&lt;video controls class="w-full rounded-lg"&gt;
+    &lt;source src="media/videos/courses/your-video.mp4" type="video/mp4"&gt;
+    Your browser does not support the video tag.
+&lt;/video&gt;</code></pre>
+                </div>
+
+                <!-- Platform Demo Video -->
+                <div class="bg-gray-800 rounded-lg p-6">
+                    <h3 class="text-xl font-semibold mb-4">Platform Demo</h3>
+                    <div class="mb-4">
+                        <div class="aspect-video bg-gray-700 rounded-lg flex items-center justify-center">
+                            <div class="text-center">
+                                <i class="fas fa-desktop text-6xl text-green-400 mb-4"></i>
+                                <p class="text-lg">Platform Demo Video</p>
+                                <p class="text-sm text-gray-400">Shows platform features</p>
+                            </div>
+                        </div>
+                    </div>
+                    <pre class="bg-gray-900 p-3 rounded text-sm overflow-x-auto"><code class="text-green-400">&lt;video controls autoplay muted class="w-full rounded-lg"&gt;
+    &lt;source src="media/videos/demos/your-demo.mp4" type="video/mp4"&gt;
+&lt;/video&gt;</code></pre>
+                </div>
+
+                <!-- Background Video -->
+                <div class="bg-gray-800 rounded-lg p-6">
+                    <h3 class="text-xl font-semibold mb-4">Background Video</h3>
+                    <div class="mb-4">
+                        <div class="relative aspect-video bg-gray-700 rounded-lg overflow-hidden">
+                            <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                                <div class="text-center text-white">
+                                    <h4 class="text-2xl font-bold mb-2">Hero Section</h4>
+                                    <p>With background video</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <pre class="bg-gray-900 p-3 rounded text-sm overflow-x-auto"><code class="text-green-400">&lt;div class="relative"&gt;
+    &lt;video autoplay muted loop class="w-full"&gt;
+        &lt;source src="media/videos/backgrounds/your-bg-video.mp4" type="video/mp4"&gt;
+    &lt;/video&gt;
+    &lt;div class="absolute inset-0 content"&gt;...&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+                </div>
+
+                <!-- Video with Custom Controls -->
+                <div class="bg-gray-800 rounded-lg p-6">
+                    <h3 class="text-xl font-semibold mb-4">Interactive Video Player</h3>
+                    <div class="mb-4">
+                        <div class="aspect-video bg-gray-700 rounded-lg flex items-center justify-center">
+                            <div class="text-center">
+                                <i class="fas fa-cog text-6xl text-yellow-400 mb-4"></i>
+                                <p class="text-lg">Custom Video Player</p>
+                                <p class="text-sm text-gray-400">With custom controls</p>
+                            </div>
+                        </div>
+                    </div>
+                    <pre class="bg-gray-900 p-3 rounded text-sm overflow-x-auto"><code class="text-green-400">&lt;div class="video-container"&gt;
+    &lt;video id="custom-video" class="w-full rounded-lg"&gt;
+        &lt;source src="media/videos/courses/your-video.mp4" type="video/mp4"&gt;
+    &lt;/video&gt;
+    &lt;div class="custom-controls"&gt;
+        &lt;button onclick="togglePlay()"&gt;Play/Pause&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Integration in Existing Platform -->
+        <section class="mb-12">
+            <h2 class="text-3xl font-semibold mb-6 text-cyan-400">
+                <i class="fas fa-code mr-3"></i>
+                Integration in Your Platform
+            </h2>
+
+            <div class="grid gap-6">
+                <!-- Course Card Enhancement -->
+                <div class="bg-gray-800 rounded-lg p-6">
+                    <h3 class="text-xl font-semibold mb-4">Enhanced Course Cards</h3>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <h4 class="text-lg font-semibold mb-3 text-blue-400">Before (Current)</h4>
+                            <div class="bg-gray-700 p-4 rounded-lg">
+                                <h5 class="font-semibold">SOC Analyst Foundations</h5>
+                                <p class="text-gray-300 text-sm">Master security operations...</p>
+                                <div class="text-blue-400 font-bold mt-2">$2,999</div>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-semibold mb-3 text-green-400">After (With Your Media)</h4>
+                            <div class="bg-gray-700 rounded-lg overflow-hidden">
+                                <img src="https://via.placeholder.com/300x200/1e40af/ffffff?text=Course+Image" 
+                                     alt="Course" class="w-full h-32 object-cover">
+                                <div class="p-4">
+                                    <h5 class="font-semibold">SOC Analyst Foundations</h5>
+                                    <p class="text-gray-300 text-sm">Master security operations...</p>
+                                    <div class="text-blue-400 font-bold mt-2">$2,999</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Demo Section Enhancement -->
+                <div class="bg-gray-800 rounded-lg p-6">
+                    <h3 class="text-xl font-semibold mb-4">Demo Section with Video</h3>
+                    <pre class="bg-gray-900 p-4 rounded text-sm overflow-x-auto"><code class="text-yellow-400">// In your demo.html, replace static content with:
+
+const renderVideoComponent = function(component) {
+    return `
+        &lt;div class="component-card animate-fade-in"&gt;
+            &lt;div class="relative bg-gray-900 rounded-lg overflow-hidden"&gt;
+                &lt;video controls class="w-full aspect-video"&gt;
+                    &lt;source src="media/videos/demos/your-demo-video.mp4" type="video/mp4"&gt;
+                &lt;/video&gt;
+                
+                &lt;div class="p-4"&gt;
+                    &lt;h3 class="text-lg font-semibold text-white mb-2"&gt;${component.title}&lt;/h3&gt;
+                    &lt;p class="text-gray-300 text-sm"&gt;${component.description}&lt;/p&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    `;
+};</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Action Buttons -->
+        <div class="text-center bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg p-8">
+            <h2 class="text-2xl font-bold mb-4">Ready to Upload Your Media?</h2>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="https://github.com/admz3379/techstep-platform" target="_blank" 
+                   class="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+                    <i class="fab fa-github mr-2"></i>
+                    Go to GitHub Repo
+                </a>
+                <a href="media-manager.html" 
+                   class="bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors">
+                    <i class="fas fa-upload mr-2"></i>
+                    Open Media Manager
+                </a>
+                <a href="../index.html" 
+                   class="bg-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors">
+                    <i class="fas fa-home mr-2"></i>
+                    Back to Platform
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

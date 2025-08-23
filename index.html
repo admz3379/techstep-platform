@@ -387,6 +387,33 @@
             border-radius: 8px;
             padding: 1rem;
         }
+        
+        /* User Media Integration Styles */
+        .hero-bg {
+            position: relative;
+            background: linear-gradient(135deg, #1e3a8a 0%, #7c3aed 100%);
+        }
+        
+        .user-video-container {
+            position: relative;
+            border: 2px solid #3b82f6;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .user-video-container:hover {
+            border-color: #60a5fa;
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+        }
+        
+        .video-fallback {
+            background: linear-gradient(135deg, #374151 0%, #1f2937 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 200px;
+        }
     </style>
 </head>
 <body class="bg-gray-900 text-white">
@@ -662,9 +689,19 @@
     </div>
     <!-- Trial App Container -->
 
-    <!-- Hero Section -->
-    <section class="hero-bg py-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <!-- Hero Section with User Image -->
+    <section class="hero-bg py-20 relative overflow-hidden">
+        <!-- User's Custom Background Image Overlay -->
+        <div class="absolute inset-0 z-0">
+            <!-- Replace 'your-image-name.jpg' with your actual uploaded image filename -->
+            <img src="media/images/backgrounds/your-image-name.jpg" 
+                 alt="TechStep Hero Background" 
+                 class="w-full h-full object-cover opacity-20"
+                 style="filter: blur(1px);"
+                 onerror="this.style.display='none'">
+        </div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
             <h1 class="text-5xl md:text-6xl font-bold mb-6">
                 Accelerate Your <span class="text-blue-400">Cybersecurity Career</span>
             </h1>
@@ -1042,6 +1079,36 @@
         </div>
 
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Featured Video - User's Upload -->
+            <div class="course-card p-6 rounded-lg col-span-full lg:col-span-2 mb-8">
+                <div class="text-center mb-4">
+                    <h3 class="text-2xl font-bold text-white mb-2">
+                        <i class="fas fa-play-circle text-blue-400 mr-2"></i>
+                        Featured Content
+                    </h3>
+                    <p class="text-gray-300">Exclusive video content from TechStep</p>
+                </div>
+                
+                <!-- User's Video Integration -->
+                <div class="user-video-container aspect-video bg-gray-900 rounded-lg overflow-hidden mb-4">
+                    <!-- Replace 'your-video-name.mp4' with your actual uploaded video filename -->
+                    <video controls class="w-full h-full object-cover" preload="metadata"
+                           onload="this.parentNode.classList.add('loaded')"
+                           onerror="this.style.display='none'; this.parentNode.innerHTML='<div class=&quot;video-fallback&quot;><div class=&quot;text-center text-gray-400&quot;><i class=&quot;fas fa-video text-4xl mb-2&quot;></i><p>Video will appear here after upload</p><p class=&quot;text-sm&quot;>Update filename in code</p></div></div>'">
+                        <source src="media/videos/courses/your-video-name.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                
+                <div class="text-center">
+                    <div class="flex items-center justify-center space-x-4 text-sm text-gray-400">
+                        <span><i class="fas fa-clock mr-1"></i>Premium Content</span>
+                        <span><i class="fas fa-eye mr-1"></i>Exclusive Access</span>
+                        <span><i class="fas fa-star mr-1"></i>Latest Update</span>
+                    </div>
+                </div>
+            </div>
+            
             <!-- Episode 1: Zero Trust - FREE ACCESS -->
             <div class="course-card p-6 rounded-lg">
                 <div class="flex items-center mb-4">

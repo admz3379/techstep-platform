@@ -936,7 +936,7 @@
             <div class="bg-gray-700 p-6 rounded-lg max-w-md mx-auto">
                 <h3 class="text-xl font-semibold mb-4">Order Summary</h3>
                 <div id="cart-items" class="space-y-2 mb-4">
-                    <p class="text-gray-400">Select courses to see pricing</p>
+                    <p id="no-courses-message" class="text-gray-400">Select SOC Analyst course below to see pricing</p>
                 </div>
                 <div class="border-t border-gray-600 pt-4">
                     <div class="flex justify-between items-center mb-4">
@@ -979,6 +979,19 @@
                                 </div>
                             </label>
                         </div>
+                        
+                        <!-- Payment Agreement Checkbox -->
+                        <div class="mt-4 p-4 bg-gray-800 rounded-lg">
+                            <label class="flex items-start cursor-pointer">
+                                <input type="checkbox" id="payment-agreement" class="mt-1 mr-3 w-4 h-4 text-blue-600 border-gray-600 rounded focus:ring-blue-500" required>
+                                <span class="text-sm text-gray-300">
+                                    I agree to the <a href="#" class="text-blue-400 hover:underline">Terms of Service</a> and 
+                                    <a href="#" class="text-blue-400 hover:underline">Payment Terms</a>. I understand that by selecting a monthly plan, 
+                                    I authorize TechStep Foundation to charge my payment method $750 today and $375 monthly for 6 months. 
+                                    I can cancel anytime with 7-day notice. *
+                                </span>
+                            </label>
+                        </div>
                     </div>
 
                     <!-- Payment Buttons Container -->
@@ -1014,7 +1027,7 @@
                                 256-bit SSL encryption • PCI DSS compliant • Powered by Stripe
                             </p>
                             <div class="space-y-1 text-xs">
-                                <p>✓ 30-day money-back guarantee</p>
+                                <p>✓ 7-day money-back guarantee</p>
                                 <p>✓ Instant course access after payment</p>
                                 <p>✓ Email support: support@techstepfoundation.org</p>
                             </div>
@@ -5270,6 +5283,14 @@ function formatTime(seconds) {
             learningTypeInputs.forEach(input => {
                 input.addEventListener('change', updateCartTotal);
             });
+            
+            // Add event listener to payment agreement checkbox
+            setTimeout(() => {
+                const agreementCheckbox = document.getElementById('payment-agreement');
+                if (agreementCheckbox) {
+                    agreementCheckbox.addEventListener('change', updateStripeButtonText);
+                }
+            }, 1000); // Wait for elements to be created
         }
         
         // Stripe Payment Integration
@@ -5356,9 +5377,16 @@ function formatTime(seconds) {
         async function handleStripeCheckout() {
             const selectedCourses = getSelectedCourses();
             const paymentPlan = document.querySelector('input[name="payment-plan"]:checked')?.value || 'full';
+            const agreementCheckbox = document.getElementById('payment-agreement');
             
             if (selectedCourses.length === 0) {
-                alert('Please select at least one course to continue.');
+                alert('Please select SOC Analyst Foundations course to continue.');
+                return;
+            }
+            
+            if (!agreementCheckbox.checked) {
+                alert('Please agree to the Terms of Service and Payment Terms to continue.');
+                agreementCheckbox.focus();
                 return;
             }
             
@@ -5481,6 +5509,7 @@ function formatTime(seconds) {
         function updateStripeButtonText() {
             const selectedCourses = getSelectedCourses();
             const paymentPlan = document.querySelector('input[name="payment-plan"]:checked')?.value || 'full';
+            const agreementCheckbox = document.getElementById('payment-agreement');
             const button = document.getElementById('stripe-checkout-button');
             const buttonText = document.getElementById('stripe-button-text');
             
@@ -5488,23 +5517,31 @@ function formatTime(seconds) {
             
             if (selectedCourses.length === 0) {
                 button.disabled = true;
-                buttonText.textContent = 'Select a Course to Continue';
+                buttonText.textContent = 'Select SOC Analyst Course to Continue';
+                return;
+            }
+            
+            // Check if SOC Analyst is selected (only course with Stripe integration)
+            const socCourse = selectedCourses.find(course => course.dataset.course === 'soc-analyst');
+            if (!socCourse) {
+                button.disabled = true;
+                buttonText.textContent = 'Stripe Available for SOC Analyst Only';
+                return;
+            }
+            
+            // Check if agreement is checked
+            if (!agreementCheckbox || !agreementCheckbox.checked) {
+                button.disabled = true;
+                buttonText.textContent = 'Accept Agreement to Continue';
                 return;
             }
             
             button.disabled = false;
             
-            // Check if SOC Analyst is selected (only course with Stripe integration)
-            const socCourse = selectedCourses.find(course => course.dataset.course === 'soc-analyst');
-            if (!socCourse) {
-                buttonText.textContent = 'Stripe Available for SOC Analyst Only';
-                return;
-            }
-            
             if (paymentPlan === 'full') {
-                buttonText.textContent = 'Pay $2,849 Now - Best Value';
+                buttonText.textContent = 'Pay $2,849 Now - Best Value 🚀';
             } else if (paymentPlan === 'monthly') {
-                buttonText.textContent = 'Start Today - $750 Down Payment';
+                buttonText.textContent = 'Start Today - $750 Down Payment 💳';
             }
         }
         
@@ -5515,17 +5552,38 @@ function formatTime(seconds) {
             const totalElement = document.getElementById('total-price');
             const paymentSelector = document.getElementById('payment-plan-selector');
             const paymentButtons = document.getElementById('payment-buttons-container');
+            const cartItems = document.getElementById('cart-items');
+            const noCoursesMessage = document.getElementById('no-courses-message');
             
             if (selectedCourses.length === 0) {
                 totalElement.textContent = '$0';
                 paymentSelector.classList.add('hidden');
                 paymentButtons.classList.add('hidden');
+                if (noCoursesMessage) {
+                    noCoursesMessage.style.display = 'block';
+                }
                 return;
             }
             
-            // Show payment options
+            // Hide "no courses" message and show payment options
+            if (noCoursesMessage) {
+                noCoursesMessage.style.display = 'none';
+            }
             paymentSelector.classList.remove('hidden');
             paymentButtons.classList.remove('hidden');
+            
+            // Update cart items display
+            cartItems.innerHTML = '';
+            selectedCourses.forEach(course => {
+                const courseName = course.querySelector('h3').textContent;
+                const courseDiv = document.createElement('div');
+                courseDiv.className = 'flex justify-between items-center py-2';
+                courseDiv.innerHTML = `
+                    <span class="text-white">${courseName}</span>
+                    <span class="text-blue-400 font-semibold">Selected</span>
+                `;
+                cartItems.appendChild(courseDiv);
+            });
             
             // Calculate total (for now just handle SOC Analyst)
             const socCourse = selectedCourses.find(course => course.dataset.course === 'soc-analyst');
@@ -5533,7 +5591,7 @@ function formatTime(seconds) {
                 if (paymentPlan === 'full') {
                     totalElement.textContent = '$2,849';
                 } else if (paymentPlan === 'monthly') {
-                    totalElement.textContent = '$750 + $375/mo × 6';
+                    totalElement.textContent = '$750 down + $375/mo';
                 }
             }
             

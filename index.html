@@ -5272,41 +5272,72 @@ function formatTime(seconds) {
         });
         
         function setupCourseSelection() {
-            console.log('Setting up course selection...');
+            console.log('🔧 Setting up course selection with event delegation...');
             
-            // Add event listeners to course checkboxes
-            const courseCheckboxes = document.querySelectorAll('.course-checkbox');
-            console.log('Found checkboxes:', courseCheckboxes.length);
-            
-            courseCheckboxes.forEach((checkbox, index) => {
-                console.log(`Setting up checkbox ${index}:`, checkbox);
-                checkbox.addEventListener('change', function(e) {
-                    console.log('Checkbox changed:', e.target.checked);
+            // Use event delegation for maximum reliability
+            document.addEventListener('change', function(e) {
+                console.log('🎯 Change event:', e.target.tagName, e.target.className, e.target.checked);
+                
+                if (e.target.classList.contains('course-checkbox')) {
+                    console.log('✅ Course checkbox changed:', e.target.checked);
+                    const courseCard = e.target.closest('.course-selection');
+                    console.log('📋 Course card:', courseCard?.dataset?.course);
                     updateCartTotal();
-                });
-            });
-            
-            // Add event listeners to learning type selection
-            const learningTypeInputs = document.querySelectorAll('input[name="learning-type"]');
-            learningTypeInputs.forEach(input => {
-                input.addEventListener('change', updateCartTotal);
-            });
-            
-            // Add event listener to payment agreement checkbox (with retry)
-            const setupAgreement = () => {
-                const agreementCheckbox = document.getElementById('payment-agreement');
-                if (agreementCheckbox) {
-                    console.log('Agreement checkbox found and connected');
-                    agreementCheckbox.addEventListener('change', updateStripeButtonText);
-                } else {
-                    console.log('Agreement checkbox not found, retrying...');
-                    setTimeout(setupAgreement, 500);
+                    return;
                 }
-            };
-            setTimeout(setupAgreement, 100);
+                
+                if (e.target.name === 'learning-type') {
+                    console.log('🎓 Learning type changed:', e.target.value);
+                    updateCartTotal();
+                    return;
+                }
+                
+                if (e.target.name === 'payment-plan') {
+                    console.log('💳 Payment plan changed:', e.target.value);
+                    updateCartTotal();
+                    return;
+                }
+                
+                if (e.target.id === 'payment-agreement') {
+                    console.log('📜 Agreement checkbox changed:', e.target.checked);
+                    updateStripeButtonText();
+                    return;
+                }
+            });
             
-            // Initial cart update
-            updateCartTotal();
+            // Delayed initialization to ensure DOM is ready
+            setTimeout(() => {
+                const checkboxes = document.querySelectorAll('.course-checkbox');
+                console.log('🔍 Found course checkboxes:', checkboxes.length);
+                
+                checkboxes.forEach((cb, i) => {
+                    const courseCard = cb.closest('.course-selection');
+                    console.log(`📋 Checkbox ${i}:`, {
+                        checked: cb.checked,
+                        course: courseCard?.dataset?.course,
+                        element: cb
+                    });
+                });
+                
+                // Initial update
+                console.log('🚀 Running initial updateCartTotal...');
+                updateCartTotal();
+            }, 1000);
+            
+            // Add manual test button for debugging
+            setTimeout(() => {
+                const cartSection = document.querySelector('.bg-gray-700.p-6.rounded-lg.max-w-md.mx-auto');
+                if (cartSection) {
+                    const testButton = document.createElement('button');
+                    testButton.className = 'mt-2 px-4 py-2 bg-red-600 text-white text-xs rounded';
+                    testButton.textContent = 'TEST: Force Cart Update';
+                    testButton.onclick = () => {
+                        console.log('🧪 Manual cart update triggered');
+                        updateCartTotal();
+                    };
+                    cartSection.appendChild(testButton);
+                }
+            }, 2000);
         }
         
         // Stripe Payment Integration
@@ -5517,16 +5548,30 @@ function formatTime(seconds) {
         }
         
         function getSelectedCourses() {
+            console.log('🔍 Getting selected courses...');
+            const allCheckboxes = document.querySelectorAll('.course-checkbox');
             const checkedBoxes = document.querySelectorAll('.course-checkbox:checked');
-            console.log('Checked boxes found:', checkedBoxes.length);
+            
+            console.log('📊 Checkbox stats:', {
+                total: allCheckboxes.length,
+                checked: checkedBoxes.length
+            });
+            
+            allCheckboxes.forEach((cb, i) => {
+                const courseCard = cb.closest('.course-selection');
+                console.log(`  📋 Checkbox ${i}:`, {
+                    checked: cb.checked,
+                    course: courseCard?.dataset?.course || 'unknown'
+                });
+            });
             
             const selectedCourses = Array.from(checkedBoxes).map(checkbox => {
                 const courseCard = checkbox.closest('.course-selection');
-                console.log('Course card found:', courseCard ? courseCard.dataset.course : 'none');
+                console.log('✅ Found selected course card:', courseCard?.dataset?.course || 'none');
                 return courseCard;
             }).filter(course => course !== null);
             
-            console.log('Selected courses:', selectedCourses.length);
+            console.log('🎯 Total selected courses:', selectedCourses.length);
             return selectedCourses;
         }
         

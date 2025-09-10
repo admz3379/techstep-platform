@@ -5272,72 +5272,144 @@ function formatTime(seconds) {
         });
         
         function setupCourseSelection() {
-            console.log('🔧 Setting up course selection with event delegation...');
+            console.log('🔧 SIMPLE Setup: Course selection...');
             
-            // Use event delegation for maximum reliability
+            // APPROACH 1: Direct event listeners with multiple attempts
+            function attachListeners() {
+                const socCheckbox = document.querySelector('[data-course="soc-analyst"] .course-checkbox');
+                console.log('🎯 SOC Checkbox found:', !!socCheckbox);
+                
+                if (socCheckbox) {
+                    // Remove any existing listeners
+                    socCheckbox.removeEventListener('change', handleCheckboxChange);
+                    socCheckbox.addEventListener('change', handleCheckboxChange);
+                    console.log('✅ Direct listener attached to SOC checkbox');
+                } else {
+                    console.log('❌ SOC checkbox not found, retrying...');
+                }
+                
+                // Attach to all checkboxes as backup
+                const allCheckboxes = document.querySelectorAll('.course-checkbox');
+                console.log('📋 Total checkboxes found:', allCheckboxes.length);
+                
+                allCheckboxes.forEach((cb, i) => {
+                    cb.removeEventListener('change', handleCheckboxChange);
+                    cb.addEventListener('change', handleCheckboxChange);
+                    console.log(`🔗 Listener attached to checkbox ${i}`);
+                });
+            }
+            
+            // APPROACH 2: Global event delegation as backup
             document.addEventListener('change', function(e) {
-                console.log('🎯 Change event:', e.target.tagName, e.target.className, e.target.checked);
-                
                 if (e.target.classList.contains('course-checkbox')) {
-                    console.log('✅ Course checkbox changed:', e.target.checked);
-                    const courseCard = e.target.closest('.course-selection');
-                    console.log('📋 Course card:', courseCard?.dataset?.course);
-                    updateCartTotal();
-                    return;
-                }
-                
-                if (e.target.name === 'learning-type') {
-                    console.log('🎓 Learning type changed:', e.target.value);
-                    updateCartTotal();
-                    return;
-                }
-                
-                if (e.target.name === 'payment-plan') {
-                    console.log('💳 Payment plan changed:', e.target.value);
-                    updateCartTotal();
-                    return;
-                }
-                
-                if (e.target.id === 'payment-agreement') {
-                    console.log('📜 Agreement checkbox changed:', e.target.checked);
-                    updateStripeButtonText();
-                    return;
+                    console.log('🌐 Global delegation caught checkbox change');
+                    handleCheckboxChange(e);
                 }
             });
             
-            // Delayed initialization to ensure DOM is ready
-            setTimeout(() => {
-                const checkboxes = document.querySelectorAll('.course-checkbox');
-                console.log('🔍 Found course checkboxes:', checkboxes.length);
-                
-                checkboxes.forEach((cb, i) => {
-                    const courseCard = cb.closest('.course-selection');
-                    console.log(`📋 Checkbox ${i}:`, {
-                        checked: cb.checked,
-                        course: courseCard?.dataset?.course,
-                        element: cb
-                    });
-                });
-                
-                // Initial update
-                console.log('🚀 Running initial updateCartTotal...');
-                updateCartTotal();
-            }, 1000);
-            
-            // Add manual test button for debugging
-            setTimeout(() => {
-                const cartSection = document.querySelector('.bg-gray-700.p-6.rounded-lg.max-w-md.mx-auto');
-                if (cartSection) {
-                    const testButton = document.createElement('button');
-                    testButton.className = 'mt-2 px-4 py-2 bg-red-600 text-white text-xs rounded';
-                    testButton.textContent = 'TEST: Force Cart Update';
-                    testButton.onclick = () => {
-                        console.log('🧪 Manual cart update triggered');
-                        updateCartTotal();
-                    };
-                    cartSection.appendChild(testButton);
+            // APPROACH 3: Polling as ultimate backup
+            let pollCount = 0;
+            const pollInterval = setInterval(() => {
+                pollCount++;
+                const socCheckbox = document.querySelector('[data-course="soc-analyst"] .course-checkbox');
+                if (socCheckbox && socCheckbox.checked) {
+                    console.log('🔄 Polling detected checked SOC checkbox!');
+                    handleCheckboxChange({ target: socCheckbox });
+                    clearInterval(pollInterval);
                 }
-            }, 2000);
+                if (pollCount > 20) clearInterval(pollInterval); // Stop after 10 seconds
+            }, 500);
+            
+            // Try attaching listeners multiple times
+            attachListeners();
+            setTimeout(attachListeners, 500);
+            setTimeout(attachListeners, 1000);
+            setTimeout(attachListeners, 2000);
+            
+            // Add test button
+            setTimeout(() => {
+                addTestButton();
+            }, 1500);
+        }
+        
+        function handleCheckboxChange(event) {
+            console.log('🚨 CHECKBOX CHANGE DETECTED!', event.target.checked);
+            const courseCard = event.target.closest('.course-selection');
+            console.log('📋 Course card found:', courseCard?.dataset?.course);
+            
+            // Force immediate cart update
+            updateCartTotal();
+            
+            // Also try direct DOM manipulation as backup
+            if (event.target.checked && courseCard?.dataset?.course === 'soc-analyst') {
+                console.log('🔥 DIRECT UPDATE: SOC Analyst selected!');
+                forceCartUpdate();
+            }
+        }
+        
+        function forceCartUpdate() {
+            console.log('🔥 FORCING cart update with direct DOM manipulation...');
+            
+            // Direct DOM updates
+            const cartItems = document.getElementById('cart-items');
+            const totalElement = document.getElementById('total-price');
+            const paymentSelector = document.getElementById('payment-plan-selector');
+            const paymentButtons = document.getElementById('payment-buttons-container');
+            const noCoursesMessage = document.getElementById('no-courses-message');
+            
+            if (cartItems) {
+                cartItems.innerHTML = `
+                    <div class="flex justify-between items-center py-2">
+                        <span class="text-white">SOC Analyst Foundations</span>
+                        <span class="text-blue-400 font-semibold">Selected</span>
+                    </div>
+                `;
+                console.log('✅ Cart items updated');
+            }
+            
+            if (totalElement) {
+                totalElement.textContent = '$2,849';
+                console.log('✅ Total updated');
+            }
+            
+            if (noCoursesMessage) {
+                noCoursesMessage.style.display = 'none';
+                console.log('✅ No courses message hidden');
+            }
+            
+            if (paymentSelector) {
+                paymentSelector.classList.remove('hidden');
+                console.log('✅ Payment selector shown');
+            }
+            
+            if (paymentButtons) {
+                paymentButtons.classList.remove('hidden');
+                console.log('✅ Payment buttons shown');
+            }
+        }
+        
+        function addTestButton() {
+            const cartSection = document.querySelector('.bg-gray-700.p-6.rounded-lg.max-w-md.mx-auto');
+            if (cartSection && !cartSection.querySelector('.test-button')) {
+                const testButton = document.createElement('button');
+                testButton.className = 'mt-2 px-4 py-2 bg-red-600 text-white text-xs rounded test-button';
+                testButton.textContent = 'TEST: Force SOC Selection';
+                testButton.onclick = () => {
+                    console.log('🧪 MANUAL TEST: Forcing SOC selection...');
+                    
+                    // Check the checkbox
+                    const socCheckbox = document.querySelector('[data-course="soc-analyst"] .course-checkbox');
+                    if (socCheckbox) {
+                        socCheckbox.checked = true;
+                        console.log('✅ SOC checkbox manually checked');
+                    }
+                    
+                    // Force update
+                    forceCartUpdate();
+                };
+                cartSection.appendChild(testButton);
+                console.log('🧪 Test button added');
+            }
         }
         
         // Stripe Payment Integration
@@ -5614,61 +5686,88 @@ function formatTime(seconds) {
             }
         }
         
-        // Update the existing updateCartTotal function to work with new system
+        // SIMPLIFIED updateCartTotal function
         function updateCartTotal() {
-            console.log('updateCartTotal called');
-            const selectedCourses = getSelectedCourses();
-            console.log('Selected courses:', selectedCourses.length);
+            console.log('🔄 updateCartTotal called');
             
-            const paymentPlan = document.querySelector('input[name="payment-plan"]:checked')?.value || 'full';
+            // Get elements with error checking
             const totalElement = document.getElementById('total-price');
             const paymentSelector = document.getElementById('payment-plan-selector');
             const paymentButtons = document.getElementById('payment-buttons-container');
             const cartItems = document.getElementById('cart-items');
             const noCoursesMessage = document.getElementById('no-courses-message');
             
-            if (selectedCourses.length === 0) {
-                totalElement.textContent = '$0';
-                paymentSelector.classList.add('hidden');
-                paymentButtons.classList.add('hidden');
-                if (noCoursesMessage) {
-                    noCoursesMessage.style.display = 'block';
-                }
+            console.log('🔍 Elements found:', {
+                totalElement: !!totalElement,
+                paymentSelector: !!paymentSelector,
+                paymentButtons: !!paymentButtons,
+                cartItems: !!cartItems,
+                noCoursesMessage: !!noCoursesMessage
+            });
+            
+            // Check for SOC Analyst selection directly
+            const socCheckbox = document.querySelector('[data-course="soc-analyst"] .course-checkbox');
+            const isSocSelected = socCheckbox?.checked || false;
+            
+            console.log('🎯 SOC Analyst status:', {
+                checkboxFound: !!socCheckbox,
+                isChecked: isSocSelected
+            });
+            
+            if (!isSocSelected) {
+                // No courses selected
+                console.log('❌ No courses selected - hiding payment options');
+                if (totalElement) totalElement.textContent = '$0';
+                if (paymentSelector) paymentSelector.classList.add('hidden');
+                if (paymentButtons) paymentButtons.classList.add('hidden');
+                if (noCoursesMessage) noCoursesMessage.style.display = 'block';
                 return;
             }
             
-            // Hide "no courses" message and show payment options
+            // SOC Analyst is selected
+            console.log('✅ SOC Analyst selected - showing payment options');
+            
+            // Hide "no courses" message
             if (noCoursesMessage) {
                 noCoursesMessage.style.display = 'none';
+                console.log('✅ Hidden no-courses message');
             }
-            paymentSelector.classList.remove('hidden');
-            paymentButtons.classList.remove('hidden');
             
-            // Update cart items display
-            cartItems.innerHTML = '';
-            selectedCourses.forEach(course => {
-                const courseName = course.querySelector('h3').textContent;
-                const courseDiv = document.createElement('div');
-                courseDiv.className = 'flex justify-between items-center py-2';
-                courseDiv.innerHTML = `
-                    <span class="text-white">${courseName}</span>
-                    <span class="text-blue-400 font-semibold">Selected</span>
+            // Show payment options
+            if (paymentSelector) {
+                paymentSelector.classList.remove('hidden');
+                console.log('✅ Showed payment selector');
+            }
+            if (paymentButtons) {
+                paymentButtons.classList.remove('hidden');
+                console.log('✅ Showed payment buttons');
+            }
+            
+            // Update cart items
+            if (cartItems) {
+                cartItems.innerHTML = `
+                    <div class="flex justify-between items-center py-2">
+                        <span class="text-white">SOC Analyst Foundations</span>
+                        <span class="text-blue-400 font-semibold">Selected</span>
+                    </div>
                 `;
-                cartItems.appendChild(courseDiv);
-            });
+                console.log('✅ Updated cart items');
+            }
             
-            // Calculate total (for now just handle SOC Analyst)
-            const socCourse = selectedCourses.find(course => course.dataset.course === 'soc-analyst');
-            if (socCourse) {
+            // Update total based on payment plan
+            const paymentPlan = document.querySelector('input[name="payment-plan"]:checked')?.value || 'full';
+            if (totalElement) {
                 if (paymentPlan === 'full') {
                     totalElement.textContent = '$2,849';
                 } else if (paymentPlan === 'monthly') {
                     totalElement.textContent = '$750 down + $375/mo';
                 }
+                console.log('✅ Updated total:', totalElement.textContent);
             }
             
             // Update Stripe button
             updateStripeButtonText();
+            console.log('🚀 Cart update complete!');
         }
         
     </script>

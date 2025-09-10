@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing - TechStep Foundation</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <style>
+        .hero-bg {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+        }
+    </style>
+</head>
+<body class="hero-bg min-h-screen text-white">
+    <div class="container mx-auto px-4 py-16">
+        <div class="max-w-6xl mx-auto">
+            
+            <!-- Header -->
+            <div class="text-center mb-12">
+                <h1 class="text-4xl md:text-6xl font-bold mb-4">Choose Your Plan</h1>
+                <p class="text-xl text-gray-300 mb-8">
+                    Start your cybersecurity career journey with TechStep Foundation
+                </p>
+                
+                <!-- Cancelled Notice (if coming from Stripe) -->
+                <div id="cancelled-notice" class="bg-yellow-900 border border-yellow-600 rounded-lg p-4 mb-8 hidden">
+                    <div class="flex items-center justify-center">
+                        <i class="fas fa-info-circle text-yellow-400 mr-3"></i>
+                        <div>
+                            <h4 class="font-semibold text-yellow-300">Payment Cancelled</h4>
+                            <p class="text-sm text-yellow-200">No worries! You can try again anytime. Your course will be waiting.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pricing Cards -->
+            <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-12">
+                
+                <!-- Full Payment Plan -->
+                <div class="bg-gradient-to-br from-green-900 to-green-800 rounded-lg p-8 border-2 border-green-500 relative">
+                    <div class="absolute top-4 right-4 bg-green-500 text-green-900 px-3 py-1 rounded-full text-sm font-bold">
+                        BEST VALUE
+                    </div>
+                    
+                    <h3 class="text-2xl font-bold mb-4 text-green-400">Full Payment</h3>
+                    <div class="text-4xl font-bold mb-2">$2,849</div>
+                    <p class="text-green-200 mb-6">One-time payment • Lifetime access</p>
+                    
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-400 mr-3"></i>
+                            <span>Complete SOC Analyst course</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-400 mr-3"></i>
+                            <span>40+ hours of content</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-400 mr-3"></i>
+                            <span>Hands-on lab exercises</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-400 mr-3"></i>
+                            <span>Career guidance</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-400 mr-3"></i>
+                            <span>No monthly payments</span>
+                        </li>
+                    </ul>
+                    
+                    <a href="/#courses" 
+                       class="block w-full bg-green-600 hover:bg-green-700 text-white text-center font-bold py-4 px-6 rounded-lg transition duration-300">
+                        Get Started Now
+                    </a>
+                </div>
+
+                <!-- Monthly Payment Plan -->
+                <div class="bg-gradient-to-br from-blue-900 to-blue-800 rounded-lg p-8 border-2 border-blue-500">
+                    <h3 class="text-2xl font-bold mb-4 text-blue-400">Monthly Plan</h3>
+                    <div class="text-4xl font-bold mb-2">$750 + $375<span class="text-xl">/month</span></div>
+                    <p class="text-blue-200 mb-6">Down payment + 6 monthly payments</p>
+                    
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-blue-400 mr-3"></i>
+                            <span>Complete SOC Analyst course</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-blue-400 mr-3"></i>
+                            <span>40+ hours of content</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-blue-400 mr-3"></i>
+                            <span>Hands-on lab exercises</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-blue-400 mr-3"></i>
+                            <span>Career guidance</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-blue-400 mr-3"></i>
+                            <span>Start today, pay monthly</span>
+                        </li>
+                    </ul>
+                    
+                    <a href="/#courses" 
+                       class="block w-full bg-blue-600 hover:bg-blue-700 text-white text-center font-bold py-4 px-6 rounded-lg transition duration-300">
+                        Start Today
+                    </a>
+                </div>
+            </div>
+
+            <!-- Features Comparison -->
+            <div class="bg-gray-800 rounded-lg p-8 mb-12">
+                <h3 class="text-2xl font-semibold mb-6 text-center">What's Included in Both Plans</h3>
+                
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="text-center">
+                        <i class="fas fa-video text-4xl text-blue-400 mb-4"></i>
+                        <h4 class="font-semibold mb-2">Video Lessons</h4>
+                        <p class="text-sm text-gray-400">40+ hours of expert-led instruction</p>
+                    </div>
+                    
+                    <div class="text-center">
+                        <i class="fas fa-laptop-code text-4xl text-green-400 mb-4"></i>
+                        <h4 class="font-semibold mb-2">Hands-on Labs</h4>
+                        <p class="text-sm text-gray-400">Practice in real-world scenarios</p>
+                    </div>
+                    
+                    <div class="text-center">
+                        <i class="fas fa-certificate text-4xl text-purple-400 mb-4"></i>
+                        <h4 class="font-semibold mb-2">Certification Prep</h4>
+                        <p class="text-sm text-gray-400">Prepare for industry certifications</p>
+                    </div>
+                    
+                    <div class="text-center">
+                        <i class="fas fa-users text-4xl text-yellow-400 mb-4"></i>
+                        <h4 class="font-semibold mb-2">Career Support</h4>
+                        <p class="text-sm text-gray-400">Job placement assistance</p>
+                    </div>
+                    
+                    <div class="text-center">
+                        <i class="fas fa-clock text-4xl text-red-400 mb-4"></i>
+                        <h4 class="font-semibold mb-2">Lifetime Access</h4>
+                        <p class="text-sm text-gray-400">Learn at your own pace</p>
+                    </div>
+                    
+                    <div class="text-center">
+                        <i class="fas fa-headset text-4xl text-indigo-400 mb-4"></i>
+                        <h4 class="font-semibold mb-2">24/7 Support</h4>
+                        <p class="text-sm text-gray-400">Get help when you need it</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ Section -->
+            <div class="bg-gray-800 rounded-lg p-8 mb-12">
+                <h3 class="text-2xl font-semibold mb-6 text-center">Frequently Asked Questions</h3>
+                
+                <div class="space-y-6">
+                    <div>
+                        <h4 class="font-semibold mb-2 text-blue-400">Can I switch payment plans after enrolling?</h4>
+                        <p class="text-sm text-gray-400">Payment plans cannot be changed after enrollment. Choose the plan that works best for your budget.</p>
+                    </div>
+                    
+                    <div>
+                        <h4 class="font-semibold mb-2 text-blue-400">Is there a refund policy?</h4>
+                        <p class="text-sm text-gray-400">Yes! We offer a 7-day money-back guarantee for both payment plans.</p>
+                    </div>
+                    
+                    <div>
+                        <h4 class="font-semibold mb-2 text-blue-400">How long do I have access to the course?</h4>
+                        <p class="text-sm text-gray-400">Both plans include lifetime access to all course materials and updates.</p>
+                    </div>
+                    
+                    <div>
+                        <h4 class="font-semibold mb-2 text-blue-400">Can I cancel my monthly plan?</h4>
+                        <p class="text-sm text-gray-400">Yes, you can cancel with 7-day written notice, but you'll still have access through your paid period.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA Section -->
+            <div class="text-center">
+                <h3 class="text-3xl font-bold mb-4">Ready to Start Your Cybersecurity Career?</h3>
+                <p class="text-xl text-gray-300 mb-8">
+                    Join thousands of students who have launched successful careers with TechStep
+                </p>
+                
+                <a href="/#courses" 
+                   class="inline-block bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-4 px-8 rounded-lg transition duration-300 transform hover:scale-105">
+                    <i class="fas fa-rocket mr-2"></i>
+                    Choose Your Plan
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check if user came from cancelled payment
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            
+            if (urlParams.has('cancelled') || document.referrer.includes('stripe.com')) {
+                const cancelledNotice = document.getElementById('cancelled-notice');
+                if (cancelledNotice) {
+                    cancelledNotice.classList.remove('hidden');
+                }
+            }
+        });
+    </script>
+</body>
+</html>

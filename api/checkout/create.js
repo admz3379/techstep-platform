@@ -14,11 +14,11 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Missing required fields: paymentPlan and courseId' });
     }
 
-    // Price IDs as specified by the user
+    // Live Stripe Price IDs
     const priceIds = {
-      full: 'price_1S5j8SHdhxmQz9FjYDWLFpyd',           // Full payment $2,849
-      down: 'price_1S5j8SHdhxmQz9FjK5KQc0HG',           // Down payment $750
-      recurring: 'price_1S5j8SHdhxmQz9FjxZR4DjJS'       // Monthly recurring $375
+      full: 'price_1S5j8SHdhxmQz9FjYDWLFpyd',           // Full payment $2,849 (live)
+      down: 'price_1S5j8SHdhxmQz9FjK5KQc0HG',           // Down payment $750 (live) 
+      recurring: 'price_1S5j8SHdhxmQz9FjxZR4DjJS'       // Monthly recurring $375 x 6 (live)
     };
 
     // Build line items based on payment plan
@@ -54,8 +54,8 @@ export default async function handler(req, res) {
       payment_method_types: ['card', 'apple_pay', 'google_pay'],
       line_items: lineItems,
       mode: paymentPlan === 'full' ? 'payment' : 'subscription',
-      success_url: `${req.headers.origin}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${req.headers.origin}/#courses`,
+      success_url: `${req.headers.origin || 'https://yourapp.com'}/onboarding/soc-analyst-foundations?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${req.headers.origin || 'https://yourapp.com'}/pricing`,
       metadata: {
         courseId: courseId,
         paymentPlan: paymentPlan

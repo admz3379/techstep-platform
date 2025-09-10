@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to SOC Analyst Foundations - TechStep Foundation</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <style>
+        .hero-bg {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+        }
+        
+        .success-animation {
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+    </style>
+</head>
+<body class="hero-bg min-h-screen text-white">
+    <div class="container mx-auto px-4 py-16">
+        <div class="max-w-4xl mx-auto text-center">
+            
+            <!-- Success Header -->
+            <div class="mb-12">
+                <div class="success-animation mb-8">
+                    <i class="fas fa-check-circle text-8xl text-green-500"></i>
+                </div>
+                <h1 class="text-4xl md:text-6xl font-bold mb-4">Welcome to TechStep!</h1>
+                <p class="text-xl md:text-2xl text-gray-300 mb-8">
+                    🎉 Payment Successful - Your SOC Analyst Journey Begins Now
+                </p>
+            </div>
+
+            <!-- Course Information -->
+            <div class="bg-gray-800 rounded-lg p-8 mb-8">
+                <h2 class="text-2xl font-semibold mb-6 text-blue-400">
+                    <i class="fas fa-graduation-cap mr-3"></i>
+                    SOC Analyst Foundations
+                </h2>
+                
+                <div class="grid md:grid-cols-2 gap-8 text-left">
+                    <div>
+                        <h3 class="font-semibold mb-4 text-green-400">What's Included:</h3>
+                        <ul class="space-y-2 text-sm">
+                            <li><i class="fas fa-check text-green-400 mr-2"></i>40+ hours of video content</li>
+                            <li><i class="fas fa-check text-green-400 mr-2"></i>Hands-on lab exercises</li>
+                            <li><i class="fas fa-check text-green-400 mr-2"></i>Real-world case studies</li>
+                            <li><i class="fas fa-check text-green-400 mr-2"></i>Industry certifications prep</li>
+                            <li><i class="fas fa-check text-green-400 mr-2"></i>Career guidance & support</li>
+                            <li><i class="fas fa-check text-green-400 mr-2"></i>Lifetime access to materials</li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h3 class="font-semibold mb-4 text-blue-400">Your Learning Path:</h3>
+                        <div class="space-y-3 text-sm">
+                            <div class="flex items-center">
+                                <span class="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs mr-3">1</span>
+                                Security Fundamentals
+                            </div>
+                            <div class="flex items-center">
+                                <span class="bg-gray-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs mr-3">2</span>
+                                Threat Detection & Analysis
+                            </div>
+                            <div class="flex items-center">
+                                <span class="bg-gray-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs mr-3">3</span>
+                                Incident Response
+                            </div>
+                            <div class="flex items-center">
+                                <span class="bg-gray-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs mr-3">4</span>
+                                SIEM Tools & Technologies
+                            </div>
+                            <div class="flex items-center">
+                                <span class="bg-gray-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs mr-3">5</span>
+                                Career Preparation
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Next Steps -->
+            <div class="bg-blue-900 rounded-lg p-6 mb-8">
+                <h3 class="text-xl font-semibold mb-4">
+                    <i class="fas fa-rocket mr-2"></i>
+                    What Happens Next?
+                </h3>
+                <div class="grid md:grid-cols-3 gap-6 text-sm">
+                    <div class="text-center">
+                        <i class="fas fa-envelope text-3xl text-blue-400 mb-2"></i>
+                        <h4 class="font-semibold mb-2">Check Your Email</h4>
+                        <p>Welcome email with login credentials sent within 5 minutes</p>
+                    </div>
+                    <div class="text-center">
+                        <i class="fas fa-user-plus text-3xl text-green-400 mb-2"></i>
+                        <h4 class="font-semibold mb-2">Account Setup</h4>
+                        <p>Complete your student profile and preferences</p>
+                    </div>
+                    <div class="text-center">
+                        <i class="fas fa-play text-3xl text-purple-400 mb-2"></i>
+                        <h4 class="font-semibold mb-2">Start Learning</h4>
+                        <p>Begin your first lesson immediately</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Information -->
+            <div id="payment-info" class="bg-gray-800 rounded-lg p-6 mb-8">
+                <h3 class="text-lg font-semibold mb-4 text-gray-300">Payment Confirmation</h3>
+                <div class="text-sm text-gray-400 space-y-2">
+                    <div class="flex justify-between">
+                        <span>Session ID:</span>
+                        <span id="session-id" class="font-mono">Loading...</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Course:</span>
+                        <span>SOC Analyst Foundations</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Payment Plan:</span>
+                        <span id="payment-plan">Loading...</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Status:</span>
+                        <span class="text-green-400">✅ Confirmed</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="space-y-4">
+                <a href="https://student.techstepfoundation.org" 
+                   class="block w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white font-bold py-4 px-8 rounded-lg transition duration-300 transform hover:scale-105">
+                    <i class="fas fa-graduation-cap mr-2"></i>
+                    Access Student Dashboard
+                </a>
+                
+                <div class="grid md:grid-cols-2 gap-4">
+                    <a href="mailto:support@techstepfoundation.org" 
+                       class="block bg-gray-700 hover:bg-gray-600 text-white font-semibold py-3 px-6 rounded-lg transition duration-300">
+                        <i class="fas fa-envelope mr-2"></i>
+                        Contact Support
+                    </a>
+                    
+                    <a href="/" 
+                       class="block border-2 border-gray-500 hover:border-blue-400 text-gray-300 hover:text-blue-400 font-semibold py-3 px-6 rounded-lg transition duration-300">
+                        <i class="fas fa-home mr-2"></i>
+                        Return Home
+                    </a>
+                </div>
+            </div>
+
+            <!-- Demo Notice -->
+            <div id="demo-notice" class="bg-yellow-900 border border-yellow-600 rounded-lg p-4 mt-8 hidden">
+                <div class="flex items-center">
+                    <i class="fas fa-info-circle text-yellow-400 mr-3"></i>
+                    <div>
+                        <h4 class="font-semibold text-yellow-300">Demo Mode</h4>
+                        <p class="text-sm text-yellow-200">This is a demonstration. No real payment was processed.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="mt-12 pt-8 border-t border-gray-700">
+                <p class="text-sm text-gray-500">
+                    Questions? Email us at <a href="mailto:support@techstepfoundation.org" class="text-blue-400 hover:underline">support@techstepfoundation.org</a>
+                </p>
+                <p class="text-xs text-gray-600 mt-2">
+                    © 2025 TechStep Foundation. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Get URL parameters and session info
+        function getPageInfo() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const sessionId = urlParams.get('session_id');
+            const demo = urlParams.get('demo') === 'true';
+            
+            return { sessionId, demo };
+        }
+        
+        // Update page with session details
+        function updatePageContent() {
+            const { sessionId, demo } = getPageInfo();
+            
+            // Update session ID display
+            const sessionIdElement = document.getElementById('session-id');
+            if (sessionIdElement) {
+                sessionIdElement.textContent = sessionId || 'Demo Session';
+            }
+            
+            // Update payment plan (could be retrieved from session or URL)
+            const paymentPlanElement = document.getElementById('payment-plan');
+            if (paymentPlanElement) {
+                // This could be enhanced to retrieve actual plan from session
+                paymentPlanElement.textContent = 'Full Payment ($2,849)';
+            }
+            
+            // Show demo notice if in demo mode
+            if (demo) {
+                const demoNotice = document.getElementById('demo-notice');
+                if (demoNotice) {
+                    demoNotice.classList.remove('hidden');
+                }
+            }
+        }
+        
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            updatePageContent();
+            
+            // Add some celebration animation
+            setTimeout(() => {
+                const icon = document.querySelector('.success-animation i');
+                if (icon) {
+                    icon.style.animation = 'pulse 1s ease-in-out 3';
+                }
+            }, 1000);
+        });
+        
+        // Analytics tracking (if needed)
+        function trackEnrollmentSuccess() {
+            const { sessionId, demo } = getPageInfo();
+            
+            // Track successful enrollment
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'enrollment_success', {
+                    'course_id': 'soc-analyst-foundations',
+                    'session_id': sessionId,
+                    'demo_mode': demo
+                });
+            }
+            
+            console.log('Enrollment success tracked:', { sessionId, demo });
+        }
+        
+        // Call tracking on page load
+        document.addEventListener('DOMContentLoaded', trackEnrollmentSuccess);
+    </script>
+</body>
+</html>

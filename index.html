@@ -5272,10 +5272,18 @@ function formatTime(seconds) {
         });
         
         function setupCourseSelection() {
+            console.log('Setting up course selection...');
+            
             // Add event listeners to course checkboxes
             const courseCheckboxes = document.querySelectorAll('.course-checkbox');
-            courseCheckboxes.forEach(checkbox => {
-                checkbox.addEventListener('change', updateCartTotal);
+            console.log('Found checkboxes:', courseCheckboxes.length);
+            
+            courseCheckboxes.forEach((checkbox, index) => {
+                console.log(`Setting up checkbox ${index}:`, checkbox);
+                checkbox.addEventListener('change', function(e) {
+                    console.log('Checkbox changed:', e.target.checked);
+                    updateCartTotal();
+                });
             });
             
             // Add event listeners to learning type selection
@@ -5284,13 +5292,21 @@ function formatTime(seconds) {
                 input.addEventListener('change', updateCartTotal);
             });
             
-            // Add event listener to payment agreement checkbox
-            setTimeout(() => {
+            // Add event listener to payment agreement checkbox (with retry)
+            const setupAgreement = () => {
                 const agreementCheckbox = document.getElementById('payment-agreement');
                 if (agreementCheckbox) {
+                    console.log('Agreement checkbox found and connected');
                     agreementCheckbox.addEventListener('change', updateStripeButtonText);
+                } else {
+                    console.log('Agreement checkbox not found, retrying...');
+                    setTimeout(setupAgreement, 500);
                 }
-            }, 1000); // Wait for elements to be created
+            };
+            setTimeout(setupAgreement, 100);
+            
+            // Initial cart update
+            updateCartTotal();
         }
         
         // Stripe Payment Integration
@@ -5501,9 +5517,17 @@ function formatTime(seconds) {
         }
         
         function getSelectedCourses() {
-            return Array.from(document.querySelectorAll('.course-checkbox:checked')).map(checkbox => 
-                checkbox.closest('.course-selection')
-            );
+            const checkedBoxes = document.querySelectorAll('.course-checkbox:checked');
+            console.log('Checked boxes found:', checkedBoxes.length);
+            
+            const selectedCourses = Array.from(checkedBoxes).map(checkbox => {
+                const courseCard = checkbox.closest('.course-selection');
+                console.log('Course card found:', courseCard ? courseCard.dataset.course : 'none');
+                return courseCard;
+            }).filter(course => course !== null);
+            
+            console.log('Selected courses:', selectedCourses.length);
+            return selectedCourses;
         }
         
         function updateStripeButtonText() {
@@ -5547,7 +5571,10 @@ function formatTime(seconds) {
         
         // Update the existing updateCartTotal function to work with new system
         function updateCartTotal() {
+            console.log('updateCartTotal called');
             const selectedCourses = getSelectedCourses();
+            console.log('Selected courses:', selectedCourses.length);
+            
             const paymentPlan = document.querySelector('input[name="payment-plan"]:checked')?.value || 'full';
             const totalElement = document.getElementById('total-price');
             const paymentSelector = document.getElementById('payment-plan-selector');

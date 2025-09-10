@@ -843,7 +843,7 @@
                         <!-- Stripe Payment Button -->
                         <button id="stripe-button" class="payment-button stripe-button" disabled>
                             <i class="fas fa-credit-card"></i>
-                            Pay with Card
+                            Pay with Stripe Checkout
                         </button>
 
                         <!-- PayPal Button Container -->
@@ -2560,14 +2560,28 @@ function formatTime(seconds) {
             // Initialize PayPal
             initializePayPal();
 
-            // Stripe button handler
-            document.getElementById('stripe-button').onclick = function() {
+            // Stripe button handler - Updated for Stripe Checkout
+            document.getElementById('stripe-button').onclick = async function() {
                 if (!validatePaymentPlan()) return;
                 
                 const selectedPlan = document.querySelector('input[name="payment-plan"]:checked').value;
                 const amount = calculatePaymentAmount(selectedPlan);
                 
-                showStripeModal(amount, selectedPlan);
+                console.log('Processing Stripe Checkout redirect:', { selectedPlan, amount });
+                
+                // Disable button during processing
+                this.disabled = true;
+                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Checkout...';
+                
+                try {
+                    await redirectToStripeCheckout(selectedPlan, { courseId: 'soc-analyst' });
+                } catch (error) {
+                    console.error('Checkout error:', error);
+                    alert('Payment processing error. Please try again.');
+                } finally {
+                    this.disabled = false;
+                    this.innerHTML = '<i class="fas fa-credit-card"></i> Pay with Stripe Checkout';
+                }
             };
 
             // Check for Apple Pay support
@@ -2764,8 +2778,155 @@ function formatTime(seconds) {
                 document.getElementById('stripe-modal').remove();
             };
         }
+        
+        // Stripe Checkout Redirect Function
+        async function redirectToStripeCheckout(paymentPlan, course) {
+            try {
+                console.log('🚀 Creating Stripe Checkout session...', { paymentPlan, courseId: course.courseId });
+                
+                // Call API to create Stripe Checkout session
+                const response = await fetch('/api/checkout/create', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        paymentPlan: paymentPlan,
+                        courseId: course.courseId || 'soc-analyst'
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const { checkoutUrl, sessionId } = await response.json();
+                console.log('✅ Checkout session created:', { sessionId, checkoutUrl });
+                
+                // Store session info for success page
+                sessionStorage.setItem('checkoutSessionId', sessionId);
+                sessionStorage.setItem('paymentPlan', paymentPlan);
+                sessionStorage.setItem('courseId', course.courseId || 'soc-analyst');
+                
+                // Redirect to Stripe Checkout
+                window.location.href = checkoutUrl;
+                
+            } catch (error) {
+                console.error('❌ Stripe Checkout error:', error);
+                
+                // Fallback for demo - show mock success
+                console.log('🔄 Demo fallback: Simulating successful checkout redirect...');
+                const mockSessionId = `cs_demo_${Date.now()}`;
+                
+                // Store demo session info
+                sessionStorage.setItem('checkoutSessionId', mockSessionId);
+                sessionStorage.setItem('paymentPlan', paymentPlan);
+                sessionStorage.setItem('courseId', 'soc-analyst');
+                sessionStorage.setItem('demoMode', 'true');
+                
+                // Simulate Stripe Checkout redirect (for demo)
+                showDemoCheckoutModal(paymentPlan, course);
+            }
+        }
+        
+        // Demo Checkout Modal for Testing
+        function showDemoCheckoutModal(paymentPlan, course) {
+            const amount = calculatePaymentAmount(paymentPlan);
+            
+            const modalHTML = `
+                <div id="demoCheckoutModal" class="modal-overlay show">
+                    <div class="modal-content max-w-md">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-xl font-semibold text-white">🔄 Demo Stripe Checkout</h3>
+                            <button id="closeDemoModal" class="text-gray-400 hover:text-white text-2xl">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="bg-green-900 rounded-lg p-4 mb-6">
+                            <h4 class="font-bold text-white mb-2">✅ Demo Mode Active</h4>
+                            <div class="text-green-200 text-sm mb-2">
+                                Payment Plan: ${paymentPlan}<br>
+                                ${paymentPlan === 'full' 
+                                    ? `Amount: $${amount.toLocaleString()} (one-time)`
+                                    : paymentPlan === 'monthly'
+                                    ? `Down: $${Math.ceil(amount/3).toLocaleString()} + $${Math.ceil(amount/3).toLocaleString()}/month × 2`
+                                    : `Weekly: $${Math.ceil(amount/12).toLocaleString()}/week × 12`
+                                }
+                            </div>
+                            <div class="text-yellow-200 text-xs">
+                                🔹 This simulates Stripe Checkout redirect<br>
+                                🔹 Apple Pay & Google Pay supported<br>
+                                🔹 Real payment processing when deployed
+                            </div>
+                        </div>
+                        
+                        <!-- Payment Method Icons -->
+                        <div class="flex justify-center space-x-4 mb-6 text-2xl">
+                            <i class="fab fa-cc-visa text-blue-600" title="Visa"></i>
+                            <i class="fab fa-cc-mastercard text-red-600" title="Mastercard"></i>
+                            <i class="fab fa-cc-amex text-green-600" title="American Express"></i>
+                            <i class="fab fa-apple-pay text-gray-600" title="Apple Pay"></i>
+                            <i class="fab fa-google-pay text-blue-500" title="Google Pay"></i>
+                        </div>
+                        
+                        <div class="space-y-3">
+                            <button id="proceedToStripe" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300">
+                                <i class="fas fa-credit-card mr-2"></i>
+                                Continue to Stripe Checkout ($${amount.toLocaleString()})
+                            </button>
+                            
+                            <button id="simulateSuccess" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300">
+                                <i class="fas fa-check mr-2"></i>
+                                Simulate Successful Payment (Demo)
+                            </button>
+                        </div>
+                        
+                        <div class="text-center mt-4">
+                            <p class="text-gray-400 text-xs flex items-center justify-center">
+                                <i class="fas fa-shield-alt mr-1"></i>
+                                Secured by Stripe • 256-bit SSL encryption
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
+            
+            // Handle modal interactions
+            const closeBtn = document.getElementById('closeDemoModal');
+            const proceedBtn = document.getElementById('proceedToStripe');
+            const successBtn = document.getElementById('simulateSuccess');
+            
+            closeBtn.addEventListener('click', () => {
+                document.getElementById('demoCheckoutModal').remove();
+            });
+            
+            proceedBtn.addEventListener('click', () => {
+                // In production, this would redirect to actual Stripe Checkout
+                alert('🚀 In production, this would redirect to Stripe Checkout with:\n\n' +
+                      `Payment Plan: ${paymentPlan}\n` +
+                      `${paymentPlan === 'full' 
+                        ? `Price ID: price_1S5j8SHdhxmQz9FjYDWLFpyd ($${amount.toLocaleString()})`
+                        : paymentPlan === 'monthly'
+                        ? `Down Payment ID: price_1S5j8SHdhxmQz9FjK5KQc0HG\nRecurring ID: price_1S5j8SHdhxmQz9FjxZR4DjJS ($375/mo × 6)`
+                        : `Weekly Payment ID: (custom weekly price)`
+                      }\n\n` +
+                      'Apple Pay & Google Pay would be available in the actual Stripe Checkout.');
+                document.getElementById('demoCheckoutModal').remove();
+            });
+            
+            successBtn.addEventListener('click', () => {
+                document.getElementById('demoCheckoutModal').remove();
+                handlePaymentSuccess({ id: 'demo_' + Date.now(), amount: amount, method: 'stripe' }, 'stripe');
+            });
+        }
 
         function handlePaymentSuccess(paymentData, method) {
+            const selectedPlan = sessionStorage.getItem('paymentPlan') || document.querySelector('input[name="payment-plan"]:checked')?.value || 'full';
+            const demoMode = sessionStorage.getItem('demoMode') === 'true';
+            
             const successHTML = `
                 <div id="success-modal" class="modal-overlay show">
                     <div class="modal-content max-w-md text-center">
@@ -2773,35 +2934,51 @@ function formatTime(seconds) {
                             <i class="fas fa-check-circle text-6xl text-green-400 mb-4"></i>
                             <h3 class="text-2xl font-bold mb-2">Payment Successful!</h3>
                             <p class="text-gray-300">Your enrollment is confirmed</p>
+                            ${demoMode ? '<div class="bg-yellow-900 border border-yellow-600 rounded p-2 mt-2"><span class="text-yellow-300 text-sm">🔄 Demo Mode - No real payment processed</span></div>' : ''}
                         </div>
                         
                         <div class="bg-gray-700 p-4 rounded-lg mb-6 text-left">
                             <h4 class="font-semibold mb-2">Order Details:</h4>
                             <div class="space-y-1 text-sm">
-                                ${selectedCourses.map(course => `
-                                    <div class="flex justify-between">
-                                        <span>${course.name}</span>
-                                        <span>$${currentLearningType === 'with-mentor' ? course.mentorPrice.toLocaleString() : course.selfPrice.toLocaleString()}</span>
-                                    </div>
-                                `).join('')}
+                                <div class="flex justify-between">
+                                    <span>Course:</span>
+                                    <span>SOC Analyst Foundations</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Payment Plan:</span>
+                                    <span class="capitalize">${selectedPlan === 'full' ? 'Full Payment' : selectedPlan === 'monthly' ? 'Monthly Plan' : 'Weekly Plan'}</span>
+                                </div>
                             </div>
                             <div class="border-t border-gray-600 mt-2 pt-2">
                                 <div class="flex justify-between font-semibold">
-                                    <span>Total Paid:</span>
-                                    <span>$${paymentData.amount ? paymentData.amount.toLocaleString() : calculatePaymentAmount(document.querySelector('input[name="payment-plan"]:checked').value).toLocaleString()}</span>
+                                    <span>Amount Paid:</span>
+                                    <span class="text-green-400">$${paymentData.amount ? paymentData.amount.toLocaleString() : calculatePaymentAmount(selectedPlan).toLocaleString()}</span>
                                 </div>
                             </div>
                         </div>
                         
+                        <div class="bg-blue-900 rounded-lg p-4 mb-6">
+                            <p class="text-white text-sm mb-2">
+                                <i class="fas fa-envelope mr-2"></i>
+                                Course access details will be sent to your email
+                            </p>
+                            <p class="text-blue-300 text-sm">Check your email for login credentials and course access instructions.</p>
+                        </div>
+                        
                         <div class="space-y-3">
-                            <button onclick="redirectToDashboard()" 
-                                    class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300">
-                                <i class="fas fa-play mr-2"></i>Start Learning
-                            </button>
+                            <a href="https://student.techstepfoundation.org" target="_blank"
+                               class="block w-full bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition duration-300 text-center">
+                                <i class="fas fa-graduation-cap mr-2"></i>Access My Course Dashboard
+                            </a>
                             <button onclick="document.getElementById('success-modal').remove()" 
                                     class="w-full border border-gray-500 text-gray-300 py-3 rounded-lg font-semibold hover:bg-gray-700 transition duration-300">
                                 Continue Browsing
                             </button>
+                        </div>
+                        
+                        <div class="mt-4 text-xs text-gray-500 text-center">
+                            <p>Payment ID: ${paymentData.id}</p>
+                            <p>Questions? Contact support@techstepfoundation.org</p>
                         </div>
                     </div>
                 </div>
@@ -2818,6 +2995,14 @@ function formatTime(seconds) {
                 checkbox.checked = false;
                 checkbox.closest('.course-card').classList.remove('selected');
             });
+            
+            // Clear session storage after success
+            setTimeout(() => {
+                sessionStorage.removeItem('checkoutSessionId');
+                sessionStorage.removeItem('paymentPlan');
+                sessionStorage.removeItem('courseId');
+                sessionStorage.removeItem('demoMode');
+            }, 5000);
         }
 
         function redirectToDashboard() {

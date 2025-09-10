@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Successful - TechStep Foundation</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <style>
+        .success-animation {
+            animation: bounce 2s ease-in-out infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 53%, 80%, 100% {
+                transform: translate3d(0,0,0);
+            }
+            40%, 43% {
+                transform: translate3d(0,-30px,0);
+            }
+            70% {
+                transform: translate3d(0,-15px,0);
+            }
+            90% {
+                transform: translate3d(0,-4px,0);
+            }
+        }
+        
+        .hero-bg {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+        }
+    </style>
+</head>
+<body class="hero-bg min-h-screen text-white">
+    <div class="container mx-auto px-4 py-16">
+        <div class="max-w-2xl mx-auto text-center">
+            <!-- Success Icon -->
+            <div class="mb-8">
+                <i class="fas fa-check-circle text-8xl text-green-500 success-animation"></i>
+            </div>
+            
+            <!-- Success Message -->
+            <h1 class="text-4xl font-bold mb-4">Payment Successful!</h1>
+            <p class="text-xl text-gray-300 mb-8">Thank you for joining TechStep Foundation</p>
+            
+            <!-- Course Details -->
+            <div class="bg-gray-800 rounded-lg p-6 mb-8 text-left">
+                <h2 class="text-xl font-semibold mb-4 text-center">Enrollment Confirmed</h2>
+                <div class="space-y-3">
+                    <div class="flex justify-between">
+                        <span>Course:</span>
+                        <span class="font-semibold text-blue-400">SOC Analyst Foundations</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Payment Plan:</span>
+                        <span class="font-semibold" id="payment-plan-display">Full Payment</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Session ID:</span>
+                        <span class="font-mono text-sm text-gray-400" id="session-id-display">-</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Next Steps -->
+            <div class="bg-blue-900 rounded-lg p-6 mb-8">
+                <h3 class="text-lg font-semibold mb-4">
+                    <i class="fas fa-envelope mr-2"></i>
+                    What's Next?
+                </h3>
+                <div class="text-sm text-blue-200 space-y-2">
+                    <p>📧 Course access details sent to your email</p>
+                    <p>🔑 Login credentials will arrive within 5 minutes</p>
+                    <p>🎓 Course materials available immediately after login</p>
+                </div>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="space-y-4">
+                <a href="https://student.techstepfoundation.org" 
+                   class="block w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-6 rounded-lg transition duration-300">
+                    <i class="fas fa-graduation-cap mr-2"></i>
+                    Access My Course Dashboard
+                </a>
+                
+                <a href="/" 
+                   class="block w-full border border-gray-500 text-gray-300 hover:bg-gray-700 font-bold py-3 px-6 rounded-lg transition duration-300">
+                    <i class="fas fa-home mr-2"></i>
+                    Return to Homepage
+                </a>
+            </div>
+            
+            <!-- Support Info -->
+            <div class="mt-8 text-xs text-gray-500">
+                <p>Need help? Contact us at <a href="mailto:support@techstepfoundation.org" class="text-blue-400 hover:underline">support@techstepfoundation.org</a></p>
+                <p class="mt-2">Transaction processed securely by Stripe</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Get session info from URL parameters or sessionStorage
+        function getSessionInfo() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const sessionId = urlParams.get('session_id') || sessionStorage.getItem('checkoutSessionId');
+            const paymentPlan = sessionStorage.getItem('paymentPlan') || 'full';
+            const courseId = sessionStorage.getItem('courseId') || 'soc-analyst';
+            const demoMode = sessionStorage.getItem('demoMode') === 'true';
+            
+            return { sessionId, paymentPlan, courseId, demoMode };
+        }
+        
+        // Update page with session details
+        function updatePageContent() {
+            const { sessionId, paymentPlan, demoMode } = getSessionInfo();
+            
+            // Update payment plan display
+            const paymentPlanDisplay = document.getElementById('payment-plan-display');
+            if (paymentPlanDisplay) {
+                const planText = paymentPlan === 'full' ? 'Full Payment ($2,849)' : 'Monthly Plan ($750 + $375/mo × 6)';
+                paymentPlanDisplay.textContent = planText;
+            }
+            
+            // Update session ID display
+            const sessionIdDisplay = document.getElementById('session-id-display');
+            if (sessionIdDisplay && sessionId) {
+                sessionIdDisplay.textContent = sessionId;
+                if (demoMode) {
+                    sessionIdDisplay.textContent += ' (Demo)';
+                }
+            }
+            
+            // Add demo notice if in demo mode
+            if (demoMode) {
+                const demoNotice = document.createElement('div');
+                demoNotice.className = 'bg-yellow-900 border border-yellow-600 rounded-lg p-4 mb-8';
+                demoNotice.innerHTML = `
+                    <div class="flex items-center">
+                        <i class="fas fa-info-circle text-yellow-400 mr-3"></i>
+                        <div>
+                            <h4 class="font-semibold text-yellow-300">Demo Mode</h4>
+                            <p class="text-sm text-yellow-200">This is a demonstration of the Stripe Checkout flow. No real payment was processed.</p>
+                        </div>
+                    </div>
+                `;
+                
+                const container = document.querySelector('.max-w-2xl');
+                const firstChild = container.children[3]; // Insert after success message
+                container.insertBefore(demoNotice, firstChild);
+            }
+        }
+        
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', updatePageContent);
+        
+        // Clear session storage after a delay
+        setTimeout(() => {
+            sessionStorage.removeItem('checkoutSessionId');
+            sessionStorage.removeItem('paymentPlan');
+            sessionStorage.removeItem('courseId');
+            sessionStorage.removeItem('demoMode');
+        }, 300000); // Clear after 5 minutes
+    </script>
+</body>
+</html>

@@ -5326,9 +5326,11 @@ function formatTime(seconds) {
             setTimeout(attachListeners, 1000);
             setTimeout(attachListeners, 2000);
             
-            // Add test button
+            // Add test button and immediate workaround
             setTimeout(() => {
                 addTestButton();
+                addImmediateWorkaround();
+                addDebugInspector();
             }, 1500);
         }
         
@@ -5410,6 +5412,126 @@ function formatTime(seconds) {
                 cartSection.appendChild(testButton);
                 console.log('🧪 Test button added');
             }
+        }
+        
+        function addImmediateWorkaround() {
+            console.log('🚨 Adding immediate workaround...');
+            
+            // Add click listener to the entire SOC course card
+            const socCourseCard = document.querySelector('[data-course="soc-analyst"]');
+            if (socCourseCard) {
+                console.log('✅ SOC course card found');
+                
+                // Make entire card clickable
+                socCourseCard.style.cursor = 'pointer';
+                socCourseCard.addEventListener('click', function(e) {
+                    console.log('🎯 SOC CARD CLICKED!');
+                    
+                    // Find checkbox within this card
+                    const checkbox = this.querySelector('.course-checkbox');
+                    if (checkbox) {
+                        // Toggle checkbox if not already the target
+                        if (e.target !== checkbox) {
+                            checkbox.checked = !checkbox.checked;
+                            console.log('✅ Checkbox toggled to:', checkbox.checked);
+                        }
+                        
+                        // Force immediate update
+                        if (checkbox.checked) {
+                            console.log('🔥 IMMEDIATELY updating cart...');
+                            forceCartUpdate();
+                        } else {
+                            // Reset cart
+                            resetCart();
+                        }
+                    }
+                });
+                
+                console.log('✅ Click listener added to entire SOC card');
+            }
+            
+            // Also add a prominent "SELECT SOC ANALYST" button
+            const socCard = document.querySelector('[data-course="soc-analyst"]');
+            if (socCard && !socCard.querySelector('.select-button')) {
+                const selectButton = document.createElement('button');
+                selectButton.className = 'select-button w-full mt-4 bg-green-600 text-white py-2 px-4 rounded-lg font-semibold hover:bg-green-700 transition';
+                selectButton.textContent = '✅ SELECT THIS COURSE';
+                selectButton.onclick = (e) => {
+                    e.stopPropagation();
+                    console.log('🎯 SELECT BUTTON CLICKED!');
+                    
+                    const checkbox = socCard.querySelector('.course-checkbox');
+                    if (checkbox) {
+                        checkbox.checked = true;
+                        forceCartUpdate();
+                        selectButton.textContent = '✅ SELECTED!';
+                        selectButton.className = selectButton.className.replace('bg-green-600 hover:bg-green-700', 'bg-blue-600');
+                    }
+                };
+                
+                socCard.appendChild(selectButton);
+                console.log('✅ SELECT button added to SOC card');
+            }
+        }
+        
+        function resetCart() {
+            console.log('🔄 Resetting cart...');
+            const cartItems = document.getElementById('cart-items');
+            const totalElement = document.getElementById('total-price');
+            const paymentSelector = document.getElementById('payment-plan-selector');
+            const paymentButtons = document.getElementById('payment-buttons-container');
+            const noCoursesMessage = document.getElementById('no-courses-message');
+            
+            if (cartItems) cartItems.innerHTML = '<p id="no-courses-message" class="text-gray-400">Select SOC Analyst course below to see pricing</p>';
+            if (totalElement) totalElement.textContent = '$0';
+            if (paymentSelector) paymentSelector.classList.add('hidden');
+            if (paymentButtons) paymentButtons.classList.add('hidden');
+            if (noCoursesMessage) noCoursesMessage.style.display = 'block';
+        }
+        
+        function addDebugInspector() {
+            console.log('🔍 DEBUGGING: DOM Inspector...');
+            
+            // Log all course cards
+            const courseCards = document.querySelectorAll('.course-selection');
+            console.log('📋 Total course cards found:', courseCards.length);
+            
+            courseCards.forEach((card, i) => {
+                const checkbox = card.querySelector('.course-checkbox');
+                const courseName = card.querySelector('h3')?.textContent;
+                const courseId = card.dataset.course;
+                
+                console.log(`📋 Card ${i}:`, {
+                    courseName: courseName,
+                    courseId: courseId,
+                    hasCheckbox: !!checkbox,
+                    checkboxChecked: checkbox?.checked
+                });
+            });
+            
+            // Log cart elements
+            console.log('🛒 Cart elements:');
+            console.log('  - cart-items:', !!document.getElementById('cart-items'));
+            console.log('  - total-price:', !!document.getElementById('total-price'));
+            console.log('  - payment-plan-selector:', !!document.getElementById('payment-plan-selector'));
+            console.log('  - payment-buttons-container:', !!document.getElementById('payment-buttons-container'));
+            console.log('  - no-courses-message:', !!document.getElementById('no-courses-message'));
+            
+            // Add window debug function
+            window.debugTechStep = function() {
+                console.log('🔧 Manual Debug Trigger');
+                const socCheckbox = document.querySelector('[data-course="soc-analyst"] .course-checkbox');
+                console.log('SOC checkbox found:', !!socCheckbox);
+                console.log('SOC checkbox checked:', socCheckbox?.checked);
+                
+                if (socCheckbox) {
+                    socCheckbox.checked = true;
+                    forceCartUpdate();
+                    console.log('✅ Forced SOC selection');
+                }
+            };
+            
+            console.log('🧪 Added window.debugTechStep() function - call this in console to force selection');
         }
         
         // Stripe Payment Integration

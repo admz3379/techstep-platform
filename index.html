@@ -69,6 +69,36 @@
             backdrop-filter: blur(10px);
         }
         
+        .payment-plan-option input[type="radio"]:checked + .payment-option-card {
+            border-color: #3b82f6 !important;
+            background-color: rgba(59, 130, 246, 0.2) !important;
+        }
+        
+        .payment-plan-option input[type="radio"]:checked + .payment-option-card .option-check {
+            opacity: 1 !important;
+        }
+        
+        .payment-option-card {
+            transition: all 0.3s ease;
+        }
+        
+        .course-selection {
+            background: rgba(31, 41, 55, 0.6);
+            border: 1px solid rgba(75, 85, 99, 0.3);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        
+        .course-selection:hover {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: rgba(59, 130, 246, 0.3);
+        }
+        
+        .course-checkbox:checked + .course-selection {
+            background: rgba(59, 130, 246, 0.2);
+            border-color: #3b82f6;
+        }
+        
         .course-card {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -759,19 +789,29 @@
             <!-- Courses Grid -->
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
                 <!-- SOC Analyst Course -->
-                <div class="course-card p-6 rounded-lg course-selection" data-course="soc-analyst">
+                <div class="course-card p-6 rounded-lg course-selection" data-course="soc-analyst" 
+                     data-full-price="2849" 
+                     data-down-payment="750" 
+                     data-monthly-payment="375"
+                     data-stripe-full-price="price_1S5j8SHdhxmQz9FjYDWLFpyd"
+                     data-stripe-down-price="price_1S5j8SHdhxmQz9FjK5KQc0HG"
+                     data-stripe-monthly-price="price_1S5j8SHdhxmQz9FjxZR4DjJS">
                     <div class="flex justify-between items-start mb-4">
                         <h3 class="text-xl font-semibold">SOC Analyst Foundations</h3>
-                        <input type="checkbox" class="course-checkbox w-5 h-5 text-blue-600" data-self-price="2999" data-mentor-price="4999">
+                        <input type="checkbox" class="course-checkbox w-5 h-5 text-blue-600">
                     </div>
                     <p class="text-gray-300 mb-4">Master security operations center fundamentals, threat detection, and incident response procedures.</p>
                     <div class="price-display">
-                        <div class="self-paced-price text-2xl font-bold text-blue-400">$2,999</div>
-                        <div class="mentor-price text-2xl font-bold text-blue-400 hidden">$4,999</div>
-                    </div>
-                    <div class="text-sm text-gray-400 mt-2">
-                        <div class="self-paced-desc">Self-paced learning decks, labs, virtual internship & certificate</div>
-                        <div class="mentor-desc hidden">Includes live mentor sessions</div>
+                        <div class="pricing-options space-y-2">
+                            <div class="full-pay-option">
+                                <div class="text-2xl font-bold text-green-400">$2,849 <span class="text-sm font-normal text-green-300">(Best Value - 5% off)</span></div>
+                                <div class="text-sm text-gray-400">One-time payment • Full course access</div>
+                            </div>
+                            <div class="monthly-plan-option mt-2">
+                                <div class="text-xl font-bold text-blue-400">$750 down + $375/month</div>
+                                <div class="text-sm text-gray-400">6 monthly payments • Start today</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -905,20 +945,38 @@
                     </div>
                     
                     <!-- Payment Plan Selection -->
-                    <div id="payment-plan-selector" class="mb-4 hidden">
-                        <h4 class="font-semibold mb-2">Choose Payment Plan:</h4>
-                        <div class="space-y-2">
-                            <label class="flex items-center cursor-pointer">
-                                <input type="radio" name="payment-plan" value="full" checked class="mr-2">
-                                <span class="text-sm">Full Payment (5% discount): <span id="full-payment-display">$0</span></span>
+                    <div id="payment-plan-selector" class="mb-6 hidden">
+                        <h4 class="font-semibold mb-4 text-center">Choose Your Payment Option</h4>
+                        <div class="space-y-3">
+                            <label class="payment-plan-option cursor-pointer block">
+                                <input type="radio" name="payment-plan" value="full" checked class="sr-only">
+                                <div class="payment-option-card border-2 border-green-500 bg-green-900 bg-opacity-20 rounded-lg p-4 transition-all hover:border-green-400">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <div class="text-lg font-bold text-green-400">Best Value - Pay Once</div>
+                                            <div class="text-2xl font-bold text-white">$2,849 <span class="text-sm text-green-300">(5% savings)</span></div>
+                                            <div class="text-sm text-gray-300">Full course access • No monthly payments</div>
+                                        </div>
+                                        <div class="text-green-400">
+                                            <i class="fas fa-check-circle text-2xl"></i>
+                                        </div>
+                                    </div>
+                                </div>
                             </label>
-                            <label class="flex items-center cursor-pointer">
-                                <input type="radio" name="payment-plan" value="monthly" class="mr-2">
-                                <span class="text-sm">3 Monthly Payments: <span id="monthly-payment-display">$0/month</span></span>
-                            </label>
-                            <label class="flex items-center cursor-pointer">
-                                <input type="radio" name="payment-plan" value="weekly" class="mr-2">
-                                <span class="text-sm">12 Weekly Payments: <span id="weekly-payment-display">$0/week</span></span>
+                            <label class="payment-plan-option cursor-pointer block">
+                                <input type="radio" name="payment-plan" value="monthly" class="sr-only">
+                                <div class="payment-option-card border-2 border-gray-600 bg-gray-800 bg-opacity-30 rounded-lg p-4 transition-all hover:border-blue-400">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <div class="text-lg font-bold text-blue-400">Start Today - Monthly Plan</div>
+                                            <div class="text-2xl font-bold text-white">$750 down + $375/month</div>
+                                            <div class="text-sm text-gray-300">6 payments • Start immediately</div>
+                                        </div>
+                                        <div class="text-blue-400 opacity-0 option-check">
+                                            <i class="fas fa-check-circle text-2xl"></i>
+                                        </div>
+                                    </div>
+                                </div>
                             </label>
                         </div>
                     </div>
@@ -945,9 +1003,22 @@
                     </div>
 
                     <!-- Secure Payment Notice -->
-                    <div id="security-notice" class="mt-4 text-xs text-gray-400 text-center hidden">
-                        <i class="fas fa-lock mr-1"></i>
-                        Your payment information is secure and encrypted
+                    <div id="security-notice" class="mt-4 text-xs text-gray-400 text-center">
+                        <div class="bg-gray-800 rounded-lg p-4">
+                            <div class="flex items-center justify-center mb-2">
+                                <i class="fas fa-shield-alt text-green-400 mr-2"></i>
+                                <span class="font-semibold text-gray-300">Secure Checkout</span>
+                            </div>
+                            <p class="text-gray-400 mb-2">
+                                <i class="fas fa-lock mr-1"></i>
+                                256-bit SSL encryption • PCI DSS compliant • Powered by Stripe
+                            </p>
+                            <div class="space-y-1 text-xs">
+                                <p>✓ 30-day money-back guarantee</p>
+                                <p>✓ Instant course access after payment</p>
+                                <p>✓ Email support: support@techstepfoundation.org</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -5179,7 +5250,296 @@ function formatTime(seconds) {
             
             // Show enhanced interactive chatbot after 10 seconds
             chatbotTimeout = setTimeout(createChatbot, 10000);
+            
+            // Initialize Stripe payment system
+            initializeStripePayments();
+            
+            // Setup course selection handlers
+            setupCourseSelection();
         });
+        
+        function setupCourseSelection() {
+            // Add event listeners to course checkboxes
+            const courseCheckboxes = document.querySelectorAll('.course-checkbox');
+            courseCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', updateCartTotal);
+            });
+            
+            // Add event listeners to learning type selection
+            const learningTypeInputs = document.querySelectorAll('input[name="learning-type"]');
+            learningTypeInputs.forEach(input => {
+                input.addEventListener('change', updateCartTotal);
+            });
+        }
+        
+        // Stripe Payment Integration
+        let stripe;
+        
+        async function initializeStripePayments() {
+            // Load Stripe.js
+            if (!window.Stripe) {
+                const stripeScript = document.createElement('script');
+                stripeScript.src = 'https://js.stripe.com/v3/';
+                stripeScript.onload = setupStripe;
+                document.head.appendChild(stripeScript);
+            } else {
+                setupStripe();
+            }
+        }
+        
+        function setupStripe() {
+            // Initialize Stripe with publishable key
+            stripe = Stripe('pk_live_51RwDEqHdhxmQz9FjdXEpYMGqNWHowR9VykwCZNgjNZjE67iz6FNcfNrSB3q6SRpNiiXYIXqJFJUGRgzX9IjWNPFa00ASln6Imw');
+            
+            // Setup payment plan interactivity
+            setupPaymentPlanSelection();
+            
+            // Update payment buttons
+            updatePaymentButtons();
+        }
+        
+        function setupPaymentPlanSelection() {
+            const paymentPlanRadios = document.querySelectorAll('input[name="payment-plan"]');
+            const paymentCards = document.querySelectorAll('.payment-option-card');
+            
+            paymentPlanRadios.forEach((radio, index) => {
+                radio.addEventListener('change', () => {
+                    // Update UI to show selected plan
+                    paymentCards.forEach((card, cardIndex) => {
+                        const checkIcon = card.querySelector('.option-check');
+                        if (cardIndex === index && radio.checked) {
+                            card.classList.remove('border-gray-600', 'bg-gray-800');
+                            card.classList.add('border-blue-500', 'bg-blue-900');
+                            if (checkIcon) checkIcon.classList.remove('opacity-0');
+                        } else if (cardIndex !== 0) { // Keep first option (full pay) always highlighted if not selected
+                            card.classList.add('border-gray-600', 'bg-gray-800');
+                            card.classList.remove('border-blue-500', 'bg-blue-900');
+                            if (checkIcon) checkIcon.classList.add('opacity-0');
+                        }
+                    });
+                    
+                    // Update total and payment buttons
+                    updateCartTotal();
+                });
+            });
+        }
+        
+        function updatePaymentButtons() {
+            const paymentContainer = document.getElementById('payment-buttons-container');
+            if (!paymentContainer) return;
+            
+            // Replace existing payment buttons with new Stripe-integrated ones
+            paymentContainer.innerHTML = `
+                <div class="space-y-3">
+                    <button id="stripe-checkout-button" class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-4 px-6 rounded-lg transition duration-300 flex items-center justify-center disabled:opacity-50" disabled>
+                        <i class="fas fa-credit-card mr-2"></i>
+                        <span id="stripe-button-text">Select a Course to Continue</span>
+                    </button>
+                    
+                    <div class="text-center">
+                        <div class="flex items-center justify-center space-x-4 text-sm text-gray-400">
+                            <span><i class="fab fa-cc-visa text-lg"></i></span>
+                            <span><i class="fab fa-cc-mastercard text-lg"></i></span>
+                            <span><i class="fab fa-cc-amex text-lg"></i></span>
+                            <span><i class="fab fa-apple-pay text-lg"></i></span>
+                            <span><i class="fab fa-google-pay text-lg"></i></span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-2">Secure payment powered by Stripe</p>
+                    </div>
+                </div>
+            `;
+            
+            // Setup checkout button click handler
+            document.getElementById('stripe-checkout-button').addEventListener('click', handleStripeCheckout);
+        }
+        
+        async function handleStripeCheckout() {
+            const selectedCourses = getSelectedCourses();
+            const paymentPlan = document.querySelector('input[name="payment-plan"]:checked')?.value || 'full';
+            
+            if (selectedCourses.length === 0) {
+                alert('Please select at least one course to continue.');
+                return;
+            }
+            
+            // For now, we only handle SOC Analyst course as specified
+            const socCourse = selectedCourses.find(course => course.dataset.course === 'soc-analyst');
+            if (!socCourse) {
+                alert('Stripe integration is currently available for SOC Analyst Foundations. Other courses coming soon!');
+                return;
+            }
+            
+            try {
+                const button = document.getElementById('stripe-checkout-button');
+                button.disabled = true;
+                button.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Processing...';
+                
+                let priceId;
+                let successUrl = 'https://techstepfoundation.org/onboarding/soc-analyst';
+                let cancelUrl = 'https://techstepfoundation.org/';
+                
+                // Determine which price ID to use based on payment plan
+                if (paymentPlan === 'full') {
+                    priceId = socCourse.dataset.stripeFullPrice; // price_1S5j8SHdhxmQz9FjYDWLFpyd
+                } else if (paymentPlan === 'monthly') {
+                    // For monthly plan, we need to create a checkout with both down payment and subscription
+                    await createMonthlyPlanCheckout(socCourse, successUrl, cancelUrl);
+                    return;
+                }
+                
+                // Create Stripe Checkout Session for full payment
+                const { error } = await stripe.redirectToCheckout({
+                    lineItems: [{
+                        price: priceId,
+                        quantity: 1,
+                    }],
+                    mode: 'payment',
+                    successUrl: successUrl + '?session_id={CHECKOUT_SESSION_ID}',
+                    cancelUrl: cancelUrl,
+                    customerEmail: null, // Will be collected at checkout
+                    billingAddressCollection: 'auto',
+                    paymentMethodTypes: ['card', 'apple_pay', 'google_pay'],
+                    metadata: {
+                        course: 'soc-analyst-foundations',
+                        paymentPlan: 'full',
+                        source: 'techstep-website'
+                    }
+                });
+                
+                if (error) {
+                    console.error('Stripe Checkout error:', error);
+                    alert('Payment initialization failed. Please try again.');
+                }
+                
+            } catch (error) {
+                console.error('Checkout error:', error);
+                alert('Payment processing error. Please try again.');
+            } finally {
+                const button = document.getElementById('stripe-checkout-button');
+                button.disabled = false;
+                updateStripeButtonText();
+            }
+        }
+        
+        async function createMonthlyPlanCheckout(course, successUrl, cancelUrl) {
+            try {
+                // For the monthly plan, we need to create a more complex checkout
+                // This would typically require a backend endpoint to create the session
+                // For now, we'll redirect to Stripe Checkout with the down payment
+                // and handle the subscription setup in webhooks
+                
+                const downPaymentPriceId = course.dataset.stripeDownPrice; // price_1S5j8SHdhxmQz9FjK5KQc0HG
+                const monthlyPriceId = course.dataset.stripeMonthlyPrice; // price_1S5j8SHdhxmQz9FjxZR4DjJS
+                
+                // Create checkout session with down payment and subscription
+                const { error } = await stripe.redirectToCheckout({
+                    lineItems: [
+                        {
+                            price: downPaymentPriceId, // $750 down payment
+                            quantity: 1,
+                        },
+                        {
+                            price: monthlyPriceId, // $375/month for 6 cycles
+                            quantity: 1,
+                        }
+                    ],
+                    mode: 'subscription',
+                    successUrl: successUrl + '?session_id={CHECKOUT_SESSION_ID}&plan=monthly',
+                    cancelUrl: cancelUrl,
+                    customerEmail: null,
+                    billingAddressCollection: 'auto',
+                    paymentMethodTypes: ['card', 'apple_pay', 'google_pay'],
+                    subscriptionData: {
+                        metadata: {
+                            course: 'soc-analyst-foundations',
+                            paymentPlan: 'monthly',
+                            source: 'techstep-website',
+                            downPayment: '750',
+                            monthlyAmount: '375',
+                            totalCycles: '6'
+                        }
+                    }
+                });
+                
+                if (error) {
+                    throw error;
+                }
+                
+            } catch (error) {
+                console.error('Monthly plan checkout error:', error);
+                alert('Monthly plan setup failed. Please try again or contact support@techstepfoundation.org');
+                throw error;
+            }
+        }
+        
+        function getSelectedCourses() {
+            return Array.from(document.querySelectorAll('.course-checkbox:checked')).map(checkbox => 
+                checkbox.closest('.course-selection')
+            );
+        }
+        
+        function updateStripeButtonText() {
+            const selectedCourses = getSelectedCourses();
+            const paymentPlan = document.querySelector('input[name="payment-plan"]:checked')?.value || 'full';
+            const button = document.getElementById('stripe-checkout-button');
+            const buttonText = document.getElementById('stripe-button-text');
+            
+            if (!button || !buttonText) return;
+            
+            if (selectedCourses.length === 0) {
+                button.disabled = true;
+                buttonText.textContent = 'Select a Course to Continue';
+                return;
+            }
+            
+            button.disabled = false;
+            
+            // Check if SOC Analyst is selected (only course with Stripe integration)
+            const socCourse = selectedCourses.find(course => course.dataset.course === 'soc-analyst');
+            if (!socCourse) {
+                buttonText.textContent = 'Stripe Available for SOC Analyst Only';
+                return;
+            }
+            
+            if (paymentPlan === 'full') {
+                buttonText.textContent = 'Pay $2,849 Now - Best Value';
+            } else if (paymentPlan === 'monthly') {
+                buttonText.textContent = 'Start Today - $750 Down Payment';
+            }
+        }
+        
+        // Update the existing updateCartTotal function to work with new system
+        function updateCartTotal() {
+            const selectedCourses = getSelectedCourses();
+            const paymentPlan = document.querySelector('input[name="payment-plan"]:checked')?.value || 'full';
+            const totalElement = document.getElementById('total-price');
+            const paymentSelector = document.getElementById('payment-plan-selector');
+            const paymentButtons = document.getElementById('payment-buttons-container');
+            
+            if (selectedCourses.length === 0) {
+                totalElement.textContent = '$0';
+                paymentSelector.classList.add('hidden');
+                paymentButtons.classList.add('hidden');
+                return;
+            }
+            
+            // Show payment options
+            paymentSelector.classList.remove('hidden');
+            paymentButtons.classList.remove('hidden');
+            
+            // Calculate total (for now just handle SOC Analyst)
+            const socCourse = selectedCourses.find(course => course.dataset.course === 'soc-analyst');
+            if (socCourse) {
+                if (paymentPlan === 'full') {
+                    totalElement.textContent = '$2,849';
+                } else if (paymentPlan === 'monthly') {
+                    totalElement.textContent = '$750 + $375/mo × 6';
+                }
+            }
+            
+            // Update Stripe button
+            updateStripeButtonText();
+        }
         
     </script>
 </body>

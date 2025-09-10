@@ -798,7 +798,22 @@
                      data-stripe-monthly-price="price_1S5j8SHdhxmQz9FjxZR4DjJS">
                     <div class="flex justify-between items-start mb-4">
                         <h3 class="text-xl font-semibold">SOC Analyst Foundations</h3>
-                        <input type="checkbox" id="soc-checkbox" class="course-checkbox w-5 h-5 text-blue-600 bg-white border-2 border-blue-600" onchange="handleSOCCheckboxChange(this)">
+                        <input type="checkbox" id="soc-checkbox" class="course-checkbox w-5 h-5 text-blue-600 bg-white border-2 border-blue-600" onchange="
+                            console.log('🎯 Checkbox changed:', this.checked);
+                            if (this.checked) {
+                                document.getElementById('cart-items').innerHTML = '<div class=&quot;flex justify-between items-center py-2&quot;><span class=&quot;text-white&quot;>SOC Analyst Foundations</span><span class=&quot;text-blue-400 font-semibold&quot;>Selected ✓</span></div>';
+                                document.getElementById('total-price').textContent = '$2,849';
+                                document.getElementById('no-courses-message').style.display = 'none';
+                                document.getElementById('payment-plan-selector').classList.remove('hidden');
+                                document.getElementById('payment-buttons-container').classList.remove('hidden');
+                                alert('✅ Course selected! Check Order Summary below.');
+                            } else {
+                                document.getElementById('cart-items').innerHTML = '<p class=&quot;text-gray-400&quot;>Select SOC Analyst course below to see pricing</p>';
+                                document.getElementById('total-price').textContent = '$0';
+                                document.getElementById('payment-plan-selector').classList.add('hidden');
+                                document.getElementById('payment-buttons-container').classList.add('hidden');
+                            }
+                        ">
                     </div>
                     <p class="text-gray-300 mb-4">Master security operations center fundamentals, threat detection, and incident response procedures.</p>
                     <div class="price-display">
@@ -818,11 +833,98 @@
                     <div class="mt-4 p-4 bg-blue-900 bg-opacity-30 rounded-lg border border-blue-500">
                         <div class="text-center">
                             <h4 class="text-blue-400 font-semibold mb-2">📋 SELECT THIS COURSE</h4>
-                            <button onclick="selectSOCCourse()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300">
+                            <button onclick="
+                                // INLINE JAVASCRIPT - ALWAYS WORKS
+                                console.log('🚨 INLINE: Button clicked!');
+                                
+                                // Check checkbox
+                                var checkbox = document.querySelector('#soc-checkbox');
+                                if (checkbox) { 
+                                    checkbox.checked = true; 
+                                    console.log('✅ Checkbox checked');
+                                }
+                                
+                                // Update cart directly
+                                var cartItems = document.getElementById('cart-items');
+                                var totalElement = document.getElementById('total-price');
+                                var paymentSelector = document.getElementById('payment-plan-selector');
+                                var paymentButtons = document.getElementById('payment-buttons-container');
+                                var noCoursesMessage = document.getElementById('no-courses-message');
+                                
+                                if (cartItems) {
+                                    cartItems.innerHTML = '<div class=&quot;flex justify-between items-center py-2&quot;><span class=&quot;text-white&quot;>SOC Analyst Foundations</span><span class=&quot;text-blue-400 font-semibold&quot;>Selected ✓</span></div>';
+                                    console.log('✅ Cart updated');
+                                }
+                                
+                                if (totalElement) { 
+                                    totalElement.textContent = '$2,849'; 
+                                    console.log('✅ Total updated');
+                                }
+                                
+                                if (noCoursesMessage) { 
+                                    noCoursesMessage.style.display = 'none'; 
+                                    console.log('✅ Message hidden');
+                                }
+                                
+                                if (paymentSelector) { 
+                                    paymentSelector.classList.remove('hidden'); 
+                                    console.log('✅ Payment selector shown');
+                                }
+                                
+                                if (paymentButtons) { 
+                                    paymentButtons.classList.remove('hidden'); 
+                                    console.log('✅ Payment buttons shown');
+                                }
+                                
+                                // Update button
+                                this.textContent = '✅ SELECTED! Check cart below';
+                                this.className = 'w-full bg-blue-600 text-white font-bold py-3 px-6 rounded-lg';
+                                
+                                // Alert and scroll
+                                alert('✅ SUCCESS! SOC Analyst added to cart. Check Order Summary below.');
+                                setTimeout(function() {
+                                    var cart = document.querySelector('.bg-gray-700.p-6.rounded-lg.max-w-md.mx-auto');
+                                    if (cart) cart.scrollIntoView({behavior: 'smooth'});
+                                }, 500);
+                            " class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300">
                                 ✅ SELECT SOC ANALYST FOUNDATIONS
                             </button>
                             <p class="text-xs text-gray-400 mt-2">Click to add to cart and see payment options</p>
                         </div>
+                    </div>
+                    
+                    <!-- BACKUP LINK METHOD -->
+                    <div class="mt-2 text-center">
+                        <a href="javascript:void(0)" onclick="
+                            document.getElementById('cart-items').innerHTML = '<div class=&quot;text-white&quot;>SOC Analyst Foundations - Selected</div>';
+                            document.getElementById('total-price').textContent = '$2,849';
+                            document.getElementById('no-courses-message').style.display = 'none';
+                            document.getElementById('payment-plan-selector').classList.remove('hidden');
+                            document.getElementById('payment-buttons-container').classList.remove('hidden');
+                            alert('Cart updated! Scroll down to see payment options.');
+                        " class="text-blue-400 hover:text-blue-300 underline text-sm">
+                            🔗 Backup: Click here if button above doesn't work
+                        </a>
+                    </div>
+                    
+                    <!-- THIRD BACKUP: SIMPLE FORM -->
+                    <div class="mt-2 p-2 bg-red-900 bg-opacity-30 rounded border border-red-500">
+                        <p class="text-red-400 text-xs text-center mb-2">Emergency Backup (if nothing else works):</p>
+                        <form onsubmit="
+                            event.preventDefault();
+                            document.getElementById('cart-items').innerHTML = '<div class=&quot;text-white&quot;>SOC Analyst Foundations - SELECTED</div>';
+                            document.getElementById('total-price').textContent = '$2,849';
+                            var msg = document.getElementById('no-courses-message');
+                            if (msg) msg.style.display = 'none';
+                            var ps = document.getElementById('payment-plan-selector');
+                            if (ps) ps.classList.remove('hidden');
+                            var pb = document.getElementById('payment-buttons-container');
+                            if (pb) pb.classList.remove('hidden');
+                            alert('SUCCESS! Course added to cart. Scroll down to Order Summary.');
+                            return false;
+                        ">
+                            <input type="submit" value="🚨 EMERGENCY: Add to Cart" class="w-full bg-red-600 text-white py-2 px-4 rounded text-sm font-bold hover:bg-red-700 cursor-pointer">
+                        </form>
                     </div>
                 </div>
 

@@ -4,6 +4,7 @@
   "description": "TechStep - Interactive Cybersecurity Training Platform with live mentors, courses, and podcast",
   "main": "index.js",
   "scripts": {
+    "build": "echo \"Static site - no build needed\" && exit 0",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

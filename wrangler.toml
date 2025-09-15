@@ -1,4 +1,12 @@
 # Cloudflare Pages configuration for TechStep Platform
 name = "techstep-platform"
 compatibility_date = "2024-09-15"
+
+# Static site configuration - no build process needed
 pages_build_output_dir = "."
+
+# Explicitly disable build process
+[build]
+command = ""
+cwd = ""
+watch_dir = ""

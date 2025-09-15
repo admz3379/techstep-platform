@@ -99,6 +99,50 @@
             border-color: #3b82f6;
         }
         
+        /* Mobile-friendly touch targets and interactions */
+        @media (max-width: 768px) {
+            .add-to-cart-btn {
+                min-height: 48px;
+                font-size: 16px;
+                touch-action: manipulation;
+                -webkit-tap-highlight-color: rgba(0, 0, 0, 0.2);
+            }
+            
+            .payment-plan-option {
+                min-height: 60px;
+                touch-action: manipulation;
+            }
+            
+            .payment-option-card {
+                padding: 16px;
+                border-width: 2px;
+            }
+            
+            /* Ensure modal content is scrollable on mobile */
+            .modal-content {
+                max-height: 90vh;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            /* Larger touch targets for checkboxes on mobile */
+            input[type="checkbox"] {
+                min-width: 20px;
+                min-height: 20px;
+            }
+            
+            /* Better spacing for mobile navigation */
+            #mobileCoursesDropdown {
+                padding: 8px 0;
+            }
+            
+            #mobileCoursesDropdown a {
+                min-height: 44px;
+                display: flex;
+                align-items: center;
+            }
+        }
+        
         .course-card {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -461,25 +505,25 @@
                             Courses
                             <i class="fas fa-chevron-down ml-1 text-xs"></i>
                         </button>
-                        <div class="absolute top-full left-0 mt-2 w-64 bg-gray-800 rounded-lg shadow-xl border border-gray-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
-                            <div class="p-2">
+                        <div class="absolute top-full left-0 mt-2 w-80 bg-gray-800 rounded-lg shadow-xl border border-gray-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+                            <div class="p-2 max-h-96 overflow-y-auto">
                                 <a href="#courses" class="block px-4 py-3 text-gray-300 hover:text-blue-400 hover:bg-gray-700 rounded-lg transition duration-300">
                                     <i class="fas fa-shield-alt mr-3 text-blue-400"></i>SOC Analyst Foundations
                                 </a>
                                 <a href="#courses" class="block px-4 py-3 text-gray-300 hover:text-blue-400 hover:bg-gray-700 rounded-lg transition duration-300">
-                                    <i class="fas fa-search mr-3 text-green-400"></i>Threat Detection & Response
+                                    <i class="fas fa-search mr-3 text-green-400"></i>Cyber Threat Analyst & Incident Response
                                 </a>
                                 <a href="#courses" class="block px-4 py-3 text-gray-300 hover:text-blue-400 hover:bg-gray-700 rounded-lg transition duration-300">
-                                    <i class="fas fa-database mr-3 text-purple-400"></i>SIEM Engineering - Splunk
+                                    <i class="fas fa-database mr-3 text-purple-400"></i>SIEM Engineering - Splunk Specialization
                                 </a>
                                 <a href="#courses" class="block px-4 py-3 text-gray-300 hover:text-blue-400 hover:bg-gray-700 rounded-lg transition duration-300">
-                                    <i class="fas fa-cloud mr-3 text-indigo-400"></i>Cloud Security Analyst
+                                    <i class="fas fa-cloud mr-3 text-indigo-400"></i>Cloud Security Analyst (AWS, Azure, GCP)
                                 </a>
                                 <a href="#courses" class="block px-4 py-3 text-gray-300 hover:text-blue-400 hover:bg-gray-700 rounded-lg transition duration-300">
-                                    <i class="fas fa-bug mr-3 text-red-400"></i>Malware Analysis & Defense
+                                    <i class="fas fa-bug mr-3 text-red-400"></i>Malware Analyst & Network Defense
                                 </a>
                                 <a href="#courses" class="block px-4 py-3 text-gray-300 hover:text-blue-400 hover:bg-gray-700 rounded-lg transition duration-300">
-                                    <i class="fas fa-clipboard-check mr-3 text-yellow-400"></i>GRC & Compliance
+                                    <i class="fas fa-balance-scale mr-3 text-yellow-400"></i>Risk & Compliance Analyst - GRC Fundamentals
                                 </a>
                                 <div class="border-t border-gray-700 mt-2 pt-2">
                                     <a href="demo/" class="block px-4 py-3 text-blue-400 hover:text-white hover:bg-blue-600 rounded-lg transition duration-300 font-semibold">
@@ -515,24 +559,24 @@
                         <span>Courses</span>
                         <i class="fas fa-chevron-down text-xs" id="mobileCourseChevron"></i>
                     </button>
-                    <div id="mobileCoursesDropdown" class="hidden mt-1 ml-4 space-y-1">
+                    <div id="mobileCoursesDropdown" class="hidden mt-1 ml-4 space-y-1 max-h-80 overflow-y-auto">
                         <a href="#courses" class="block px-3 py-2 text-sm text-gray-400 hover:text-blue-400 hover:bg-gray-600 rounded-md transition duration-300">
                             <i class="fas fa-shield-alt mr-2 text-blue-400"></i>SOC Analyst Foundations
                         </a>
                         <a href="#courses" class="block px-3 py-2 text-sm text-gray-400 hover:text-blue-400 hover:bg-gray-600 rounded-md transition duration-300">
-                            <i class="fas fa-search mr-2 text-green-400"></i>Threat Detection & Response
+                            <i class="fas fa-search mr-2 text-green-400"></i>Cyber Threat Analyst & Incident Response
                         </a>
                         <a href="#courses" class="block px-3 py-2 text-sm text-gray-400 hover:text-blue-400 hover:bg-gray-600 rounded-md transition duration-300">
-                            <i class="fas fa-database mr-2 text-purple-400"></i>SIEM Engineering - Splunk
+                            <i class="fas fa-database mr-2 text-purple-400"></i>SIEM Engineering - Splunk Specialization
                         </a>
                         <a href="#courses" class="block px-3 py-2 text-sm text-gray-400 hover:text-blue-400 hover:bg-gray-600 rounded-md transition duration-300">
-                            <i class="fas fa-cloud mr-2 text-indigo-400"></i>Cloud Security Analyst
+                            <i class="fas fa-cloud mr-2 text-indigo-400"></i>Cloud Security Analyst (AWS, Azure, GCP)
                         </a>
                         <a href="#courses" class="block px-3 py-2 text-sm text-gray-400 hover:text-blue-400 hover:bg-gray-600 rounded-md transition duration-300">
-                            <i class="fas fa-bug mr-2 text-red-400"></i>Malware Analysis & Defense
+                            <i class="fas fa-bug mr-2 text-red-400"></i>Malware Analyst & Network Defense
                         </a>
                         <a href="#courses" class="block px-3 py-2 text-sm text-gray-400 hover:text-blue-400 hover:bg-gray-600 rounded-md transition duration-300">
-                            <i class="fas fa-clipboard-check mr-2 text-yellow-400"></i>GRC & Compliance
+                            <i class="fas fa-balance-scale mr-2 text-yellow-400"></i>Risk & Compliance Analyst - GRC Fundamentals
                         </a>
                     </div>
                 </div>
@@ -798,22 +842,7 @@
                      data-stripe-monthly-price="price_1S5j8SHdhxmQz9FjxZR4DjJS">
                     <div class="flex justify-between items-start mb-4">
                         <h3 class="text-xl font-semibold">SOC Analyst Foundations</h3>
-                        <input type="checkbox" id="soc-checkbox" class="course-checkbox w-5 h-5 text-blue-600 bg-white border-2 border-blue-600" onchange="
-                            console.log('🎯 Checkbox changed:', this.checked);
-                            if (this.checked) {
-                                document.getElementById('cart-items').innerHTML = '<div class=&quot;flex justify-between items-center py-2&quot;><span class=&quot;text-white&quot;>SOC Analyst Foundations</span><span class=&quot;text-blue-400 font-semibold&quot;>Selected ✓</span></div>';
-                                document.getElementById('total-price').textContent = '$2,849';
-                                document.getElementById('no-courses-message').style.display = 'none';
-                                document.getElementById('payment-plan-selector').classList.remove('hidden');
-                                document.getElementById('payment-buttons-container').classList.remove('hidden');
-                                alert('✅ Course selected! Check Order Summary below.');
-                            } else {
-                                document.getElementById('cart-items').innerHTML = '<p class=&quot;text-gray-400&quot;>Select SOC Analyst course below to see pricing</p>';
-                                document.getElementById('total-price').textContent = '$0';
-                                document.getElementById('payment-plan-selector').classList.add('hidden');
-                                document.getElementById('payment-buttons-container').classList.add('hidden');
-                            }
-                        ">
+                        <span class="bg-blue-600 text-white text-sm px-3 py-1 rounded-full">Foundation Level</span>
                     </div>
                     <p class="text-gray-300 mb-4">Master security operations center fundamentals, threat detection, and incident response procedures.</p>
                     <div class="price-display">
@@ -829,110 +858,25 @@
                         </div>
                     </div>
                     
-                    <!-- IMMEDIATE HTML SOLUTION - Always Visible -->
-                    <div class="mt-4 p-4 bg-blue-900 bg-opacity-30 rounded-lg border border-blue-500">
-                        <div class="text-center">
-                            <h4 class="text-blue-400 font-semibold mb-2">📋 SELECT THIS COURSE</h4>
-                            <button onclick="
-                                // INLINE JAVASCRIPT - ALWAYS WORKS
-                                console.log('🚨 INLINE: Button clicked!');
-                                
-                                // Check checkbox
-                                var checkbox = document.querySelector('#soc-checkbox');
-                                if (checkbox) { 
-                                    checkbox.checked = true; 
-                                    console.log('✅ Checkbox checked');
-                                }
-                                
-                                // Update cart directly
-                                var cartItems = document.getElementById('cart-items');
-                                var totalElement = document.getElementById('total-price');
-                                var paymentSelector = document.getElementById('payment-plan-selector');
-                                var paymentButtons = document.getElementById('payment-buttons-container');
-                                var noCoursesMessage = document.getElementById('no-courses-message');
-                                
-                                if (cartItems) {
-                                    cartItems.innerHTML = '<div class=&quot;flex justify-between items-center py-2&quot;><span class=&quot;text-white&quot;>SOC Analyst Foundations</span><span class=&quot;text-blue-400 font-semibold&quot;>Selected ✓</span></div>';
-                                    console.log('✅ Cart updated');
-                                }
-                                
-                                if (totalElement) { 
-                                    totalElement.textContent = '$2,849'; 
-                                    console.log('✅ Total updated');
-                                }
-                                
-                                if (noCoursesMessage) { 
-                                    noCoursesMessage.style.display = 'none'; 
-                                    console.log('✅ Message hidden');
-                                }
-                                
-                                if (paymentSelector) { 
-                                    paymentSelector.classList.remove('hidden'); 
-                                    console.log('✅ Payment selector shown');
-                                }
-                                
-                                if (paymentButtons) { 
-                                    paymentButtons.classList.remove('hidden'); 
-                                    console.log('✅ Payment buttons shown');
-                                }
-                                
-                                // Update button
-                                this.textContent = '✅ SELECTED! Check cart below';
-                                this.className = 'w-full bg-blue-600 text-white font-bold py-3 px-6 rounded-lg';
-                                
-                                // Alert and scroll
-                                alert('✅ SUCCESS! SOC Analyst added to cart. Check Order Summary below.');
-                                setTimeout(function() {
-                                    var cart = document.querySelector('.bg-gray-700.p-6.rounded-lg.max-w-md.mx-auto');
-                                    if (cart) cart.scrollIntoView({behavior: 'smooth'});
-                                }, 500);
-                            " class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300">
-                                ✅ SELECT SOC ANALYST FOUNDATIONS
-                            </button>
-                            <p class="text-xs text-gray-400 mt-2">Click to add to cart and see payment options</p>
-                        </div>
+                    <!-- Add to Cart Button -->
+                    <div class="mt-4">
+                        <button class="add-to-cart-btn w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300" 
+                                data-course-id="soc-analyst" 
+                                data-course-name="SOC Analyst Foundations" 
+                                data-price="2849"
+                                onclick="addToCart('soc-analyst', 'SOC Analyst Foundations', 2849)">
+                            <i class="fas fa-shopping-cart mr-2"></i>Add to Cart
+                        </button>
                     </div>
                     
-                    <!-- BACKUP LINK METHOD -->
-                    <div class="mt-2 text-center">
-                        <a href="javascript:void(0)" onclick="
-                            document.getElementById('cart-items').innerHTML = '<div class=&quot;text-white&quot;>SOC Analyst Foundations - Selected</div>';
-                            document.getElementById('total-price').textContent = '$2,849';
-                            document.getElementById('no-courses-message').style.display = 'none';
-                            document.getElementById('payment-plan-selector').classList.remove('hidden');
-                            document.getElementById('payment-buttons-container').classList.remove('hidden');
-                            alert('Cart updated! Scroll down to see payment options.');
-                        " class="text-blue-400 hover:text-blue-300 underline text-sm">
-                            🔗 Backup: Click here if button above doesn't work
-                        </a>
-                    </div>
-                    
-                    <!-- THIRD BACKUP: SIMPLE FORM -->
-                    <div class="mt-2 p-2 bg-red-900 bg-opacity-30 rounded border border-red-500">
-                        <p class="text-red-400 text-xs text-center mb-2">Emergency Backup (if nothing else works):</p>
-                        <form onsubmit="
-                            event.preventDefault();
-                            document.getElementById('cart-items').innerHTML = '<div class=&quot;text-white&quot;>SOC Analyst Foundations - SELECTED</div>';
-                            document.getElementById('total-price').textContent = '$2,849';
-                            var msg = document.getElementById('no-courses-message');
-                            if (msg) msg.style.display = 'none';
-                            var ps = document.getElementById('payment-plan-selector');
-                            if (ps) ps.classList.remove('hidden');
-                            var pb = document.getElementById('payment-buttons-container');
-                            if (pb) pb.classList.remove('hidden');
-                            alert('SUCCESS! Course added to cart. Scroll down to Order Summary.');
-                            return false;
-                        ">
-                            <input type="submit" value="🚨 EMERGENCY: Add to Cart" class="w-full bg-red-600 text-white py-2 px-4 rounded text-sm font-bold hover:bg-red-700 cursor-pointer">
-                        </form>
-                    </div>
+
                 </div>
 
                 <!-- Threat Detection Course -->
                 <div class="course-card p-6 rounded-lg course-selection" data-course="threat-detection">
                     <div class="flex justify-between items-start mb-4">
                         <h3 class="text-xl font-semibold">Cyber Threat Analyst & Incident Response</h3>
-                        <input type="checkbox" class="course-checkbox w-5 h-5 text-blue-600" data-self-price="2999" data-mentor-price="4999">
+                        <span class="bg-orange-600 text-white text-sm px-3 py-1 rounded-full">Intermediate</span>
                     </div>
                     <p class="text-gray-300 mb-4">Advanced threat hunting, malware analysis, and comprehensive incident response strategies.</p>
                     <div class="price-display">
@@ -943,13 +887,23 @@
                         <div class="self-paced-desc">Self-paced learning decks, labs, virtual internship & certificate</div>
                         <div class="mentor-desc hidden">Includes live mentor sessions</div>
                     </div>
+                    <!-- Add to Cart Button -->
+                    <div class="mt-4">
+                        <button class="add-to-cart-btn w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300" 
+                                data-course-id="threat-detection" 
+                                data-course-name="Cyber Threat Analyst & Incident Response" 
+                                data-price="2999"
+                                onclick="addToCart('threat-detection', 'Cyber Threat Analyst & Incident Response', 2999)">
+                            <i class="fas fa-shopping-cart mr-2"></i>Add to Cart
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Splunk Course -->
                 <div class="course-card p-6 rounded-lg course-selection" data-course="splunk-siem">
                     <div class="flex justify-between items-start mb-4">
                         <h3 class="text-xl font-semibold">SIEM Engineering - Splunk Specialization</h3>
-                        <input type="checkbox" class="course-checkbox w-5 h-5 text-blue-600" data-self-price="2999" data-mentor-price="4999">
+                        <span class="bg-purple-600 text-white text-sm px-3 py-1 rounded-full">Advanced</span>
                     </div>
                     <p class="text-gray-300 mb-4">Master Splunk administration, SIEM deployment, and security monitoring infrastructure.</p>
                     <div class="price-display">
@@ -960,13 +914,23 @@
                         <div class="self-paced-desc">Self-paced learning decks, labs, virtual internship & certificate</div>
                         <div class="mentor-desc hidden">Includes live mentor sessions</div>
                     </div>
+                    <!-- Add to Cart Button -->
+                    <div class="mt-4">
+                        <button class="add-to-cart-btn w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300" 
+                                data-course-id="splunk-siem" 
+                                data-course-name="SIEM Engineering - Splunk Specialization" 
+                                data-price="2999"
+                                onclick="addToCart('splunk-siem', 'SIEM Engineering - Splunk Specialization', 2999)">
+                            <i class="fas fa-shopping-cart mr-2"></i>Add to Cart
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Cloud Security Course -->
                 <div class="course-card p-6 rounded-lg course-selection" data-course="cloud-security">
                     <div class="flex justify-between items-start mb-4">
                         <h3 class="text-xl font-semibold">Cloud Security Analyst (AWS, Azure, GCP)</h3>
-                        <input type="checkbox" class="course-checkbox w-5 h-5 text-blue-600" data-self-price="2999" data-mentor-price="4999">
+                        <span class="bg-green-600 text-white text-sm px-3 py-1 rounded-full">Intermediate</span>
                     </div>
                     <p class="text-gray-300 mb-4">AWS, Azure, and GCP security architecture, compliance, and best practices.</p>
                     <div class="price-display">
@@ -977,13 +941,23 @@
                         <div class="self-paced-desc">Self-paced learning decks, labs, virtual internship & certificate</div>
                         <div class="mentor-desc hidden">Includes live mentor sessions</div>
                     </div>
+                    <!-- Add to Cart Button -->
+                    <div class="mt-4">
+                        <button class="add-to-cart-btn w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300" 
+                                data-course-id="cloud-security" 
+                                data-course-name="Cloud Security Analyst (AWS, Azure, GCP)" 
+                                data-price="2999"
+                                onclick="addToCart('cloud-security', 'Cloud Security Analyst (AWS, Azure, GCP)', 2999)">
+                            <i class="fas fa-shopping-cart mr-2"></i>Add to Cart
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Malware Analysis Course -->
                 <div class="course-card p-6 rounded-lg course-selection" data-course="malware-analysis">
                     <div class="flex justify-between items-start mb-4">
                         <h3 class="text-xl font-semibold">Malware Analyst & Network Defense</h3>
-                        <input type="checkbox" class="course-checkbox w-5 h-5 text-blue-600" data-self-price="2999" data-mentor-price="4999">
+                        <span class="bg-red-600 text-white text-sm px-3 py-1 rounded-full">Advanced</span>
                     </div>
                     <p class="text-gray-300 mb-4">Reverse engineering, dynamic analysis, and advanced network security techniques.</p>
                     <div class="price-display">
@@ -994,13 +968,23 @@
                         <div class="self-paced-desc">Self-paced learning decks, labs, virtual internship & certificate</div>
                         <div class="mentor-desc hidden">Includes live mentor sessions</div>
                     </div>
+                    <!-- Add to Cart Button -->
+                    <div class="mt-4">
+                        <button class="add-to-cart-btn w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300" 
+                                data-course-id="malware-analysis" 
+                                data-course-name="Malware Analyst & Network Defense" 
+                                data-price="2999"
+                                onclick="addToCart('malware-analysis', 'Malware Analyst & Network Defense', 2999)">
+                            <i class="fas fa-shopping-cart mr-2"></i>Add to Cart
+                        </button>
+                    </div>
                 </div>
 
                 <!-- GRC Course -->
                 <div class="course-card p-6 rounded-lg course-selection" data-course="grc-essentials">
                     <div class="flex justify-between items-start mb-4">
                         <h3 class="text-xl font-semibold">Risk & Compliance Analyst - GRC Fundamentals</h3>
-                        <input type="checkbox" class="course-checkbox w-5 h-5 text-blue-600" data-self-price="2999" data-mentor-price="4999">
+                        <span class="bg-indigo-600 text-white text-sm px-3 py-1 rounded-full">Intermediate</span>
                     </div>
                     <p class="text-gray-300 mb-4">Governance frameworks, risk management, and regulatory compliance strategies.</p>
                     <div class="price-display">
@@ -1010,6 +994,16 @@
                     <div class="text-sm text-gray-400 mt-2">
                         <div class="self-paced-desc">Self-paced learning decks, labs, virtual internship & certificate</div>
                         <div class="mentor-desc hidden">Includes live mentor sessions</div>
+                    </div>
+                    <!-- Add to Cart Button -->
+                    <div class="mt-4">
+                        <button class="add-to-cart-btn w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300" 
+                                data-course-id="grc-essentials" 
+                                data-course-name="Risk & Compliance Analyst - GRC Fundamentals" 
+                                data-price="2999"
+                                onclick="addToCart('grc-essentials', 'Risk & Compliance Analyst - GRC Fundamentals', 2999)">
+                            <i class="fas fa-shopping-cart mr-2"></i>Add to Cart
+                        </button>
                     </div>
                 </div>
             </div>
@@ -1093,16 +1087,42 @@
                             </label>
                         </div>
                         
-                        <!-- Payment Agreement Checkbox -->
-                        <div class="mt-4 p-4 bg-gray-800 rounded-lg">
-                            <label class="flex items-start cursor-pointer">
-                                <input type="checkbox" id="payment-agreement" class="mt-1 mr-3 w-4 h-4 text-blue-600 border-gray-600 rounded focus:ring-blue-500" required>
-                                <span class="text-sm text-gray-300">
-                                    I agree to the <a href="#" class="text-blue-400 hover:underline">Terms of Service</a> and 
-                                    <a href="#" class="text-blue-400 hover:underline">Payment Terms</a>. I understand that by selecting a monthly plan, 
-                                    I authorize TechStep Foundation to charge my payment method $750 today and $375 monthly for 6 months. 
-                                    I can cancel anytime with 7-day notice. *
-                                </span>
+                        <!-- Enhanced Payment Agreement Section -->
+                        <div class="mt-6 p-5 bg-gradient-to-r from-gray-800 to-gray-700 border border-gray-600 rounded-lg">
+                            <div class="mb-3">
+                                <h4 class="text-white font-semibold mb-2 flex items-center">
+                                    <i class="fas fa-shield-alt text-blue-400 mr-2"></i>
+                                    Terms & Payment Authorization
+                                </h4>
+                            </div>
+                            
+                            <label class="flex items-start cursor-pointer group">
+                                <input type="checkbox" id="payment-agreement" class="mt-1.5 mr-4 w-5 h-5 text-blue-600 border-2 border-gray-500 rounded focus:ring-blue-500 focus:ring-2" required>
+                                <div class="text-sm text-gray-300 leading-relaxed">
+                                    <p class="mb-2">
+                                        I acknowledge that I have read and agree to the 
+                                        <button onclick="showTermsOfService(); return false;" 
+                                                class="text-blue-400 hover:text-blue-300 underline font-medium transition-colors">
+                                            Terms of Service
+                                        </button> and 
+                                        <button onclick="showPaymentTerms(); return false;" 
+                                                class="text-blue-400 hover:text-blue-300 underline font-medium transition-colors">
+                                            Payment Terms
+                                        </button>.
+                                    </p>
+                                    
+                                    <div id="payment-authorization-text" class="mt-3 p-3 bg-blue-900/20 border border-blue-500/30 rounded-lg">
+                                        <p class="text-blue-200 text-xs font-medium mb-1">Payment Authorization:</p>
+                                        <p class="text-blue-100 text-xs" id="dynamic-payment-text">
+                                            By proceeding, I authorize TechStep Foundation to process my selected payment option.
+                                        </p>
+                                    </div>
+                                    
+                                    <div class="mt-3 flex items-center text-xs text-gray-400">
+                                        <i class="fas fa-lock mr-1"></i>
+                                        <span>Secure payment processing • 7-day money-back guarantee • Cancel anytime</span>
+                                    </div>
+                                </div>
                             </label>
                         </div>
                     </div>
@@ -2236,13 +2256,11 @@ function formatTime(seconds) {
     </footer>
 
     <script>
-        // Initialize Stripe
-        const stripe = Stripe('pk_test_51RwDF3HTfrREHzBzMxKImvpXUSlamCz990lkgAxIzZeLrdsDouon9Uq8RyOKtvwR0OC8zjWHdUgpb9freiqlrzo300uyTp6tMx'); // Real Stripe publishable key
-        
         // Global variables
         let selectedCourses = [];
         let currentLearningType = 'self-paced';
         let paymentPlanAgreed = false;
+        let stripe = null; // Will be initialized after Stripe SDK loads
 
         // Initialize Mobile Menu and Trial Navigation Immediately
         function initializeMobileNavigation() {
@@ -2558,16 +2576,398 @@ function formatTime(seconds) {
             radio.addEventListener('change', function() {
                 const selectedPlan = this.value;
                 
-                if (selectedPlan !== 'full') {
-                    showPaymentPlanAgreement(selectedPlan);
-                } else {
+                // Update payment authorization text dynamically
+                updatePaymentAuthorizationText(selectedPlan);
+                
+                // Show exclusive selection message
+                if (selectedPlan === 'full') {
+                    showPaymentSelectionMessage('Pay Once selected - You\'ll pay the full amount upfront with 5% savings.');
                     hidePaymentPlanRequirements();
                     enablePaymentButtons();
+                } else if (selectedPlan === 'monthly') {
+                    showPaymentSelectionMessage('Monthly Plan selected - You\'ll pay $750 today and $375/month for 6 months.');
+                    showPaymentPlanAgreement(selectedPlan);
                 }
                 
                 updatePaymentDisplays();
             });
         });
+        }
+
+        // Terms of Service and Payment Terms functions
+        function showTermsOfService() {
+            const termsHTML = `
+                <div id="termsModal" class="modal-overlay">
+                    <div class="modal-content max-w-4xl max-h-90vh overflow-y-auto">
+                        <div class="flex justify-between items-center mb-6 sticky top-0 bg-gray-700 p-4 -m-4 mb-4 border-b border-gray-600">
+                            <h2 class="text-2xl font-bold text-white">Terms of Service</h2>
+                            <button onclick="document.getElementById('termsModal').remove()" class="text-gray-400 hover:text-white text-2xl">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="space-y-6 text-gray-300">
+                            <div>
+                                <h3 class="text-lg font-bold text-white mb-3">1. ACCEPTANCE OF TERMS</h3>
+                                <p>By accessing and using the TechStep cybersecurity training platform, you agree to be bound by these Terms of Service and all applicable laws and regulations. If you do not agree with any part of these terms, you are prohibited from using this service.</p>
+                            </div>
+                            
+                            <div>
+                                <h3 class="text-lg font-bold text-white mb-3">2. COURSE ACCESS AND CONTENT</h3>
+                                <ul class="list-disc list-inside space-y-2 ml-4">
+                                    <li>Course access is granted upon full payment or successful enrollment in a payment plan</li>
+                                    <li>Content is for personal, non-commercial educational use only</li>
+                                    <li>Sharing course materials or credentials is strictly prohibited</li>
+                                    <li>Course access is valid for 12 months from enrollment date</li>
+                                </ul>
+                            </div>
+                            
+                            <div>
+                                <h3 class="text-lg font-bold text-white mb-3">3. USER RESPONSIBILITIES</h3>
+                                <ul class="list-disc list-inside space-y-2 ml-4">
+                                    <li>Maintain the confidentiality of your account credentials</li>
+                                    <li>Use the platform in accordance with all applicable laws</li>
+                                    <li>Refrain from attempting to access unauthorized areas</li>
+                                    <li>Report security vulnerabilities responsibly</li>
+                                </ul>
+                            </div>
+                            
+                            <div>
+                                <h3 class="text-lg font-bold text-white mb-3">4. INTELLECTUAL PROPERTY</h3>
+                                <p>All course content, including videos, materials, assessments, and documentation, is proprietary to TechStep and protected by copyright law. Users may not reproduce, distribute, or create derivative works from our content.</p>
+                            </div>
+                            
+                            <div>
+                                <h3 class="text-lg font-bold text-white mb-3">5. REFUND POLICY</h3>
+                                <ul class="list-disc list-inside space-y-2 ml-4">
+                                    <li>7-day money-back guarantee for full payment options</li>
+                                    <li>Refunds processed within 5-7 business days</li>
+                                    <li>Payment plan enrollments: refund available before second payment</li>
+                                    <li>Course completion over 25% disqualifies for refund</li>
+                                </ul>
+                            </div>
+                            
+                            <div>
+                                <h3 class="text-lg font-bold text-white mb-3">6. LIMITATION OF LIABILITY</h3>
+                                <p>TechStep shall not be liable for any indirect, incidental, special, or consequential damages arising from your use of our services. Our total liability is limited to the amount paid for the service.</p>
+                            </div>
+                            
+                            <div class="bg-gray-800 border border-gray-600 rounded-lg p-4">
+                                <h4 class="font-semibold text-white mb-2">Contact Information</h4>
+                                <p class="text-sm">
+                                    For questions about these Terms of Service:<br>
+                                    <strong>TechStep Foundation</strong><br>
+                                    Email: support@techstepfoundation.org<br>
+                                    Phone: 1-301-AJW-10MP
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', termsHTML);
+            document.getElementById('termsModal').classList.add('show');
+        }
+        
+        function showPaymentTerms() {
+            const paymentTermsHTML = `
+                <div id="paymentTermsModal" class="modal-overlay">
+                    <div class="modal-content max-w-4xl max-h-90vh overflow-y-auto">
+                        <div class="flex justify-between items-center mb-6 sticky top-0 bg-gray-700 p-4 -m-4 mb-4 border-b border-gray-600">
+                            <h2 class="text-2xl font-bold text-white">Payment Terms</h2>
+                            <button onclick="document.getElementById('paymentTermsModal').remove()" class="text-gray-400 hover:text-white text-2xl">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="space-y-6 text-gray-300">
+                            <div>
+                                <h3 class="text-lg font-bold text-white mb-3">1. PAYMENT OPTIONS</h3>
+                                <ul class="list-disc list-inside space-y-2 ml-4">
+                                    <li><strong>Full Payment:</strong> Pay the complete course fee upfront and receive a 5% discount</li>
+                                    <li><strong>Monthly Plan:</strong> Pay an initial down payment followed by monthly installments</li>
+                                    <li>All payments are processed securely through Stripe and PayPal</li>
+                                </ul>
+                            </div>
+                            
+                            <div>
+                                <h3 class="text-lg font-bold text-white mb-3">2. MONTHLY PAYMENT PLAN TERMS</h3>
+                                <ul class="list-disc list-inside space-y-2 ml-4">
+                                    <li>Down payment required at enrollment: $750</li>
+                                    <li>Monthly payment amount: $375 for 6 consecutive months</li>
+                                    <li>Total cost under monthly plan: $3,000 (no discount applied)</li>
+                                    <li>Automatic billing on the same date each month</li>
+                                    <li>Failed payments may result in course access suspension</li>
+                                </ul>
+                            </div>
+                            
+                            <div>
+                                <h3 class="text-lg font-bold text-white mb-3">3. BILLING AND CHARGES</h3>
+                                <ul class="list-disc list-inside space-y-2 ml-4">
+                                    <li>All fees are in USD and exclude applicable taxes</li>
+                                    <li>Payment methods accepted: Credit/Debit cards, PayPal, Apple Pay</li>
+                                    <li>Billing address verification required for security</li>
+                                    <li>Course access granted immediately upon successful payment</li>
+                                </ul>
+                            </div>
+                            
+                            <div>
+                                <h3 class="text-lg font-bold text-white mb-3">4. CANCELLATION AND REFUNDS</h3>
+                                <ul class="list-disc list-inside space-y-2 ml-4">
+                                    <li>Monthly plans: Cancel anytime with 7-day notice</li>
+                                    <li>Refunds: 7-day money-back guarantee on all purchases</li>
+                                    <li>Partial refunds available for payment plan cancellations before 2nd payment</li>
+                                    <li>Processing time: 5-7 business days for refunds</li>
+                                </ul>
+                            </div>
+                            
+                            <div>
+                                <h3 class="text-lg font-bold text-white mb-3">5. FAILED PAYMENTS</h3>
+                                <ul class="list-disc list-inside space-y-2 ml-4">
+                                    <li>Automatic retry within 3 days of failed payment</li>
+                                    <li>Email notification sent for payment failures</li>
+                                    <li>Course access suspended after 7 days of non-payment</li>
+                                    <li>Account reactivation available upon successful payment</li>
+                                </ul>
+                            </div>
+                            
+                            <div>
+                                <h3 class="text-lg font-bold text-white mb-3">6. SECURITY AND PRIVACY</h3>
+                                <p>All payment information is encrypted using industry-standard SSL technology. We do not store credit card details on our servers. Payment processing is handled by certified PCI DSS compliant providers.</p>
+                            </div>
+                            
+                            <div class="bg-gray-800 border border-gray-600 rounded-lg p-4">
+                                <h4 class="font-semibold text-white mb-2">Payment Support</h4>
+                                <p class="text-sm">
+                                    For payment-related questions or issues:<br>
+                                    <strong>TechStep Billing Department</strong><br>
+                                    Email: billing@techstepfoundation.org<br>
+                                    Phone: 1-301-AJW-10MP<br>
+                                    Business Hours: Monday-Friday, 9 AM - 5 PM EST
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', paymentTermsHTML);
+            document.getElementById('paymentTermsModal').classList.add('show');
+        }
+
+        // Show enhanced payment selection message with clear exclusivity notice
+        function showPaymentSelectionMessage(message) {
+            // Remove any existing message
+            const existingMessage = document.getElementById('payment-selection-message');
+            if (existingMessage) {
+                existingMessage.remove();
+            }
+            
+            // Create enhanced message with exclusivity notice
+            const messageHTML = `
+                <div id="payment-selection-message" class="bg-gradient-to-r from-blue-900/30 to-green-900/30 border border-blue-500/50 rounded-lg p-4 mb-4">
+                    <div class="text-center mb-2">
+                        <div class="flex items-center justify-center mb-2">
+                            <i class="fas fa-check-circle text-green-400 mr-2 text-lg"></i>
+                            <span class="text-white font-semibold">Payment Option Selected</span>
+                        </div>
+                        <p class="text-blue-200 text-sm">${message}</p>
+                    </div>
+                    
+                    <div class="bg-yellow-900/20 border border-yellow-500/30 rounded-lg p-3 mt-3">
+                        <div class="flex items-start">
+                            <i class="fas fa-info-circle text-yellow-400 mr-2 mt-0.5 text-sm"></i>
+                            <div class="text-xs text-yellow-200">
+                                <strong>Note:</strong> You can only select one payment option. 
+                                Selecting a different option will replace your current choice.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-3 text-center">
+                        <button onclick="document.getElementById('payment-selection-message').remove()" 
+                                class="text-gray-400 hover:text-white text-xs underline">
+                            Dismiss
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            // Insert message after payment plan selector
+            const paymentPlanSelector = document.getElementById('payment-plan-selector');
+            if (paymentPlanSelector) {
+                paymentPlanSelector.insertAdjacentHTML('afterend', messageHTML);
+            }
+        }
+
+        // Add to Cart function with single selection logic
+        function addToCart(courseId, courseName, price) {
+            console.log('🛒 Adding to cart:', { courseId, courseName, price });
+            
+            try {
+                // Get cart elements directly (more reliable)
+                const cartItems = document.getElementById('cart-items');
+                const totalElement = document.getElementById('total-price');
+                const paymentSelector = document.getElementById('payment-plan-selector');
+                const paymentButtons = document.getElementById('payment-buttons-container');
+                const securityNotice = document.getElementById('security-notice');
+                const noCoursesMessage = document.getElementById('no-courses-message');
+                
+                console.log('📋 Cart elements found:', {
+                    cartItems: !!cartItems,
+                    totalElement: !!totalElement,
+                    paymentSelector: !!paymentSelector,
+                    paymentButtons: !!paymentButtons
+                });
+                
+                // Check if course is already in cart
+                const existingCourse = selectedCourses.find(course => course.id === courseId);
+                if (existingCourse) {
+                    alert('Course is already in your cart!');
+                    return;
+                }
+                
+                // Clear any existing courses (single selection logic)
+                if (selectedCourses.length > 0) {
+                    const shouldReplace = confirm(`You currently have "${selectedCourses[0].name}" in your cart. Replace it with "${courseName}"?`);
+                    if (!shouldReplace) {
+                        return;
+                    }
+                    
+                    // Reset previous course button
+                    resetAllCourseButtons();
+                    selectedCourses = [];
+                }
+                
+                // Add course to selected courses
+                selectedCourses.push({
+                    id: courseId,
+                    name: courseName,
+                    selfPrice: price,
+                    mentorPrice: price + 2000 // Add $2000 for mentor option
+                });
+                
+                console.log('✅ Course added to selectedCourses:', selectedCourses);
+                
+                // Update cart display directly
+                if (cartItems) {
+                    cartItems.innerHTML = `
+                        <div class="flex justify-between items-center py-2 bg-blue-900/20 rounded p-2">
+                            <span class="text-white font-medium">${courseName}</span>
+                            <span class="text-green-400 font-semibold">✓ Selected</span>
+                        </div>
+                    `;
+                    console.log('✅ Cart items updated');
+                }
+                
+                if (totalElement) {
+                    totalElement.textContent = `$${price.toLocaleString()}`;
+                    console.log('✅ Total price updated to:', price);
+                }
+                
+                // Hide "no courses" message
+                if (noCoursesMessage) {
+                    noCoursesMessage.style.display = 'none';
+                    console.log('✅ No courses message hidden');
+                }
+                
+                // Show payment options
+                if (paymentSelector) {
+                    paymentSelector.classList.remove('hidden');
+                    console.log('✅ Payment selector shown');
+                }
+                
+                if (paymentButtons) {
+                    paymentButtons.classList.remove('hidden');
+                    console.log('✅ Payment buttons shown');
+                }
+                
+                if (securityNotice) {
+                    securityNotice.classList.remove('hidden');
+                    console.log('✅ Security notice shown');
+                }
+                
+                // Update payment displays with course pricing
+                updatePaymentDisplays();
+                
+                // Enable payment button now that course is selected
+                enablePaymentButton();
+                
+                // Update button state for selected course
+                updateCourseButtonState(courseId, 'selected');
+                
+                // Show success notification
+                alert(`✅ ${courseName} added to cart! Scroll down to see payment options.`);
+                
+                // Scroll to cart section
+                setTimeout(() => {
+                    const orderSummary = document.querySelector('.bg-gray-700.p-6.rounded-lg.max-w-md.mx-auto');
+                    if (orderSummary) {
+                        orderSummary.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        console.log('✅ Scrolled to order summary');
+                    }
+                }, 500);
+                
+            } catch (error) {
+                console.error('❌ Error in addToCart:', error);
+                alert('There was an issue adding the course to cart. Please refresh and try again.');
+            }
+        }
+        
+        // Reset all course buttons to default state
+        function resetAllCourseButtons() {
+            document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+                btn.innerHTML = '<i class="fas fa-shopping-cart mr-2"></i>Add to Cart';
+                btn.className = 'w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300';
+                btn.disabled = false;
+                // Restore onclick handler
+                const courseId = btn.getAttribute('data-course-id');
+                if (courseId) {
+                    btn.onclick = () => {
+                        const courseName = btn.getAttribute('data-course-name');
+                        const price = parseInt(btn.getAttribute('data-price'));
+                        addToCart(courseId, courseName, price);
+                    };
+                }
+            });
+        }
+        
+        // Update course button state
+        function updateCourseButtonState(courseId, state) {
+            // Find button by course ID in data attribute
+            const button = document.querySelector(`[data-course="${courseId}"] .add-to-cart-btn`) || 
+                          document.querySelector(`[data-course-id="${courseId}"]`);
+            
+            console.log('🔘 Updating button state for course:', courseId, 'Button found:', !!button);
+            
+            if (button) {
+                if (state === 'selected') {
+                    button.innerHTML = '<i class="fas fa-check mr-2"></i>Added to Cart';
+                    button.className = 'add-to-cart-btn w-full bg-blue-600 text-white font-bold py-3 px-6 rounded-lg cursor-default';
+                    button.disabled = true;
+                    button.onclick = null; // Disable click
+                } else {
+                    button.innerHTML = '<i class="fas fa-shopping-cart mr-2"></i>Add to Cart';
+                    button.className = 'add-to-cart-btn w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300';
+                    button.disabled = false;
+                }
+                console.log('✅ Button state updated to:', state);
+            } else {
+                console.warn('⚠️ Button not found for course:', courseId);
+            }
+        }
+        
+        // Update payment authorization text based on selected plan
+        function updatePaymentAuthorizationText(selectedPlan) {
+            const authText = document.getElementById('dynamic-payment-text');
+            if (authText) {
+                if (selectedPlan === 'full') {
+                    authText.textContent = 'I authorize TechStep Foundation to charge my payment method the full course amount with 5% discount applied.';
+                } else if (selectedPlan === 'monthly') {
+                    authText.textContent = 'I authorize TechStep Foundation to charge my payment method $750 today and $375 monthly for 6 consecutive months.';
+                }
+            }
         }
 
         function updateCart() {
@@ -2623,14 +3023,89 @@ function formatTime(seconds) {
         }
 
         function updatePaymentDisplays() {
-            const total = calculateTotal();
-            const fullPayment = Math.round(total * 0.95);
-            const monthlyPayment = Math.round(total / 3);
-            const weeklyPayment = Math.round(total / 12);
+            console.log('🔄 Updating payment displays...');
+            
+            if (selectedCourses.length === 0) {
+                console.log('⚠️ No courses selected, skipping payment display update');
+                return;
+            }
+            
+            const course = selectedCourses[0]; // Single course selection
+            const basePrice = course.selfPrice;
+            
+            // Calculate payment amounts for SOC Analyst (using its specific pricing)
+            let fullPayment, downPayment, monthlyPayment;
+            
+            if (course.id === 'soc-analyst') {
+                fullPayment = 2849; // Fixed price for SOC Analyst
+                downPayment = 750;
+                monthlyPayment = 375;
+            } else {
+                fullPayment = Math.round(basePrice * 0.95); // 5% discount
+                downPayment = Math.round(basePrice * 0.25); // 25% down
+                monthlyPayment = Math.round((basePrice - downPayment) / 6); // 6 months
+            }
+            
+            console.log('💰 Payment calculations:', {
+                basePrice,
+                fullPayment,
+                downPayment,
+                monthlyPayment
+            });
+            
+            // Update the payment plan cards with actual pricing
+            try {
+                // Update "Pay Once" option
+                const payOncePrice = document.querySelector('input[value="full"] + .payment-option-card .text-2xl.font-bold');
+                if (payOncePrice) {
+                    payOncePrice.innerHTML = `$${fullPayment.toLocaleString()} <span class="text-sm text-green-300">(5% savings)</span>`;
+                }
+                
+                // Update "Monthly Plan" option  
+                const monthlyPrice = document.querySelector('input[value="monthly"] + .payment-option-card .text-2xl.font-bold');
+                if (monthlyPrice) {
+                    monthlyPrice.textContent = `$${downPayment} down + $${monthlyPayment}/month`;
+                }
+                
+                console.log('✅ Payment displays updated successfully');
+            } catch (error) {
+                console.error('❌ Error updating payment displays:', error);
+            }
+        }
 
-            document.getElementById('full-payment-display').textContent = `$${fullPayment.toLocaleString()}`;
-            document.getElementById('monthly-payment-display').textContent = `$${monthlyPayment.toLocaleString()}/month`;
-            document.getElementById('weekly-payment-display').textContent = `$${weeklyPayment.toLocaleString()}/week`;
+        // Enable payment button when course is added to cart
+        function enablePaymentButton() {
+            const checkoutButton = document.getElementById('stripe-checkout-button');
+            const buttonText = document.getElementById('stripe-button-text');
+            
+            if (checkoutButton && selectedCourses.length > 0) {
+                checkoutButton.disabled = false;
+                checkoutButton.classList.remove('opacity-50');
+                
+                if (buttonText) {
+                    const course = selectedCourses[0];
+                    buttonText.textContent = `Complete Purchase - ${course.name}`;
+                }
+                
+                console.log('✅ Payment button enabled');
+            }
+        }
+        
+        // Disable payment button when cart is empty
+        function disablePaymentButton() {
+            const checkoutButton = document.getElementById('stripe-checkout-button');
+            const buttonText = document.getElementById('stripe-button-text');
+            
+            if (checkoutButton) {
+                checkoutButton.disabled = true;
+                checkoutButton.classList.add('opacity-50');
+                
+                if (buttonText) {
+                    buttonText.textContent = 'Select a Course to Continue';
+                }
+                
+                console.log('❌ Payment button disabled');
+            }
         }
 
         function calculateTotal() {
@@ -3310,6 +3785,27 @@ function formatTime(seconds) {
             }
         });
 
+        // Initialize Stripe on page load
+        // Initialize Stripe Payment System
+        function initializeStripePayments() {
+            console.log('🚀 Initializing Stripe payment system...');
+            
+            // Load Stripe.js if not already loaded
+            if (!window.Stripe) {
+                const stripeScript = document.createElement('script');
+                stripeScript.src = 'https://js.stripe.com/v3/';
+                stripeScript.onload = setupStripe;
+                stripeScript.onerror = () => {
+                    console.error('❌ Failed to load Stripe.js');
+                    updatePaymentButtons(false);
+                };
+                document.head.appendChild(stripeScript);
+                console.log('📦 Loading Stripe.js...');
+            } else {
+                setupStripe();
+            }
+        }
+        
         // Initialize on page load - consolidated with main DOMContentLoaded listener
         
         // API Configuration and Service Layer
@@ -3983,7 +4479,7 @@ function formatTime(seconds) {
                                         <input type="checkbox" id="agreementCheck" required class="mt-1">
                                         <span class="text-sm text-gray-300">
                                             I have read and agree to the 
-                                            <button type="button" id="agreementLink" class="text-blue-400 hover:text-blue-300 underline">
+                                            <button type="button" id="agreementLink" onclick="showTermsOfService()" class="text-blue-400 hover:text-blue-300 underline">
                                                 Mentee Agreement and Terms of Service
                                             </button>
                                         </span>
@@ -4176,34 +4672,8 @@ function formatTime(seconds) {
                 });
             }
 
-            // Initialize Stripe Elements
-            let stripe, elements, cardElement;
-            try {
-                stripe = Stripe('pk_test_51RwDF3HTfrREHzBzMxKImvpXUSlamCz990lkgAxIzZeLrdsDouon9Uq8RyOKtvwR0OC8zjWHdUgpb9freiqlrzo300uyTp6tMx'); // Real Stripe publishable key
-                elements = stripe.elements();
-                
-                cardElement = elements.create('card', {
-                    style: {
-                        base: {
-                            color: '#ffffff',
-                            fontFamily: 'system-ui, sans-serif',
-                            fontSize: '16px',
-                            '::placeholder': {
-                                color: '#9CA3AF',
-                            },
-                        },
-                    },
-                });
-                
-                cardElement.mount('#card-element');
-            } catch (error) {
-                console.log('Stripe not available - payment demo mode');
-                // Hide card element and show a message
-                const cardElementContainer = document.getElementById('card-element');
-                if (cardElementContainer) {
-                    cardElementContainer.innerHTML = '<p class="text-gray-400 p-4">Payment processing will be available after Stripe setup</p>';
-                }
-            }
+            // Stripe Elements will be initialized when needed for modals
+            // Main payment flow uses Stripe Checkout (no card elements needed)
 
             // Handle form submission
             paymentForm.addEventListener('submit', async (e) => {
@@ -4651,7 +5121,7 @@ function formatTime(seconds) {
                             <div class="flex items-start mt-4">
                                 <input type="checkbox" id="trialTerms" required class="mt-1 mr-3">
                                 <label for="trialTerms" class="text-gray-300 text-sm">
-                                    I agree to the <a href="#" class="text-purple-400 hover:text-purple-300">Terms of Service</a> 
+                                    I agree to the <a href="#" onclick="showTermsOfService(); return false;" class="text-purple-400 hover:text-purple-300">Terms of Service</a> 
                                     and understand this is a 7-day free trial with no obligations.
                                 </label>
                             </div>
@@ -5734,30 +6204,25 @@ function formatTime(seconds) {
             console.log('🧪 Added window.debugTechStep() function - call this in console to force selection');
         }
         
-        // Stripe Payment Integration
-        let stripe;
-        
-        async function initializeStripePayments() {
-            // Load Stripe.js
-            if (!window.Stripe) {
-                const stripeScript = document.createElement('script');
-                stripeScript.src = 'https://js.stripe.com/v3/';
-                stripeScript.onload = setupStripe;
-                document.head.appendChild(stripeScript);
-            } else {
-                setupStripe();
-            }
-        }
+        // Stripe Payment Integration (removed duplicate - using the enhanced version below)
         
         function setupStripe() {
-            // Initialize Stripe with publishable key
-            stripe = Stripe('pk_live_51RwDEqHdhxmQz9FjdXEpYMGqNWHowR9VykwCZNgjNZjE67iz6FNcfNrSB3q6SRpNiiXYIXqJFJUGRgzX9IjWNPFa00ASln6Imw');
-            
-            // Setup payment plan interactivity
-            setupPaymentPlanSelection();
-            
-            // Update payment buttons
-            updatePaymentButtons();
+            // Initialize Stripe with test key for development
+            try {
+                stripe = Stripe('pk_test_51RwDF3HTfrREHzBzMxKImvpXUSlamCz990lkgAxIzZeLrdsDouon9Uq8RyOKtvwR0OC8zjWHdUgpb9freiqlrzo300uyTp6tMx');
+                console.log('✅ Stripe initialized successfully');
+                
+                // Setup payment plan interactivity
+                setupPaymentPlanSelection();
+                
+                // Update payment buttons
+                updatePaymentButtons();
+                
+            } catch (error) {
+                console.error('❌ Stripe initialization failed:', error);
+                // Fallback for payment demo mode
+                updatePaymentButtons(false);
+            }
         }
         
         function setupPaymentPlanSelection() {
@@ -5786,107 +6251,184 @@ function formatTime(seconds) {
             });
         }
         
-        function updatePaymentButtons() {
+        function updatePaymentButtons(stripeEnabled = true) {
             const paymentContainer = document.getElementById('payment-buttons-container');
-            if (!paymentContainer) return;
+            if (!paymentContainer) {
+                console.warn('Payment buttons container not found');
+                return;
+            }
             
             // Replace existing payment buttons with new Stripe-integrated ones
-            paymentContainer.innerHTML = `
-                <div class="space-y-3">
-                    <button id="stripe-checkout-button" class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-4 px-6 rounded-lg transition duration-300 flex items-center justify-center disabled:opacity-50" disabled>
-                        <i class="fas fa-credit-card mr-2"></i>
-                        <span id="stripe-button-text">Select a Course to Continue</span>
-                    </button>
-                    
-                    <div class="text-center">
-                        <div class="flex items-center justify-center space-x-4 text-sm text-gray-400">
-                            <span><i class="fab fa-cc-visa text-lg"></i></span>
-                            <span><i class="fab fa-cc-mastercard text-lg"></i></span>
-                            <span><i class="fab fa-cc-amex text-lg"></i></span>
-                            <span><i class="fab fa-apple-pay text-lg"></i></span>
-                            <span><i class="fab fa-google-pay text-lg"></i></span>
+            if (stripeEnabled) {
+                paymentContainer.innerHTML = `
+                    <div class="space-y-3">
+                        <button id="stripe-checkout-button" class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-4 px-6 rounded-lg transition duration-300 flex items-center justify-center disabled:opacity-50" disabled>
+                            <i class="fas fa-credit-card mr-2"></i>
+                            <span id="stripe-button-text">Select a Course to Continue</span>
+                        </button>
+                        
+                        <div class="text-center">
+                            <div class="flex items-center justify-center space-x-4 text-sm text-gray-400">
+                                <span><i class="fab fa-cc-visa text-lg"></i></span>
+                                <span><i class="fab fa-cc-mastercard text-lg"></i></span>
+                                <span><i class="fab fa-cc-amex text-lg"></i></span>
+                                <span><i class="fab fa-apple-pay text-lg"></i></span>
+                                <span><i class="fab fa-google-pay text-lg"></i></span>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-2">🔒 256-bit SSL encryption • PCI DSS compliant • Powered by Stripe</p>
                         </div>
-                        <p class="text-xs text-gray-500 mt-2">Secure payment powered by Stripe</p>
                     </div>
-                </div>
-            `;
-            
-            // Setup checkout button click handler
-            document.getElementById('stripe-checkout-button').addEventListener('click', handleStripeCheckout);
+                `;
+                
+                // Setup checkout button click handler after DOM update
+                setTimeout(() => {
+                    const checkoutButton = document.getElementById('stripe-checkout-button');
+                    if (checkoutButton) {
+                        checkoutButton.addEventListener('click', handleStripeCheckout);
+                        console.log('✅ Stripe checkout button initialized');
+                    }
+                }, 100);
+            } else {
+                // Fallback for demo mode
+                paymentContainer.innerHTML = `
+                    <div class="space-y-3">
+                        <button class="w-full bg-gray-600 text-white font-bold py-4 px-6 rounded-lg cursor-not-allowed" disabled>
+                            <i class="fas fa-exclamation-triangle mr-2"></i>
+                            Payment Demo Mode - Stripe Not Available
+                        </button>
+                        <p class="text-xs text-gray-500 text-center">In production, secure payment processing will be available</p>
+                    </div>
+                `;
+            }
         }
         
         async function handleStripeCheckout() {
-            const selectedCourses = getSelectedCourses();
-            const paymentPlan = document.querySelector('input[name="payment-plan"]:checked')?.value || 'full';
-            const agreementCheckbox = document.getElementById('payment-agreement');
+            console.log('💳 Starting Stripe checkout process...');
+            console.log('Selected courses:', selectedCourses);
             
+            // Check if we have Stripe initialized
+            if (!stripe) {
+                console.error('❌ Stripe not initialized');
+                alert('Payment system not available. Please refresh the page and try again.');
+                return;
+            }
+            
+            // Check if courses are selected using our global selectedCourses array
             if (selectedCourses.length === 0) {
-                alert('Please select SOC Analyst Foundations course to continue.');
+                alert('Please select a course to continue with payment.');
                 return;
             }
             
-            if (!agreementCheckbox.checked) {
+            // Check payment plan selection
+            const paymentPlan = document.querySelector('input[name="payment-plan"]:checked')?.value || 'full';
+            console.log('📅 Selected payment plan:', paymentPlan);
+            
+            // Check agreement checkbox
+            const agreementCheckbox = document.getElementById('payment-agreement');
+            if (!agreementCheckbox || !agreementCheckbox.checked) {
                 alert('Please agree to the Terms of Service and Payment Terms to continue.');
-                agreementCheckbox.focus();
+                if (agreementCheckbox) agreementCheckbox.focus();
                 return;
             }
             
-            // For now, we only handle SOC Analyst course as specified
-            const socCourse = selectedCourses.find(course => course.dataset.course === 'soc-analyst');
-            if (!socCourse) {
-                alert('Stripe integration is currently available for SOC Analyst Foundations. Other courses coming soon!');
-                return;
-            }
+            // Get the first (and only) selected course
+            const course = selectedCourses[0];
+            console.log('🎯 Course for checkout:', course);
             
             try {
                 const button = document.getElementById('stripe-checkout-button');
                 button.disabled = true;
                 button.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Processing...';
                 
-                let priceId;
-                let successUrl = 'https://techstepfoundation.org/onboarding/soc-analyst';
-                let cancelUrl = 'https://techstepfoundation.org/';
+                // Define success and cancel URLs
+                let successUrl, cancelUrl;
+                if (course.id === 'soc-analyst') {
+                    successUrl = 'https://techstepfoundation.org/onboarding/soc-analyst';
+                } else {
+                    successUrl = 'https://techstepfoundation.org/onboarding/success';
+                }
+                cancelUrl = 'https://techstepfoundation.org/';
                 
-                // Determine which price ID to use based on payment plan
+                // Calculate final price based on payment plan
+                let finalPrice, mode, lineItems;
+                
                 if (paymentPlan === 'full') {
-                    priceId = socCourse.dataset.stripeFullPrice; // price_1S5j8SHdhxmQz9FjYDWLFpyd
+                    // Full payment with 5% discount for SOC Analyst
+                    if (course.id === 'soc-analyst') {
+                        finalPrice = 2849; // Fixed discounted price
+                    } else {
+                        finalPrice = Math.round(course.selfPrice * 0.95);
+                    }
+                    
+                    mode = 'payment';
+                    lineItems = [{
+                        price_data: {
+                            currency: 'usd',
+                            product_data: {
+                                name: course.name,
+                                description: 'TechStep Foundation Course - Full Payment (5% Discount Applied)'
+                            },
+                            unit_amount: finalPrice * 100 // Convert to cents
+                        },
+                        quantity: 1
+                    }];
                 } else if (paymentPlan === 'monthly') {
-                    // For monthly plan, we need to create a checkout with both down payment and subscription
-                    await createMonthlyPlanCheckout(socCourse, successUrl, cancelUrl);
-                    return;
+                    // Monthly plan: down payment + subscription
+                    const downPayment = course.id === 'soc-analyst' ? 750 : Math.round(course.selfPrice * 0.25);
+                    
+                    mode = 'payment';
+                    lineItems = [{
+                        price_data: {
+                            currency: 'usd',
+                            product_data: {
+                                name: `${course.name} - Down Payment`,
+                                description: 'Initial payment for monthly plan. Recurring payments will be set up separately.'
+                            },
+                            unit_amount: downPayment * 100
+                        },
+                        quantity: 1
+                    }];
                 }
                 
-                // Create Stripe Checkout Session for full payment
+                console.log('🚀 Creating Stripe checkout session:', { mode, lineItems, finalPrice });
+                
+                // Create Stripe Checkout Session
                 const { error } = await stripe.redirectToCheckout({
-                    lineItems: [{
-                        price: priceId,
-                        quantity: 1,
-                    }],
-                    mode: 'payment',
+                    lineItems: lineItems,
+                    mode: mode,
                     successUrl: successUrl + '?session_id={CHECKOUT_SESSION_ID}',
                     cancelUrl: cancelUrl,
                     customerEmail: null, // Will be collected at checkout
                     billingAddressCollection: 'auto',
-                    paymentMethodTypes: ['card', 'apple_pay', 'google_pay'],
+                    paymentMethodTypes: ['card'],
                     metadata: {
-                        course: 'soc-analyst-foundations',
-                        paymentPlan: 'full',
-                        source: 'techstep-website'
+                        courseId: course.id,
+                        courseName: course.name,
+                        paymentPlan: paymentPlan,
+                        source: 'techstep-website',
+                        originalPrice: course.selfPrice.toString(),
+                        finalPrice: (finalPrice || 'subscription').toString()
                     }
                 });
                 
                 if (error) {
-                    console.error('Stripe Checkout error:', error);
-                    alert('Payment initialization failed. Please try again.');
+                    console.error('❌ Stripe Checkout error:', error);
+                    alert('Payment initialization failed: ' + error.message);
                 }
                 
             } catch (error) {
-                console.error('Checkout error:', error);
-                alert('Payment processing error. Please try again.');
+                console.error('❌ Checkout error:', error);
+                alert('Payment processing error: ' + error.message);
             } finally {
+                // Reset button state
                 const button = document.getElementById('stripe-checkout-button');
-                button.disabled = false;
-                updateStripeButtonText();
+                if (button) {
+                    button.disabled = false;
+                    const buttonText = document.getElementById('stripe-button-text');
+                    if (buttonText && selectedCourses.length > 0) {
+                        buttonText.textContent = `Complete Purchase - ${selectedCourses[0].name}`;
+                    }
+                }
             }
         }
         

@@ -461,25 +461,25 @@
                             Courses
                             <i class="fas fa-chevron-down ml-1 text-xs"></i>
                         </button>
-                        <div class="absolute top-full left-0 mt-2 w-64 bg-gray-800 rounded-lg shadow-xl border border-gray-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
-                            <div class="p-2">
+                        <div class="absolute top-full left-0 mt-2 w-80 bg-gray-800 rounded-lg shadow-xl border border-gray-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+                            <div class="p-2 max-h-96 overflow-y-auto">
                                 <a href="#courses" class="block px-4 py-3 text-gray-300 hover:text-blue-400 hover:bg-gray-700 rounded-lg transition duration-300">
                                     <i class="fas fa-shield-alt mr-3 text-blue-400"></i>SOC Analyst Foundations
                                 </a>
                                 <a href="#courses" class="block px-4 py-3 text-gray-300 hover:text-blue-400 hover:bg-gray-700 rounded-lg transition duration-300">
-                                    <i class="fas fa-search mr-3 text-green-400"></i>Threat Detection & Response
+                                    <i class="fas fa-search mr-3 text-green-400"></i>Cyber Threat Analyst & Incident Response
                                 </a>
                                 <a href="#courses" class="block px-4 py-3 text-gray-300 hover:text-blue-400 hover:bg-gray-700 rounded-lg transition duration-300">
-                                    <i class="fas fa-database mr-3 text-purple-400"></i>SIEM Engineering - Splunk
+                                    <i class="fas fa-database mr-3 text-purple-400"></i>SIEM Engineering - Splunk Specialization
                                 </a>
                                 <a href="#courses" class="block px-4 py-3 text-gray-300 hover:text-blue-400 hover:bg-gray-700 rounded-lg transition duration-300">
-                                    <i class="fas fa-cloud mr-3 text-indigo-400"></i>Cloud Security Analyst
+                                    <i class="fas fa-cloud mr-3 text-indigo-400"></i>Cloud Security Analyst (AWS, Azure, GCP)
                                 </a>
                                 <a href="#courses" class="block px-4 py-3 text-gray-300 hover:text-blue-400 hover:bg-gray-700 rounded-lg transition duration-300">
-                                    <i class="fas fa-bug mr-3 text-red-400"></i>Malware Analysis & Defense
+                                    <i class="fas fa-bug mr-3 text-red-400"></i>Malware Analyst & Network Defense
                                 </a>
                                 <a href="#courses" class="block px-4 py-3 text-gray-300 hover:text-blue-400 hover:bg-gray-700 rounded-lg transition duration-300">
-                                    <i class="fas fa-clipboard-check mr-3 text-yellow-400"></i>GRC & Compliance
+                                    <i class="fas fa-balance-scale mr-3 text-yellow-400"></i>Risk & Compliance Analyst - GRC Fundamentals
                                 </a>
                                 <div class="border-t border-gray-700 mt-2 pt-2">
                                     <a href="demo/" class="block px-4 py-3 text-blue-400 hover:text-white hover:bg-blue-600 rounded-lg transition duration-300 font-semibold">
@@ -515,24 +515,24 @@
                         <span>Courses</span>
                         <i class="fas fa-chevron-down text-xs" id="mobileCourseChevron"></i>
                     </button>
-                    <div id="mobileCoursesDropdown" class="hidden mt-1 ml-4 space-y-1">
+                    <div id="mobileCoursesDropdown" class="hidden mt-1 ml-4 space-y-1 max-h-80 overflow-y-auto">
                         <a href="#courses" class="block px-3 py-2 text-sm text-gray-400 hover:text-blue-400 hover:bg-gray-600 rounded-md transition duration-300">
                             <i class="fas fa-shield-alt mr-2 text-blue-400"></i>SOC Analyst Foundations
                         </a>
                         <a href="#courses" class="block px-3 py-2 text-sm text-gray-400 hover:text-blue-400 hover:bg-gray-600 rounded-md transition duration-300">
-                            <i class="fas fa-search mr-2 text-green-400"></i>Threat Detection & Response
+                            <i class="fas fa-search mr-2 text-green-400"></i>Cyber Threat Analyst & Incident Response
                         </a>
                         <a href="#courses" class="block px-3 py-2 text-sm text-gray-400 hover:text-blue-400 hover:bg-gray-600 rounded-md transition duration-300">
-                            <i class="fas fa-database mr-2 text-purple-400"></i>SIEM Engineering - Splunk
+                            <i class="fas fa-database mr-2 text-purple-400"></i>SIEM Engineering - Splunk Specialization
                         </a>
                         <a href="#courses" class="block px-3 py-2 text-sm text-gray-400 hover:text-blue-400 hover:bg-gray-600 rounded-md transition duration-300">
-                            <i class="fas fa-cloud mr-2 text-indigo-400"></i>Cloud Security Analyst
+                            <i class="fas fa-cloud mr-2 text-indigo-400"></i>Cloud Security Analyst (AWS, Azure, GCP)
                         </a>
                         <a href="#courses" class="block px-3 py-2 text-sm text-gray-400 hover:text-blue-400 hover:bg-gray-600 rounded-md transition duration-300">
-                            <i class="fas fa-bug mr-2 text-red-400"></i>Malware Analysis & Defense
+                            <i class="fas fa-bug mr-2 text-red-400"></i>Malware Analyst & Network Defense
                         </a>
                         <a href="#courses" class="block px-3 py-2 text-sm text-gray-400 hover:text-blue-400 hover:bg-gray-600 rounded-md transition duration-300">
-                            <i class="fas fa-clipboard-check mr-2 text-yellow-400"></i>GRC & Compliance
+                            <i class="fas fa-balance-scale mr-2 text-yellow-400"></i>Risk & Compliance Analyst - GRC Fundamentals
                         </a>
                     </div>
                 </div>
@@ -798,22 +798,9 @@
                      data-stripe-monthly-price="price_1S5j8SHdhxmQz9FjxZR4DjJS">
                     <div class="flex justify-between items-start mb-4">
                         <h3 class="text-xl font-semibold">SOC Analyst Foundations</h3>
-                        <input type="checkbox" id="soc-checkbox" class="course-checkbox w-5 h-5 text-blue-600 bg-white border-2 border-blue-600" onchange="
-                            console.log('🎯 Checkbox changed:', this.checked);
-                            if (this.checked) {
-                                document.getElementById('cart-items').innerHTML = '<div class=&quot;flex justify-between items-center py-2&quot;><span class=&quot;text-white&quot;>SOC Analyst Foundations</span><span class=&quot;text-blue-400 font-semibold&quot;>Selected ✓</span></div>';
-                                document.getElementById('total-price').textContent = '$2,849';
-                                document.getElementById('no-courses-message').style.display = 'none';
-                                document.getElementById('payment-plan-selector').classList.remove('hidden');
-                                document.getElementById('payment-buttons-container').classList.remove('hidden');
-                                alert('✅ Course selected! Check Order Summary below.');
-                            } else {
-                                document.getElementById('cart-items').innerHTML = '<p class=&quot;text-gray-400&quot;>Select SOC Analyst course below to see pricing</p>';
-                                document.getElementById('total-price').textContent = '$0';
-                                document.getElementById('payment-plan-selector').classList.add('hidden');
-                                document.getElementById('payment-buttons-container').classList.add('hidden');
-                            }
-                        ">
+                        <button id="soc-add-to-cart" class="add-to-cart-btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300" onclick="addToCart('soc-analyst', 'SOC Analyst Foundations', 2849)">
+                            <i class="fas fa-shopping-cart mr-2"></i>Add to Cart
+                        </button>
                     </div>
                     <p class="text-gray-300 mb-4">Master security operations center fundamentals, threat detection, and incident response procedures.</p>
                     <div class="price-display">
@@ -829,110 +816,23 @@
                         </div>
                     </div>
                     
-                    <!-- IMMEDIATE HTML SOLUTION - Always Visible -->
-                    <div class="mt-4 p-4 bg-blue-900 bg-opacity-30 rounded-lg border border-blue-500">
-                        <div class="text-center">
-                            <h4 class="text-blue-400 font-semibold mb-2">📋 SELECT THIS COURSE</h4>
-                            <button onclick="
-                                // INLINE JAVASCRIPT - ALWAYS WORKS
-                                console.log('🚨 INLINE: Button clicked!');
-                                
-                                // Check checkbox
-                                var checkbox = document.querySelector('#soc-checkbox');
-                                if (checkbox) { 
-                                    checkbox.checked = true; 
-                                    console.log('✅ Checkbox checked');
-                                }
-                                
-                                // Update cart directly
-                                var cartItems = document.getElementById('cart-items');
-                                var totalElement = document.getElementById('total-price');
-                                var paymentSelector = document.getElementById('payment-plan-selector');
-                                var paymentButtons = document.getElementById('payment-buttons-container');
-                                var noCoursesMessage = document.getElementById('no-courses-message');
-                                
-                                if (cartItems) {
-                                    cartItems.innerHTML = '<div class=&quot;flex justify-between items-center py-2&quot;><span class=&quot;text-white&quot;>SOC Analyst Foundations</span><span class=&quot;text-blue-400 font-semibold&quot;>Selected ✓</span></div>';
-                                    console.log('✅ Cart updated');
-                                }
-                                
-                                if (totalElement) { 
-                                    totalElement.textContent = '$2,849'; 
-                                    console.log('✅ Total updated');
-                                }
-                                
-                                if (noCoursesMessage) { 
-                                    noCoursesMessage.style.display = 'none'; 
-                                    console.log('✅ Message hidden');
-                                }
-                                
-                                if (paymentSelector) { 
-                                    paymentSelector.classList.remove('hidden'); 
-                                    console.log('✅ Payment selector shown');
-                                }
-                                
-                                if (paymentButtons) { 
-                                    paymentButtons.classList.remove('hidden'); 
-                                    console.log('✅ Payment buttons shown');
-                                }
-                                
-                                // Update button
-                                this.textContent = '✅ SELECTED! Check cart below';
-                                this.className = 'w-full bg-blue-600 text-white font-bold py-3 px-6 rounded-lg';
-                                
-                                // Alert and scroll
-                                alert('✅ SUCCESS! SOC Analyst added to cart. Check Order Summary below.');
-                                setTimeout(function() {
-                                    var cart = document.querySelector('.bg-gray-700.p-6.rounded-lg.max-w-md.mx-auto');
-                                    if (cart) cart.scrollIntoView({behavior: 'smooth'});
-                                }, 500);
-                            " class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300">
-                                ✅ SELECT SOC ANALYST FOUNDATIONS
-                            </button>
-                            <p class="text-xs text-gray-400 mt-2">Click to add to cart and see payment options</p>
-                        </div>
+                    <!-- Add to Cart Button -->
+                    <div class="mt-4">
+                        <button class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300" onclick="addToCart('soc-analyst', 'SOC Analyst Foundations', 2849)">
+                            <i class="fas fa-shopping-cart mr-2"></i>Add to Cart
+                        </button>
                     </div>
                     
-                    <!-- BACKUP LINK METHOD -->
-                    <div class="mt-2 text-center">
-                        <a href="javascript:void(0)" onclick="
-                            document.getElementById('cart-items').innerHTML = '<div class=&quot;text-white&quot;>SOC Analyst Foundations - Selected</div>';
-                            document.getElementById('total-price').textContent = '$2,849';
-                            document.getElementById('no-courses-message').style.display = 'none';
-                            document.getElementById('payment-plan-selector').classList.remove('hidden');
-                            document.getElementById('payment-buttons-container').classList.remove('hidden');
-                            alert('Cart updated! Scroll down to see payment options.');
-                        " class="text-blue-400 hover:text-blue-300 underline text-sm">
-                            🔗 Backup: Click here if button above doesn't work
-                        </a>
-                    </div>
-                    
-                    <!-- THIRD BACKUP: SIMPLE FORM -->
-                    <div class="mt-2 p-2 bg-red-900 bg-opacity-30 rounded border border-red-500">
-                        <p class="text-red-400 text-xs text-center mb-2">Emergency Backup (if nothing else works):</p>
-                        <form onsubmit="
-                            event.preventDefault();
-                            document.getElementById('cart-items').innerHTML = '<div class=&quot;text-white&quot;>SOC Analyst Foundations - SELECTED</div>';
-                            document.getElementById('total-price').textContent = '$2,849';
-                            var msg = document.getElementById('no-courses-message');
-                            if (msg) msg.style.display = 'none';
-                            var ps = document.getElementById('payment-plan-selector');
-                            if (ps) ps.classList.remove('hidden');
-                            var pb = document.getElementById('payment-buttons-container');
-                            if (pb) pb.classList.remove('hidden');
-                            alert('SUCCESS! Course added to cart. Scroll down to Order Summary.');
-                            return false;
-                        ">
-                            <input type="submit" value="🚨 EMERGENCY: Add to Cart" class="w-full bg-red-600 text-white py-2 px-4 rounded text-sm font-bold hover:bg-red-700 cursor-pointer">
-                        </form>
-                    </div>
+
                 </div>
 
                 <!-- Threat Detection Course -->
                 <div class="course-card p-6 rounded-lg course-selection" data-course="threat-detection">
                     <div class="flex justify-between items-start mb-4">
                         <h3 class="text-xl font-semibold">Cyber Threat Analyst & Incident Response</h3>
-                        <input type="checkbox" class="course-checkbox w-5 h-5 text-blue-600" data-self-price="2999" data-mentor-price="4999">
+                        <button class="add-to-cart-btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300" onclick="addToCart('threat-detection', 'Cyber Threat Analyst & Incident Response', 2999)">
+                            <i class="fas fa-shopping-cart mr-2"></i>Add to Cart
+                        </button>
                     </div>
                     <p class="text-gray-300 mb-4">Advanced threat hunting, malware analysis, and comprehensive incident response strategies.</p>
                     <div class="price-display">
@@ -943,13 +843,21 @@
                         <div class="self-paced-desc">Self-paced learning decks, labs, virtual internship & certificate</div>
                         <div class="mentor-desc hidden">Includes live mentor sessions</div>
                     </div>
+                    <!-- Add to Cart Button -->
+                    <div class="mt-4">
+                        <button class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300" onclick="addToCart('threat-detection', 'Cyber Threat Analyst & Incident Response', 2999)">
+                            <i class="fas fa-shopping-cart mr-2"></i>Add to Cart
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Splunk Course -->
                 <div class="course-card p-6 rounded-lg course-selection" data-course="splunk-siem">
                     <div class="flex justify-between items-start mb-4">
                         <h3 class="text-xl font-semibold">SIEM Engineering - Splunk Specialization</h3>
-                        <input type="checkbox" class="course-checkbox w-5 h-5 text-blue-600" data-self-price="2999" data-mentor-price="4999">
+                        <button class="add-to-cart-btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300" onclick="addToCart('splunk-siem', 'SIEM Engineering - Splunk Specialization', 2999)">
+                            <i class="fas fa-shopping-cart mr-2"></i>Add to Cart
+                        </button>
                     </div>
                     <p class="text-gray-300 mb-4">Master Splunk administration, SIEM deployment, and security monitoring infrastructure.</p>
                     <div class="price-display">
@@ -960,13 +868,21 @@
                         <div class="self-paced-desc">Self-paced learning decks, labs, virtual internship & certificate</div>
                         <div class="mentor-desc hidden">Includes live mentor sessions</div>
                     </div>
+                    <!-- Add to Cart Button -->
+                    <div class="mt-4">
+                        <button class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300" onclick="addToCart('splunk-siem', 'SIEM Engineering - Splunk Specialization', 2999)">
+                            <i class="fas fa-shopping-cart mr-2"></i>Add to Cart
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Cloud Security Course -->
                 <div class="course-card p-6 rounded-lg course-selection" data-course="cloud-security">
                     <div class="flex justify-between items-start mb-4">
                         <h3 class="text-xl font-semibold">Cloud Security Analyst (AWS, Azure, GCP)</h3>
-                        <input type="checkbox" class="course-checkbox w-5 h-5 text-blue-600" data-self-price="2999" data-mentor-price="4999">
+                        <button class="add-to-cart-btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300" onclick="addToCart('cloud-security', 'Cloud Security Analyst (AWS, Azure, GCP)', 2999)">
+                            <i class="fas fa-shopping-cart mr-2"></i>Add to Cart
+                        </button>
                     </div>
                     <p class="text-gray-300 mb-4">AWS, Azure, and GCP security architecture, compliance, and best practices.</p>
                     <div class="price-display">
@@ -977,13 +893,21 @@
                         <div class="self-paced-desc">Self-paced learning decks, labs, virtual internship & certificate</div>
                         <div class="mentor-desc hidden">Includes live mentor sessions</div>
                     </div>
+                    <!-- Add to Cart Button -->
+                    <div class="mt-4">
+                        <button class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300" onclick="addToCart('cloud-security', 'Cloud Security Analyst (AWS, Azure, GCP)', 2999)">
+                            <i class="fas fa-shopping-cart mr-2"></i>Add to Cart
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Malware Analysis Course -->
                 <div class="course-card p-6 rounded-lg course-selection" data-course="malware-analysis">
                     <div class="flex justify-between items-start mb-4">
                         <h3 class="text-xl font-semibold">Malware Analyst & Network Defense</h3>
-                        <input type="checkbox" class="course-checkbox w-5 h-5 text-blue-600" data-self-price="2999" data-mentor-price="4999">
+                        <button class="add-to-cart-btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300" onclick="addToCart('malware-analysis', 'Malware Analyst & Network Defense', 2999)">
+                            <i class="fas fa-shopping-cart mr-2"></i>Add to Cart
+                        </button>
                     </div>
                     <p class="text-gray-300 mb-4">Reverse engineering, dynamic analysis, and advanced network security techniques.</p>
                     <div class="price-display">
@@ -994,13 +918,21 @@
                         <div class="self-paced-desc">Self-paced learning decks, labs, virtual internship & certificate</div>
                         <div class="mentor-desc hidden">Includes live mentor sessions</div>
                     </div>
+                    <!-- Add to Cart Button -->
+                    <div class="mt-4">
+                        <button class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300" onclick="addToCart('malware-analysis', 'Malware Analyst & Network Defense', 2999)">
+                            <i class="fas fa-shopping-cart mr-2"></i>Add to Cart
+                        </button>
+                    </div>
                 </div>
 
                 <!-- GRC Course -->
                 <div class="course-card p-6 rounded-lg course-selection" data-course="grc-essentials">
                     <div class="flex justify-between items-start mb-4">
                         <h3 class="text-xl font-semibold">Risk & Compliance Analyst - GRC Fundamentals</h3>
-                        <input type="checkbox" class="course-checkbox w-5 h-5 text-blue-600" data-self-price="2999" data-mentor-price="4999">
+                        <button class="add-to-cart-btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300" onclick="addToCart('grc-essentials', 'Risk & Compliance Analyst - GRC Fundamentals', 2999)">
+                            <i class="fas fa-shopping-cart mr-2"></i>Add to Cart
+                        </button>
                     </div>
                     <p class="text-gray-300 mb-4">Governance frameworks, risk management, and regulatory compliance strategies.</p>
                     <div class="price-display">
@@ -1010,6 +942,12 @@
                     <div class="text-sm text-gray-400 mt-2">
                         <div class="self-paced-desc">Self-paced learning decks, labs, virtual internship & certificate</div>
                         <div class="mentor-desc hidden">Includes live mentor sessions</div>
+                    </div>
+                    <!-- Add to Cart Button -->
+                    <div class="mt-4">
+                        <button class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300" onclick="addToCart('grc-essentials', 'Risk & Compliance Analyst - GRC Fundamentals', 2999)">
+                            <i class="fas fa-shopping-cart mr-2"></i>Add to Cart
+                        </button>
                     </div>
                 </div>
             </div>
@@ -1098,8 +1036,8 @@
                             <label class="flex items-start cursor-pointer">
                                 <input type="checkbox" id="payment-agreement" class="mt-1 mr-3 w-4 h-4 text-blue-600 border-gray-600 rounded focus:ring-blue-500" required>
                                 <span class="text-sm text-gray-300">
-                                    I agree to the <a href="#" class="text-blue-400 hover:underline">Terms of Service</a> and 
-                                    <a href="#" class="text-blue-400 hover:underline">Payment Terms</a>. I understand that by selecting a monthly plan, 
+                                    I agree to the <a href="#" onclick="showTermsOfService(); return false;" class="text-blue-400 hover:underline">Terms of Service</a> and 
+                                    <a href="#" onclick="showPaymentTerms(); return false;" class="text-blue-400 hover:underline">Payment Terms</a>. I understand that by selecting a monthly plan, 
                                     I authorize TechStep Foundation to charge my payment method $750 today and $375 monthly for 6 months. 
                                     I can cancel anytime with 7-day notice. *
                                 </span>
@@ -2558,16 +2496,256 @@ function formatTime(seconds) {
             radio.addEventListener('change', function() {
                 const selectedPlan = this.value;
                 
-                if (selectedPlan !== 'full') {
-                    showPaymentPlanAgreement(selectedPlan);
-                } else {
+                // Show exclusive selection message
+                if (selectedPlan === 'full') {
+                    showPaymentSelectionMessage('Pay Once selected - You\'ll pay the full amount upfront with 5% savings.');
                     hidePaymentPlanRequirements();
                     enablePaymentButtons();
+                } else if (selectedPlan === 'monthly') {
+                    showPaymentSelectionMessage('Monthly Plan selected - You\'ll pay $750 today and $375/month for 6 months.');
+                    showPaymentPlanAgreement(selectedPlan);
                 }
                 
                 updatePaymentDisplays();
             });
         });
+        }
+
+        // Terms of Service and Payment Terms functions
+        function showTermsOfService() {
+            const termsHTML = `
+                <div id="termsModal" class="modal-overlay">
+                    <div class="modal-content max-w-4xl max-h-90vh overflow-y-auto">
+                        <div class="flex justify-between items-center mb-6 sticky top-0 bg-gray-700 p-4 -m-4 mb-4 border-b border-gray-600">
+                            <h2 class="text-2xl font-bold text-white">Terms of Service</h2>
+                            <button onclick="document.getElementById('termsModal').remove()" class="text-gray-400 hover:text-white text-2xl">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="space-y-6 text-gray-300">
+                            <div>
+                                <h3 class="text-lg font-bold text-white mb-3">1. ACCEPTANCE OF TERMS</h3>
+                                <p>By accessing and using the TechStep cybersecurity training platform, you agree to be bound by these Terms of Service and all applicable laws and regulations. If you do not agree with any part of these terms, you are prohibited from using this service.</p>
+                            </div>
+                            
+                            <div>
+                                <h3 class="text-lg font-bold text-white mb-3">2. COURSE ACCESS AND CONTENT</h3>
+                                <ul class="list-disc list-inside space-y-2 ml-4">
+                                    <li>Course access is granted upon full payment or successful enrollment in a payment plan</li>
+                                    <li>Content is for personal, non-commercial educational use only</li>
+                                    <li>Sharing course materials or credentials is strictly prohibited</li>
+                                    <li>Course access is valid for 12 months from enrollment date</li>
+                                </ul>
+                            </div>
+                            
+                            <div>
+                                <h3 class="text-lg font-bold text-white mb-3">3. USER RESPONSIBILITIES</h3>
+                                <ul class="list-disc list-inside space-y-2 ml-4">
+                                    <li>Maintain the confidentiality of your account credentials</li>
+                                    <li>Use the platform in accordance with all applicable laws</li>
+                                    <li>Refrain from attempting to access unauthorized areas</li>
+                                    <li>Report security vulnerabilities responsibly</li>
+                                </ul>
+                            </div>
+                            
+                            <div>
+                                <h3 class="text-lg font-bold text-white mb-3">4. INTELLECTUAL PROPERTY</h3>
+                                <p>All course content, including videos, materials, assessments, and documentation, is proprietary to TechStep and protected by copyright law. Users may not reproduce, distribute, or create derivative works from our content.</p>
+                            </div>
+                            
+                            <div>
+                                <h3 class="text-lg font-bold text-white mb-3">5. REFUND POLICY</h3>
+                                <ul class="list-disc list-inside space-y-2 ml-4">
+                                    <li>7-day money-back guarantee for full payment options</li>
+                                    <li>Refunds processed within 5-7 business days</li>
+                                    <li>Payment plan enrollments: refund available before second payment</li>
+                                    <li>Course completion over 25% disqualifies for refund</li>
+                                </ul>
+                            </div>
+                            
+                            <div>
+                                <h3 class="text-lg font-bold text-white mb-3">6. LIMITATION OF LIABILITY</h3>
+                                <p>TechStep shall not be liable for any indirect, incidental, special, or consequential damages arising from your use of our services. Our total liability is limited to the amount paid for the service.</p>
+                            </div>
+                            
+                            <div class="bg-gray-800 border border-gray-600 rounded-lg p-4">
+                                <h4 class="font-semibold text-white mb-2">Contact Information</h4>
+                                <p class="text-sm">
+                                    For questions about these Terms of Service:<br>
+                                    <strong>TechStep Foundation</strong><br>
+                                    Email: support@techstepfoundation.org<br>
+                                    Phone: 1-301-AJW-10MP
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', termsHTML);
+            document.getElementById('termsModal').classList.add('show');
+        }
+        
+        function showPaymentTerms() {
+            const paymentTermsHTML = `
+                <div id="paymentTermsModal" class="modal-overlay">
+                    <div class="modal-content max-w-4xl max-h-90vh overflow-y-auto">
+                        <div class="flex justify-between items-center mb-6 sticky top-0 bg-gray-700 p-4 -m-4 mb-4 border-b border-gray-600">
+                            <h2 class="text-2xl font-bold text-white">Payment Terms</h2>
+                            <button onclick="document.getElementById('paymentTermsModal').remove()" class="text-gray-400 hover:text-white text-2xl">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="space-y-6 text-gray-300">
+                            <div>
+                                <h3 class="text-lg font-bold text-white mb-3">1. PAYMENT OPTIONS</h3>
+                                <ul class="list-disc list-inside space-y-2 ml-4">
+                                    <li><strong>Full Payment:</strong> Pay the complete course fee upfront and receive a 5% discount</li>
+                                    <li><strong>Monthly Plan:</strong> Pay an initial down payment followed by monthly installments</li>
+                                    <li>All payments are processed securely through Stripe and PayPal</li>
+                                </ul>
+                            </div>
+                            
+                            <div>
+                                <h3 class="text-lg font-bold text-white mb-3">2. MONTHLY PAYMENT PLAN TERMS</h3>
+                                <ul class="list-disc list-inside space-y-2 ml-4">
+                                    <li>Down payment required at enrollment: $750</li>
+                                    <li>Monthly payment amount: $375 for 6 consecutive months</li>
+                                    <li>Total cost under monthly plan: $3,000 (no discount applied)</li>
+                                    <li>Automatic billing on the same date each month</li>
+                                    <li>Failed payments may result in course access suspension</li>
+                                </ul>
+                            </div>
+                            
+                            <div>
+                                <h3 class="text-lg font-bold text-white mb-3">3. BILLING AND CHARGES</h3>
+                                <ul class="list-disc list-inside space-y-2 ml-4">
+                                    <li>All fees are in USD and exclude applicable taxes</li>
+                                    <li>Payment methods accepted: Credit/Debit cards, PayPal, Apple Pay</li>
+                                    <li>Billing address verification required for security</li>
+                                    <li>Course access granted immediately upon successful payment</li>
+                                </ul>
+                            </div>
+                            
+                            <div>
+                                <h3 class="text-lg font-bold text-white mb-3">4. CANCELLATION AND REFUNDS</h3>
+                                <ul class="list-disc list-inside space-y-2 ml-4">
+                                    <li>Monthly plans: Cancel anytime with 7-day notice</li>
+                                    <li>Refunds: 7-day money-back guarantee on all purchases</li>
+                                    <li>Partial refunds available for payment plan cancellations before 2nd payment</li>
+                                    <li>Processing time: 5-7 business days for refunds</li>
+                                </ul>
+                            </div>
+                            
+                            <div>
+                                <h3 class="text-lg font-bold text-white mb-3">5. FAILED PAYMENTS</h3>
+                                <ul class="list-disc list-inside space-y-2 ml-4">
+                                    <li>Automatic retry within 3 days of failed payment</li>
+                                    <li>Email notification sent for payment failures</li>
+                                    <li>Course access suspended after 7 days of non-payment</li>
+                                    <li>Account reactivation available upon successful payment</li>
+                                </ul>
+                            </div>
+                            
+                            <div>
+                                <h3 class="text-lg font-bold text-white mb-3">6. SECURITY AND PRIVACY</h3>
+                                <p>All payment information is encrypted using industry-standard SSL technology. We do not store credit card details on our servers. Payment processing is handled by certified PCI DSS compliant providers.</p>
+                            </div>
+                            
+                            <div class="bg-gray-800 border border-gray-600 rounded-lg p-4">
+                                <h4 class="font-semibold text-white mb-2">Payment Support</h4>
+                                <p class="text-sm">
+                                    For payment-related questions or issues:<br>
+                                    <strong>TechStep Billing Department</strong><br>
+                                    Email: billing@techstepfoundation.org<br>
+                                    Phone: 1-301-AJW-10MP<br>
+                                    Business Hours: Monday-Friday, 9 AM - 5 PM EST
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', paymentTermsHTML);
+            document.getElementById('paymentTermsModal').classList.add('show');
+        }
+
+        // Show payment selection message
+        function showPaymentSelectionMessage(message) {
+            // Remove any existing message
+            const existingMessage = document.getElementById('payment-selection-message');
+            if (existingMessage) {
+                existingMessage.remove();
+            }
+            
+            // Create new message
+            const messageHTML = `
+                <div id="payment-selection-message" class="bg-blue-900/30 border border-blue-500/50 rounded-lg p-3 mb-4 text-center">
+                    <div class="flex items-center justify-center">
+                        <i class="fas fa-check-circle text-blue-400 mr-2"></i>
+                        <span class="text-blue-200 text-sm">${message}</span>
+                    </div>
+                </div>
+            `;
+            
+            // Insert message after payment plan selector
+            const paymentPlanSelector = document.getElementById('payment-plan-selector');
+            if (paymentPlanSelector) {
+                paymentPlanSelector.insertAdjacentHTML('afterend', messageHTML);
+                
+                // Auto-remove message after 5 seconds
+                setTimeout(() => {
+                    const msgElement = document.getElementById('payment-selection-message');
+                    if (msgElement) {
+                        msgElement.remove();
+                    }
+                }, 5000);
+            }
+        }
+
+        // Add to Cart function for "Add to Cart" buttons
+        function addToCart(courseId, courseName, price) {
+            console.log('Adding to cart:', { courseId, courseName, price });
+            
+            // Check if course is already in cart
+            const existingCourse = selectedCourses.find(course => course.id === courseId);
+            if (existingCourse) {
+                alert('Course is already in your cart!');
+                return;
+            }
+            
+            // Add course to selected courses
+            selectedCourses.push({
+                id: courseId,
+                name: courseName,
+                selfPrice: price,
+                mentorPrice: price + 2000 // Add $2000 for mentor option
+            });
+            
+            // Update cart display
+            updateCart();
+            
+            // Update button state
+            const addToCartBtns = document.querySelectorAll(`[onclick*="${courseId}"]`);
+            addToCartBtns.forEach(btn => {
+                btn.textContent = '✓ Added to Cart';
+                btn.className = 'w-full bg-green-800 text-white font-bold py-3 px-6 rounded-lg cursor-default';
+                btn.onclick = null;
+            });
+            
+            // Show success notification
+            showNotification(`${courseName} added to cart!`, 'success');
+            
+            // Scroll to cart section
+            setTimeout(() => {
+                const cartSection = document.querySelector('#cart-section');
+                if (cartSection) {
+                    cartSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            }, 500);
         }
 
         function updateCart() {
@@ -3983,7 +4161,7 @@ function formatTime(seconds) {
                                         <input type="checkbox" id="agreementCheck" required class="mt-1">
                                         <span class="text-sm text-gray-300">
                                             I have read and agree to the 
-                                            <button type="button" id="agreementLink" class="text-blue-400 hover:text-blue-300 underline">
+                                            <button type="button" id="agreementLink" onclick="showTermsOfService()" class="text-blue-400 hover:text-blue-300 underline">
                                                 Mentee Agreement and Terms of Service
                                             </button>
                                         </span>
@@ -4651,7 +4829,7 @@ function formatTime(seconds) {
                             <div class="flex items-start mt-4">
                                 <input type="checkbox" id="trialTerms" required class="mt-1 mr-3">
                                 <label for="trialTerms" class="text-gray-300 text-sm">
-                                    I agree to the <a href="#" class="text-purple-400 hover:text-purple-300">Terms of Service</a> 
+                                    I agree to the <a href="#" onclick="showTermsOfService(); return false;" class="text-purple-400 hover:text-purple-300">Terms of Service</a> 
                                     and understand this is a 7-day free trial with no obligations.
                                 </label>
                             </div>

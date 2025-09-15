@@ -1,0 +1,21 @@
+# Cloudflare Pages Redirects Configuration
+# Documentation: https://developers.cloudflare.com/pages/platform/redirects/
+
+# Redirect common URLs to main sections
+/home              /                     301
+/courses           /#courses-section     301
+/enrollment        /#enrollment-section  301
+/pricing           /#pricing-section     301
+/contact           /#contact-section     301
+/about             /#about-section       301
+
+# Redirect old course URLs to main page
+/soc-analyst       /#courses-section     301
+/cyber-security    /#courses-section     301
+/malware-analysis  /#courses-section     301
+
+# Ensure www subdomain (if using custom domain)
+https://techstepfoundation.org/*  https://www.techstepfoundation.org/:splat  301!
+
+# Handle 404s for SPA-like behavior (fallback to main page)
+/*  /index.html  200

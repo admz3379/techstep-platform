@@ -1,79 +1,19 @@
-# Cloudflare Pages Configuration for TechStep Platform
+# Cloudflare Pages Advanced Configuration for TechStep Platform
+# Note: This file is optional. Basic configuration is handled by wrangler.toml and _headers/_redirects files
 
 [build]
-# No build command needed for static HTML
+# Static site - no build process needed
 command = ""
-
-# Output directory is the root (where index.html is located)
 destination = "."
 
-# Node.js version for any potential build processes
 [build.environment]
+# Environment variables for build process (if needed in future)
 NODE_VERSION = "18.17.0"
 
-# Security and performance settings
+# Functions configuration (for future edge functions)
 [functions]
 compatibility_date = "2024-09-15"
 compatibility_flags = ["nodejs_compat"]
 
-# Custom redirects for SEO and user experience
-[[redirects]]
-from = "/home"
-to = "/"
-status = 301
-
-[[redirects]]
-from = "/courses"
-to = "/#courses-section"
-status = 301
-
-[[redirects]]
-from = "/enrollment"
-to = "/#enrollment-section"
-status = 301
-
-[[redirects]]
-from = "/pricing"
-to = "/#pricing-section"
-status = 301
-
-# Handle 404s by redirecting to main page (SPA-like behavior)
-[[redirects]]
-from = "/*"
-to = "/index.html"
-status = 200
-conditions = {Country = ["US", "CA", "GB", "AU"]}
-
-# Security headers
-[headers]
-for = "/*"
-
-[headers.values]
-# Security Headers
-X-Frame-Options = "DENY"
-X-Content-Type-Options = "nosniff"
-X-XSS-Protection = "1; mode=block"
-Referrer-Policy = "strict-origin-when-cross-origin"
-Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=()"
-
-# Content Security Policy for enhanced security
-Content-Security-Policy = """
-  default-src 'self';
-  script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.stripe.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com;
-  style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com;
-  font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com;
-  img-src 'self' data: https: blob:;
-  connect-src 'self' https://api.stripe.com;
-  frame-src https://js.stripe.com;
-"""
-
-# HSTS for HTTPS enforcement
-Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
-
-# Performance optimization
-[headers_performance]
-for = "*.{css,js,png,jpg,jpeg,gif,webp,svg,ico}"
-
-[headers_performance.values]
-Cache-Control = "public, max-age=31536000, immutable"
-Vary = "Accept-Encoding"
+# Note: Headers and redirects are now handled by _headers and _redirects files
+# This provides better performance and easier maintenance

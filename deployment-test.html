@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Deployment Test - Support Email Integration</title>
+    <meta charset="UTF-8">
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            max-width: 800px; 
+            margin: 50px auto; 
+            padding: 20px;
+            background: #1a1a2e;
+            color: white;
+        }
+        .test-item { 
+            background: #16213e; 
+            padding: 15px; 
+            margin: 10px 0; 
+            border-radius: 8px; 
+            border-left: 4px solid #4f46e5;
+        }
+        .success { border-left-color: #10b981; }
+        .email-link { color: #60a5fa; text-decoration: none; }
+        .email-link:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <h1>🚀 TechStep Deployment Test - Support Email Integration</h1>
+    <p><strong>Deployed:</strong> <span id="timestamp"></span></p>
+    
+    <div class="test-item success">
+        <h3>✅ Support Email Integration Test</h3>
+        <p>If you can see this page, our latest deployment is live!</p>
+        <p><strong>Support Contact:</strong> <a href="mailto:support@techstepfoundation.org" class="email-link">support@techstepfoundation.org</a></p>
+    </div>
+    
+    <div class="test-item">
+        <h3>🎯 Implemented Features Status</h3>
+        <ul>
+            <li>✅ Footer with support@techstepfoundation.org contact section</li>
+            <li>✅ Registration form with enrollment assistance email</li>
+            <li>✅ Order summary with pre-checkout support contact</li>
+            <li>✅ Mentee login modals with help contacts</li>
+            <li>✅ Navigation dropdown with 4 cybersecurity themes</li>
+            <li>✅ "Enroll Now" buttons replacing "Add to Cart"</li>
+            <li>✅ Mentee login with membership gating</li>
+        </ul>
+    </div>
+    
+    <div class="test-item">
+        <h3>🔧 Next Steps</h3>
+        <p>Return to main site: <a href="/" class="email-link">TechStep Foundation</a></p>
+        <p>If main site doesn't show changes, clear cache (Ctrl+F5) and wait 2-5 minutes for GitHub Pages deployment.</p>
+    </div>
+    
+    <script>
+        document.getElementById('timestamp').textContent = new Date().toISOString();
+    </script>
+</body>
+</html>

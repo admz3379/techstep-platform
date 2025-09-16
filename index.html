@@ -6714,24 +6714,32 @@ function formatTime(seconds) {
         }
         
         // Demo Completion Modal and Enrollment Flow
-        function showDemoCompletionModal() {
+        function showDemoCompletionModal(exerciseType = 'general') {
             const modalHTML = `
                 <div id="demo-completion-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
-                    <div class="bg-gray-800 border border-gray-700 rounded-lg max-w-md w-full mx-4 p-6">
+                    <div class="bg-gray-800 border border-gray-700 rounded-lg max-w-md w-full mx-4 p-6 sm:p-6 p-4">
                         <div class="text-center">
                             <div class="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
                                 <i class="fas fa-check text-white text-2xl"></i>
                             </div>
                             <h3 class="text-xl font-bold text-white mb-2">Demo Complete!</h3>
-                            <p class="text-gray-300 mb-6">Great job completing the knowledge check. Ready for the full experience?</p>
+                            <p class="text-gray-300 mb-4">Great job completing the ${exerciseType === 'log_investigation' ? 'Log Investigation' : exerciseType === 'email_security' ? 'Email Security Analysis' : 'knowledge check'}.</p>
+                            <p class="text-blue-200 mb-6">Ready for the full experience with live mentorship and career support?</p>
                             
                             <div class="space-y-3">
-                                <button onclick="continueToEnrollment()" class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300">
+                                <button onclick="continueToEnrollment('${exerciseType}')" class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300">
                                     <i class="fas fa-arrow-right mr-2"></i>Continue My Journey
                                 </button>
                                 <button onclick="closeDemoModal()" class="w-full border border-gray-600 text-gray-300 hover:text-white hover:bg-gray-700 font-medium py-3 px-6 rounded-lg transition duration-300">
                                     Maybe Later
                                 </button>
+                                
+                                <div class="mt-4 p-3 bg-gray-700 border border-gray-600 rounded-lg">
+                                    <p class="text-xs text-gray-400 mb-1">Questions about our programs?</p>
+                                    <a href="mailto:support@techstepfoundation.org" class="text-blue-400 hover:text-blue-300 text-sm font-medium">
+                                        <i class="fas fa-envelope mr-1"></i>support@techstepfoundation.org
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -6740,11 +6748,27 @@ function formatTime(seconds) {
             
             document.body.insertAdjacentHTML('beforeend', modalHTML);
             
-            // Analytics event
+            // Enhanced Analytics tracking
             if (typeof gtag !== 'undefined') {
                 gtag('event', 'demo_complete', {
                     event_category: 'engagement',
-                    event_label: 'demo_completion'
+                    event_label: 'demo_completion',
+                    exercise_type: exerciseType,
+                    value: 1
+                });
+                
+                gtag('event', 'modal_shown', {
+                    event_category: 'ui',
+                    event_label: 'demo_completion_modal',
+                    modal_type: 'demo_completion'
+                });
+            }
+            
+            // Track funnel progression
+            if (typeof mixpanel !== 'undefined') {
+                mixpanel.track('Demo Complete', {
+                    exercise_type: exerciseType,
+                    completion_time: new Date().toISOString()
                 });
             }
             
@@ -6757,11 +6781,12 @@ function formatTime(seconds) {
             }, 100);
         }
         
-        function continueToEnrollment() {
-            // Analytics event
+        function continueToEnrollment(source = 'demo') {
+            // Enhanced Analytics tracking
             if (typeof gtag !== 'undefined') {
                 gtag('event', 'enroll_clicked', {
                     event_category: 'conversion',
+                    source: source,
                     event_label: 'demo_to_enrollment'
                 });
             }
@@ -6844,11 +6869,27 @@ function formatTime(seconds) {
                                 <input type="tel" name="phone" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
                             </div>
                             
-                            <div class="flex items-start space-x-3">
-                                <input type="checkbox" id="email-consent" name="emailConsent" required class="mt-1 w-5 h-5 text-blue-600">
-                                <label for="email-consent" class="text-sm text-gray-300">
-                                    I agree to receive course updates and educational content via email. I can unsubscribe at any time. *
-                                </label>
+                            <div class="space-y-3">
+                                <div class="flex items-start space-x-3">
+                                    <input type="checkbox" id="email-consent" name="emailConsent" required class="mt-1 w-5 h-5 text-blue-600">
+                                    <label for="email-consent" class="text-sm text-gray-300">
+                                        I agree to receive course updates, educational content, and service notifications via email. I understand I can unsubscribe at any time using the link provided in each email. *
+                                    </label>
+                                </div>
+                                
+                                <div class="flex items-start space-x-3">
+                                    <input type="checkbox" id="terms-consent" name="termsConsent" required class="mt-1 w-5 h-5 text-blue-600">
+                                    <label for="terms-consent" class="text-sm text-gray-300">
+                                        I agree to the <a href="#" onclick="showPaymentTerms()" class="text-blue-400 hover:underline">Payment Terms</a> and <a href="#" onclick="showPrivacyPolicy()" class="text-blue-400 hover:underline">Privacy Policy</a> *
+                                    </label>
+                                </div>
+                                
+                                <div class="p-3 bg-blue-900/20 border border-blue-500/30 rounded-lg">
+                                    <p class="text-blue-100 text-xs">
+                                        <i class="fas fa-shield-alt mr-2"></i>
+                                        <strong>GDPR Compliance:</strong> Your personal data will be processed in accordance with EU data protection regulations. You have the right to access, rectify, or delete your personal data at any time.
+                                    </p>
+                                </div>
                             </div>
                             
                             <div class="text-center p-3 bg-gray-700 border border-gray-600 rounded-lg">
@@ -6877,11 +6918,33 @@ function formatTime(seconds) {
             document.getElementById('registration-form').addEventListener('submit', (e) => {
                 e.preventDefault();
                 
-                // Analytics event
+                // Enhanced Analytics tracking
                 if (typeof gtag !== 'undefined') {
                     gtag('event', 'registration_submit', {
                         event_category: 'conversion',
-                        course_name: courseName
+                        course_name: courseName,
+                        course_price: price,
+                        email_consent: userData.emailConsent,
+                        value: price
+                    });
+                }
+                
+                // Track conversion funnel
+                if (typeof mixpanel !== 'undefined') {
+                    mixpanel.track('Registration Submit', {
+                        course_name: courseName,
+                        course_price: price,
+                        user_email: userData.email,
+                        consent_given: userData.emailConsent
+                    });
+                }
+                
+                // Facebook Pixel conversion tracking
+                if (typeof fbq !== 'undefined') {
+                    fbq('track', 'Lead', {
+                        content_name: courseName,
+                        value: price,
+                        currency: 'USD'
                     });
                 }
                 
@@ -6989,12 +7052,28 @@ function formatTime(seconds) {
             
             document.body.insertAdjacentHTML('beforeend', orderHTML);
             
-            // Analytics event
+            // Enhanced Analytics tracking
             if (typeof gtag !== 'undefined') {
                 gtag('event', 'order_summary_view', {
                     event_category: 'conversion',
                     course_name: courseName,
-                    value: price
+                    value: price,
+                    currency: 'USD',
+                    user_email: userData.email
+                });
+                
+                gtag('event', 'modal_shown', {
+                    event_category: 'ui',
+                    event_label: 'order_summary_modal'
+                });
+            }
+            
+            // Track order summary funnel
+            if (typeof mixpanel !== 'undefined') {
+                mixpanel.track('Order Summary View', {
+                    course_name: courseName,
+                    course_price: price,
+                    user_email: userData.email
                 });
             }
         }
@@ -7010,13 +7089,46 @@ function formatTime(seconds) {
             const userData = JSON.parse(userDataStr);
             const paymentPlan = document.querySelector('input[name="order-payment-plan"]:checked')?.value || 'full';
             
-            // Analytics event
+            // Enhanced Analytics tracking
             if (typeof gtag !== 'undefined') {
                 gtag('event', 'checkout_start', {
                     event_category: 'conversion',
                     course_name: courseName,
                     payment_plan: paymentPlan,
-                    value: price
+                    value: price,
+                    currency: 'USD',
+                    user_email: userData.email
+                });
+                
+                gtag('event', 'begin_checkout', {
+                    currency: 'USD',
+                    value: price,
+                    items: [{
+                        item_id: courseId,
+                        item_name: courseName,
+                        category: 'cybersecurity_course',
+                        quantity: 1,
+                        price: price
+                    }]
+                });
+            }
+            
+            // Track checkout start in multiple platforms
+            if (typeof mixpanel !== 'undefined') {
+                mixpanel.track('Checkout Start', {
+                    course_id: courseId,
+                    course_name: courseName,
+                    payment_plan: paymentPlan,
+                    course_price: price,
+                    user_email: userData.email
+                });
+            }
+            
+            if (typeof fbq !== 'undefined') {
+                fbq('track', 'InitiateCheckout', {
+                    content_name: courseName,
+                    value: price,
+                    currency: 'USD'
                 });
             }
             
@@ -7135,8 +7247,50 @@ function formatTime(seconds) {
             }
         }
         
-        // Expose demo completion function globally for demo pages
+        // Purchase completion tracking
+        function trackPurchaseComplete(courseId, courseName, price, paymentPlan, transactionId) {
+            // Enhanced purchase analytics
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'purchase', {
+                    transaction_id: transactionId,
+                    value: price,
+                    currency: 'USD',
+                    items: [{
+                        item_id: courseId,
+                        item_name: courseName,
+                        category: 'cybersecurity_course',
+                        quantity: 1,
+                        price: price
+                    }]
+                });
+            }
+            
+            // Track successful conversion
+            if (typeof mixpanel !== 'undefined') {
+                mixpanel.track('Purchase Complete', {
+                    course_id: courseId,
+                    course_name: courseName,
+                    payment_plan: paymentPlan,
+                    course_price: price,
+                    transaction_id: transactionId,
+                    revenue: price
+                });
+            }
+            
+            if (typeof fbq !== 'undefined') {
+                fbq('track', 'Purchase', {
+                    content_name: courseName,
+                    value: price,
+                    currency: 'USD'
+                });
+            }
+            
+            console.log('✅ Purchase tracking complete for:', courseName, 'Amount:', price);
+        }
+        
+        // Global demo completion function for all exercises
         window.showDemoCompletionModal = showDemoCompletionModal;
+        window.trackPurchaseComplete = trackPurchaseComplete;
         
     </script>
 </body>

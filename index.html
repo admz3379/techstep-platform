@@ -6197,21 +6197,6 @@ function formatTime(seconds) {
                 console.log('✅ Payment buttons shown');
             }
         }
-                    
-                    // Check the checkbox
-                    const socCheckbox = document.querySelector('[data-course="soc-analyst"] .course-checkbox');
-                    if (socCheckbox) {
-                        socCheckbox.checked = true;
-                        console.log('✅ SOC checkbox manually checked');
-                    }
-                    
-                    // Force update
-                    forceCartUpdate();
-                };
-                cartSection.appendChild(testButton);
-                console.log('🧪 Test button added');
-            }
-        }
         
         function addImmediateWorkaround() {
             console.log('🚨 Adding immediate workaround...');

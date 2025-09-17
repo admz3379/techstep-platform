@@ -852,7 +852,7 @@
                                 data-course-id="soc-analyst" 
                                 data-course-name="SOC Analyst Foundations" 
                                 data-price="2849"
-                                onclick="startEnrollment('soc-analyst', 'SOC Analyst Foundations', 2849)">
+                                onclick="console.log('Button clicked!'); startEnrollment('soc-analyst', 'SOC Analyst Foundations', 2849); return false;">
                             <i class="fas fa-graduation-cap mr-2"></i>Enroll Now
                         </button>
                     </div>
@@ -6819,22 +6819,35 @@ function formatTime(seconds) {
         function startEnrollment(courseId, courseName, price) {
             console.log('🎓 Starting enrollment for:', courseName);
             
-            // Analytics event
+            // Enhanced Analytics event
             if (typeof gtag !== 'undefined') {
-                gtag('event', 'enrollment_start', {
+                gtag('event', 'enroll_clicked', {
                     event_category: 'conversion',
                     course_name: courseName,
-                    course_price: price
+                    course_price: price,
+                    source: 'course_card'
                 });
+            }
+            
+            // Ensure modal is removed before showing new one
+            const existingModal = document.getElementById('registration-modal');
+            if (existingModal) {
+                existingModal.remove();
             }
             
             showRegistrationForm(courseId, courseName, price);
         }
         
+        // Make startEnrollment globally accessible
+        window.startEnrollment = startEnrollment;
+        
         function showRegistrationForm(courseId, courseName, price) {
-            const registrationHTML = `
-                <div id="registration-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
-                    <div class="bg-gray-800 border border-gray-700 rounded-lg max-w-lg w-full mx-4 p-6 max-h-[90vh] overflow-y-auto sm:p-6 p-4">
+            console.log('🔧 showRegistrationForm called with:', {courseId, courseName, price});
+            
+            try {
+                const registrationHTML = `
+                    <div id="registration-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+                        <div class="bg-gray-800 border border-gray-700 rounded-lg max-w-lg w-full mx-4 p-6 max-h-[90vh] overflow-y-auto sm:p-6 p-4">
                         <div class="flex justify-between items-center mb-6">
                             <h3 class="text-2xl font-bold text-blue-400">Start Your Journey</h3>
                             <button onclick="closeRegistrationModal()" class="text-gray-400 hover:text-white text-2xl">
@@ -6912,10 +6925,18 @@ function formatTime(seconds) {
                 </div>
             `;
             
-            document.body.insertAdjacentHTML('beforeend', registrationHTML);
-            
-            // Add form submit handler
-            document.getElementById('registration-form').addEventListener('submit', (e) => {
+                document.body.insertAdjacentHTML('beforeend', registrationHTML);
+                
+                console.log('✅ Registration modal HTML inserted successfully');
+                
+                // Add form submit handler
+                const registrationForm = document.getElementById('registration-form');
+                if (!registrationForm) {
+                    console.error('❌ Registration form not found after insertion!');
+                    return;
+                }
+                
+                registrationForm.addEventListener('submit', (e) => {
                 e.preventDefault();
                 
                 // Enhanced Analytics tracking
@@ -6957,9 +6978,14 @@ function formatTime(seconds) {
                     emailConsent: formData.get('emailConsent') === 'on'
                 };
                 
-                closeRegistrationModal();
-                showOrderSummary(courseId, courseName, price, userData);
-            });
+                    closeRegistrationModal();
+                    showOrderSummary(courseId, courseName, price, userData);
+                });
+                
+            } catch (error) {
+                console.error('❌ Error in showRegistrationForm:', error);
+                alert('Enrollment system error. Please refresh the page and try again.');
+            }
         }
         
         function closeRegistrationModal() {
@@ -7291,6 +7317,24 @@ function formatTime(seconds) {
         // Global demo completion function for all exercises
         window.showDemoCompletionModal = showDemoCompletionModal;
         window.trackPurchaseComplete = trackPurchaseComplete;
+        
+        // Debug function to test button functionality
+        function testEnrollButton() {
+            console.log('✅ Test enrollment button clicked!');
+            alert('Enroll button is working! Opening registration...');
+            startEnrollment('test', 'Test Course', 100);
+        }
+        window.testEnrollButton = testEnrollButton;
+        
+        // Ensure all functions are loaded on page ready
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('✅ TechStep enrollment system loaded successfully');
+            console.log('Available functions:', {
+                startEnrollment: typeof startEnrollment,
+                showRegistrationForm: typeof showRegistrationForm,
+                showDemoCompletionModal: typeof showDemoCompletionModal
+            });
+        });
         
     </script>
 </body>
